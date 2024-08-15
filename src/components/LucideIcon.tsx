@@ -1,27 +1,17 @@
 import { FC } from 'react';
-import { 
-  Home, 
-  ChartBar, 
-  User, 
-  Lock,
-} from 'lucide-react';
+import { icons, Icon } from 'lucide-react';
+
+type IconName = keyof typeof icons;
 
 interface LucideIconProps {
-  name: 'Home' | 'ChartBar' | 'User' | 'Lock'
+  name: IconName;
   className?: string;
 }
 
-const iconMap = {
-  Home: Home,
-  ChartBar: ChartBar,
-  User: User,
-  Lock: Lock,
-};
-
 const LucideIcon: FC<LucideIconProps> = ({ name, className }) => {
-  const Icon = iconMap[name] || Home;
+  const IconComponent = icons[name] || icons['Circle'];
 
-  return <Icon className={className} />;
+  return <IconComponent className={className} />;
 };
 
 export default LucideIcon;

@@ -1,6 +1,13 @@
-import LucideIcon from "@/components/LucideIcon"
+import { FC } from 'react';
+import LucideIcon from '@/components/LucideIcon';
 
-const features = [
+interface Feature {
+  icon: keyof typeof import('lucide-react').icons;
+  title: string;
+  description: string;
+}
+
+const features: Feature[] = [
   {
     icon: "ChartBar",
     title: "Financial Insights",
@@ -18,7 +25,7 @@ const features = [
   }
 ];
 
-const FeaturesSection = () => (
+const FeaturesSection: FC = () => (
   <section className="py-16 bg-gray-100">
     <div className="container mx-auto text-center">
       <h2 className="text-3xl font-bold mb-6">Key Features</h2>
