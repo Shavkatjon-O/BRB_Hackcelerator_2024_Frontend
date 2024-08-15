@@ -1,11 +1,13 @@
+import { User, Star } from 'lucide-react';
+
 const HeroSection = () => (
-  <section className="bg-blue-500 text-white text-center py-20">
-    <div className="container mx-auto">
+  <section className="relative bg-blue-500 text-white">
+    <div className="container mx-auto py-16 text-center">
       <h1 className="text-5xl font-bold mb-4">Welcome to YourBank</h1>
-      <p className="text-lg mb-8">Your one-stop solution for all banking needs.</p>
-      <a href="#features" className="bg-white text-blue-500 px-6 py-3 rounded-full font-semibold">
-        Learn More
-      </a>
+      <p className="text-xl mb-8">The best place for your banking needs.</p>
+      <button className="bg-white text-blue-500 py-2 px-4 rounded-lg">
+        Get Started
+      </button>
     </div>
   </section>
 );

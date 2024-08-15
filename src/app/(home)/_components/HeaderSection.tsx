@@ -1,18 +1,22 @@
 import Link from 'next/link';
-import LucideIcon from '@/components/LucideIcon';
+import { Home, Menu } from 'lucide-react';
 
 const HeaderSection = () => (
-  <header className="py-4 bg-white shadow-md">
+  <header className="py-4 bg-gray-800 text-white">
     <div className="container mx-auto flex justify-between items-center">
       <Link href="/" className="text-2xl font-bold flex items-center">
-        <LucideIcon name="Home" className="w-8 h-8 inline mr-2" />
+        <Home className="w-8 h-8 mr-2" />
         YourBank
       </Link>
       <nav className="space-x-6">
-        <Link href="/about" className="text-gray-700">About</Link>
-        <Link href="/services" className="text-gray-700">Services</Link>
-        <Link href="/contact" className="text-gray-700">Contact</Link>
+        <Link href="/" className="hover:text-gray-300">Home</Link>
+        <Link href="/about" className="hover:text-gray-300">About</Link>
+        <Link href="/services" className="hover:text-gray-300">Services</Link>
+        <Link href="/contact" className="hover:text-gray-300">Contact</Link>
       </nav>
+      <button className="md:hidden">
+        <Menu className="w-8 h-8" />
+      </button>
     </div>
   </header>
 );

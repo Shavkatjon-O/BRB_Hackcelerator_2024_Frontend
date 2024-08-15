@@ -1,11 +1,11 @@
 const testimonials = [
   {
-    name: "John Doe",
-    feedback: "This platform has transformed how we handle our banking operations. Highly recommended!"
+    name: 'John Doe',
+    feedback: 'This platform has transformed how we handle our banking operations. Highly recommended!'
   },
   {
-    name: "Jane Smith",
-    feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!"
+    name: 'Jane Smith',
+    feedback: 'An intuitive and secure solution that meets all our needs. Excellent customer support!'
   }
 ];
 
