@@ -1,31 +1,24 @@
-import { FC } from 'react';
 import LucideIcon from '@/components/LucideIcon';
 
-interface Feature {
-  icon: keyof typeof import('lucide-react').icons;
-  title: string;
-  description: string;
-}
-
-const features: Feature[] = [
+const features = [
   {
-    icon: "ChartBar",
-    title: "Financial Insights",
-    description: "Gain deep insights into your financial data with interactive charts and reports."
+    icon: 'ChartBar',
+    title: 'Financial Insights',
+    description: 'Gain deep insights into your financial data with interactive charts and reports.'
   },
   {
-    icon: "User",
-    title: "User Management",
-    description: "Manage user roles and permissions easily with our intuitive interface."
+    icon: 'User',
+    title: 'User Management',
+    description: 'Manage user roles and permissions easily with our intuitive interface.'
   },
   {
-    icon: "Lock",
-    title: "Secure Access",
-    description: "Ensure the highest level of security with advanced authentication methods."
+    icon: 'Lock',
+    title: 'Secure Access',
+    description: 'Ensure the highest level of security with advanced authentication methods.'
   }
 ];
 
-const FeaturesSection: FC = () => (
+const FeaturesSection = () => (
   <section className="py-16 bg-gray-100">
     <div className="container mx-auto text-center">
       <h2 className="text-3xl font-bold mb-6">Key Features</h2>

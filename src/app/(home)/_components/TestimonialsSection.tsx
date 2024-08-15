@@ -16,7 +16,7 @@ const TestimonialsSection = () => (
       <div className="flex flex-col items-center">
         {testimonials.map((testimonial, index) => (
           <div key={index} className="bg-white p-6 rounded-lg shadow-lg mb-6 max-w-md">
-            <p className="italic">&ldquo;{testimonial.feedback}&rdquo;</p>
+            <p className="italic">"{testimonial.feedback}"</p>
             <p className="font-semibold mt-4">- {testimonial.name}</p>
           </div>
         ))}
