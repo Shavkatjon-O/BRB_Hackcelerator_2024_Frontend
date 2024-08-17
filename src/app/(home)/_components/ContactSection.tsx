@@ -9,7 +9,7 @@ const ContactSection = () => (
       </p>
       <Mail className="w-16 h-16 mx-auto mb-4" />
       <a href="mailto:support@yourbank.com" className="text-lg underline">
-        support@yourbank.com
+        support@brb-titans.uz
       </a>
     </div>
   </section>

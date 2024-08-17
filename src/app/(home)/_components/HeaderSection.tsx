@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import { Home, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 const HeaderSection = () => (
   <header className="py-4 bg-gray-800 text-white">
     <div className="container mx-auto flex justify-between items-center">
       <Link href="/" className="text-2xl font-bold flex items-center">
-        <Home className="w-8 h-8 mr-2" />
-        YourBank
+        <img src="brb-titans-logo.png" alt="BRB Titans Logo" className="w-8 h-8 mr-2" />
+        BRB Titans
       </Link>
       <nav className="space-x-6">
         <Link href="/" className="hover:text-gray-300">Home</Link>
