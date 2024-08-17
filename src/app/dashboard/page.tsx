@@ -2,7 +2,9 @@ import Dashboard from './layout';
 
 const Page = () => {
   return (
-    <h1>Dashboard</h1>
+    <>
+      <h1>Dashboard</h1>
+    </>
   );
 }
 
