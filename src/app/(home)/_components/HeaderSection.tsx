@@ -8,11 +8,14 @@ const HeaderSection = () => (
         <img src="brb-titans-logo.png" alt="BRB Titans Logo" className="w-8 h-8 mr-2" />
         BRB Titans
       </Link>
-      <nav className="space-x-6">
+      <nav className="space-x-6 hidden md:flex items-center justify-center">
         <Link href="/" className="hover:text-gray-300">Home</Link>
         <Link href="/about" className="hover:text-gray-300">About</Link>
         <Link href="/services" className="hover:text-gray-300">Services</Link>
         <Link href="/contact" className="hover:text-gray-300">Contact</Link>
+        <button className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
+          Login
+        </button>
       </nav>
       <button className="md:hidden">
         <Menu className="w-8 h-8" />
