@@ -1,4 +1,3 @@
-import Dashboard from './layout';
 
 const Page = () => {
   return (

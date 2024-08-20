@@ -1,13 +1,20 @@
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
 
 const Header = () => {
   return (
-    <header className="bg-blue-600 text-white p-4">
+    <header className="bg-gray-800 text-white p-4">
       <div className="container mx-auto">
         <h1 className="text-xl font-bold">
-          <Link href="/">
-            GoodJob!
+          <Link href="/" className="text-2xl font-bold flex items-center">
+            <Image 
+              src="/brb-titans-logo.png"
+              alt="BRB Titans Logo"
+              width={40}
+              height={40}  
+              className="mr-2"
+            />
+            BRB Titans
           </Link>
         </h1>
       </div>
