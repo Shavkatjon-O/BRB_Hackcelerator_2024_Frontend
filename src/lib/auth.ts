@@ -14,8 +14,10 @@ export const signup = async (email: string, password: string) => {
 export const login = async (email: string, password: string) => {
   try {
     const response = await CoreAPI.post('/users/token/', { email, password });
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('access_token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
+    }
     return { success: true };
   } catch (error) {
     return { error: 'Invalid email or password' };
