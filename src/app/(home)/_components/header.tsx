@@ -1,5 +1,3 @@
-import { Menu } from 'lucide-react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -29,7 +27,9 @@ const Header = () => {
         
         </nav>
         <button className="md:hidden">
-          <Menu className="w-8 h-8" />
+          <Link href="/users/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
+            Login
+          </Link>
         </button>
       </div>
     </header>
