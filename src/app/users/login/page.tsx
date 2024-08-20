@@ -17,7 +17,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await CoreAPI.post('/users/token/', {
+      const response = await CoreAPI.post('/users/token', {
         email,
         password,
       });

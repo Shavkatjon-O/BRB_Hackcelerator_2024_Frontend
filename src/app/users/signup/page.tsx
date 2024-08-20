@@ -24,7 +24,7 @@ const SignupPage = () => {
     }
 
     try {
-      await CoreAPI.post('/users/signup/', {
+      await CoreAPI.post('/users/signup', {
         email,
         password,
       });
