@@ -9,14 +9,14 @@ const LoginPage = () => {
         <h1 className="text-2xl font-bold mb-6">Login</h1>
         <form>
           <div className="mb-4">
-            <Label htmlFor="email" className="block mb-1">Email</Label>
+            <Label htmlFor="email" className="block mb-3">Email</Label>
             <Input type="email" id="email" placeholder="Enter your email" className="w-full" />
           </div>
           <div className="mb-6">
-            <Label htmlFor="password" className="block mb-1">Password</Label>
+            <Label htmlFor="password" className="block mb-3">Password</Label>
             <Input type="password" id="password" placeholder="Enter your password" className="w-full" />
           </div>
-          <Button type="submit" className="w-full bg-blue-600 text-white">Login</Button>
+          <Button type="submit" className="w-full bg-gray-800 text-white">Login</Button>
         </form>
       </div>
     </>
