@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import CoreAPI from '@/lib/coreApi';
+import { login } from '@/lib/auth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,18 +16,11 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await CoreAPI.post('/users/token/', {
-        email,
-        password,
-      });
-
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-      
+    const result = await login(email, password);
+    if (result.success) {
       window.location.href = '/dashboard/';
-    } catch (err) {
-      setError('Invalid email or password');
+    } else {
+      setError("Invalid email or password");
     }
   };
 

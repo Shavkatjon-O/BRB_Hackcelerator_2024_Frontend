@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import CoreAPI from '@/lib/coreApi';
+import { signup } from '@/lib/auth';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
@@ -23,18 +23,15 @@ const SignupPage = () => {
       return;
     }
 
-    try {
-      await CoreAPI.post('/users/signup/', {
-        email,
-        password,
-      });
-      setSuccess('Account created successfully! Please log in.');
+    const result = await signup(email, password);
+    if (result.success) {
+      setSuccess(result.success);
       setError('');
       setTimeout(() => {
         window.location.href = '/users/login';
       }, 2000);
-    } catch (err) {
-      setError('Error creating account');
+    } else {
+      setError("Error creating account");
     }
   };
 
