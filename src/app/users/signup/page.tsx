@@ -4,8 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
-import UsersLayout from '../layout';
-
 const SignupPage = () => {
   return (
     <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
