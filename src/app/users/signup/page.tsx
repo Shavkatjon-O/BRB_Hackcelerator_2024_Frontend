@@ -33,8 +33,9 @@ const SignupPage = () => {
       setTimeout(() => {
         window.location.href = '/users/login';
       }, 2000);
-    } catch (err) {
-      setError('Error creating account');
+    } catch (err: any) {
+      setError(err.message);
+      // setError('Error creating account');
     }
   };
 

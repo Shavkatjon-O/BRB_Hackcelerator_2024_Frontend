@@ -26,8 +26,9 @@ const LoginPage = () => {
       localStorage.setItem('refresh_token', response.data.refresh);
       
       window.location.href = '/dashboard/';
-    } catch (err) {
-      setError('Invalid email or password');
+    } catch (err: any) {
+      setError(err.message);
+      // setError('Invalid email or password');
     }
   };
 
