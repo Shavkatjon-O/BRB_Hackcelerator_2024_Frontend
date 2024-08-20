@@ -1,14 +1,20 @@
-// Header
-
-import Link from 'next/link';
 import { Menu } from 'lucide-react';
+
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   return (
     <header className="py-4 bg-gray-800 text-white">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold flex items-center">
-          <img src="brb-titans-logo.png" alt="BRB Titans Logo" className="w-8 h-8 mr-2" />
+          <Image 
+            src="/brb-titans-logo.png"
+            alt="BRB Titans Logo"
+            width={40}
+            height={40}  
+            className="mr-2"
+          />
           BRB Titans
         </Link>
         <nav className="space-x-6 hidden md:flex items-center justify-center">

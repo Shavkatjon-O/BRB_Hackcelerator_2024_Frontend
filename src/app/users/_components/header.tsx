@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-const LoginHeaderSection = () => {
+const Header = () => {
   return (
     <header className="bg-blue-600 text-white p-4">
       <div className="container mx-auto">
@@ -15,4 +15,4 @@ const LoginHeaderSection = () => {
   );
 };
 
-export default LoginHeaderSection;
+export default Header;
