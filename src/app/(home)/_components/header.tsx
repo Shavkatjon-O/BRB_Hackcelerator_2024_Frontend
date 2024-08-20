@@ -19,12 +19,14 @@ const Header = () => {
         </Link>
         <nav className="space-x-6 hidden md:flex items-center justify-center">
           <Link href="/" className="hover:text-gray-300">Home</Link>
-          <Link href="/about" className="hover:text-gray-300">About</Link>
-          <Link href="/services" className="hover:text-gray-300">Services</Link>
-          <Link href="/contact" className="hover:text-gray-300">Contact</Link>
+          <Link href="#" className="hover:text-gray-300">About</Link>
+          <Link href="#" className="hover:text-gray-300">Services</Link>
+          <Link href="#" className="hover:text-gray-300">Contact</Link>
+          
           <Link href="/users/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
             Login
           </Link>
+        
         </nav>
         <button className="md:hidden">
           <Menu className="w-8 h-8" />
