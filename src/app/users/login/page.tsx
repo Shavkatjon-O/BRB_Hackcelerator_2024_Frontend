@@ -17,6 +17,9 @@ const LoginPage = () => {
             <Input type="password" id="password" placeholder="Enter your password" className="w-full" />
           </div>
           <Button type="submit" className="w-full bg-gray-800 text-white">Login</Button>
+          <div className="text-center mt-4">
+            <p className="text-sm text-gray-600">Do not have account yet? <a href="/users/signup" className="text-blue-600 hover:underline">Signup!</a></p>
+          </div>
         </form>
       </div>
     </>
