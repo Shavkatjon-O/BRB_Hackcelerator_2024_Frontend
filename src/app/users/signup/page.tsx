@@ -34,8 +34,7 @@ const SignupPage = () => {
         window.location.href = '/users/login';
       }, 2000);
     } catch (err: any) {
-      setError(err.message);
-      // setError('Error creating account');
+      setError('Error creating account');
     }
   };
 

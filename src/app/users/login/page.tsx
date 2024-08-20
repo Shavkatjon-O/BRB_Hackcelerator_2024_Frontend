@@ -27,8 +27,7 @@ const LoginPage = () => {
       
       window.location.href = '/dashboard/';
     } catch (err: any) {
-      setError(err.message);
-      // setError('Invalid email or password');
+      setError('Invalid email or password');
     }
   };
 
