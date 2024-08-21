@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 
 import { login } from '@/lib/auth';
 
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +52,11 @@ const LoginPage = () => {
           />
         </div>
         <Button type="submit" className="w-full bg-gray-800 text-white">Login</Button>
-        {error && <p className="text-red-600 mt-2">{error}</p>}
+        {error && (
+          <div className='mt-4 p-1.5 flex justify-center items-center border border-red-500 text-red-600 rounded-lg'>
+            <p>{error}</p>
+          </div>
+        )}
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Do not have an account yet?{' '}

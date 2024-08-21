@@ -27,9 +27,8 @@ const SignupPage = () => {
     if (result.success) {
       setSuccess(result.success);
       setError('');
-      setTimeout(() => {
-        window.location.href = '/users/login';
-      }, 2000);
+      
+      window.location.href = '/users/login';
     } else {
       setError("Error creating account");
     }
@@ -73,8 +72,16 @@ const SignupPage = () => {
           />
         </div>
         <Button type="submit" className="w-full bg-gray-800 text-white">Sign Up</Button>
-        {error && <p className="text-red-600 mt-2">{error}</p>}
-        {success && <p className="text-green-600 mt-2">{success}</p>}
+        {error && (
+          <div className='mt-4 p-1.5 flex justify-center items-center border border-red-500 text-red-600 rounded-lg'>
+            <p>{error}</p>
+          </div>
+        )}
+        {success && (
+          <div className='mt-4 p-1.5 flex justify-center items-center border border-green-500 text-green-600 rounded-lg'>
+            <p>{success}</p>
+          </div>
+        )}
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
