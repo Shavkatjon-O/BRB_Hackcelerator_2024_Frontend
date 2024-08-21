@@ -25,9 +25,9 @@ const SignupPage = () => {
 
     const result = await signup(email, password);
     if (result.success) {
-      setSuccess(result.success);
+      setSuccess(result.success); 
       setError('');
-      
+
       window.location.href = '/users/login';
     } else {
       setError("Error creating account");
