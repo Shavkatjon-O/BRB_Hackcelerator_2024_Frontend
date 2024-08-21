@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { signup } from '@/lib/auth';
+import { signupPerform } from './signupPerform';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
@@ -23,14 +23,13 @@ const SignupPage = () => {
       return;
     }
 
-    const result = await signup(email, password);
+    const result = await signupPerform(email, password);
     if (result.success) {
-      setSuccess(result.success); 
-      setError('');
+      setSuccess(result.message);
 
       window.location.href = '/login';
     } else {
-      setError("Error creating account");
+      setError(result.message);
     }
   };
 

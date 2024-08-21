@@ -6,22 +6,25 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { login } from '@/lib/auth';
-
+import { loginPerform } from './loginPerform';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const result = await login(email, password);
+    const result = await loginPerform(email, password);
+
     if (result.success) {
+      setSuccess(result.message);
+
       window.location.href = '/dashboard/';
     } else {
-      setError("Invalid email or password");
+      setError(result.message);
     }
   };
 
@@ -57,6 +60,11 @@ const LoginPage = () => {
             {error && (
               <div className='mt-4 p-1.5 flex justify-center items-center border border-red-500 text-red-600 rounded-lg'>
                 <p>{error}</p>
+              </div>
+            )}
+            {success && (
+              <div className='mt-4 p-1.5 flex justify-center items-center border border-green-500 text-green-600 rounded-lg'>
+                <p>{success}</p>
               </div>
             )}
             <div className="text-center mt-4">
