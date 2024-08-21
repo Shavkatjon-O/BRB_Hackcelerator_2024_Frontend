@@ -17,7 +17,7 @@ const Header = () => {
         BRB Titans
       </Link>
 
-      <Link href="/users/logout">
+      <Link href="/signout">
         <Button className="font-semibold">Sign Out</Button>
       </Link>
     </header>

@@ -21,13 +21,13 @@ const Header = () => {
           <Link href="#" className="hover:text-gray-300">Services</Link>
           <Link href="#" className="hover:text-gray-300">Contact</Link>
           
-          <Link href="/users/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
+          <Link href="/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
             Login
           </Link>
         
         </nav>
         <button className="md:hidden">
-          <Link href="/users/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
+          <Link href="/login" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
             Login
           </Link>
         </button>

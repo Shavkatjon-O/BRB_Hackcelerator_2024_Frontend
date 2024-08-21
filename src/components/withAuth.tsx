@@ -13,7 +13,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
     React.useEffect(() => {
       if (!token) {
-        router.push('/users/login');
+        router.push('/login');
       } else {
         setIsLoading(false);
       }
