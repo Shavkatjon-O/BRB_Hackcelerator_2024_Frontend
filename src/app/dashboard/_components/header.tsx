@@ -17,7 +17,9 @@ const Header = () => {
         BRB Titans
       </Link>
 
-      <Button className="font-semibold">Sign Out</Button>
+      <Link href="/users/logout">
+        <Button className="font-semibold">Sign Out</Button>
+      </Link>
     </header>
   );
 };
