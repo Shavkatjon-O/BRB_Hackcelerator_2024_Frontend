@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 
 import { signupPerform } from './signupPerform';
 
+import Cookies from 'js-cookie';
+
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +28,9 @@ const SignupPage = () => {
     const result = await signupPerform(email, password);
     if (result.success) {
       setSuccess(result.message);
+
+      Cookies.set('access_token', result.accessToken, { secure: true, sameSite: 'strict' });
+      Cookies.set('refresh_token', result.refreshToken, { secure: true, sameSite: 'strict' });
 
       window.location.href = '/login';
     } else {
