@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <header className="py-4 bg-gray-800 text-white">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="fixed top-0 right-0 left-0 z-50 h-16 bg-gray-800 text-white">
+      <div className="h-full container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold flex items-center">
           <Image 
             src="/brb-titans-logo.png"
