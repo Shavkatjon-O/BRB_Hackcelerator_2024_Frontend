@@ -15,8 +15,8 @@ const SignupPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
