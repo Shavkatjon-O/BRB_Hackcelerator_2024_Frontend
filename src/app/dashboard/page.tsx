@@ -1,5 +1,8 @@
+'use client';
 
-const Page = () => {
+import withAuth from "@/components/withAuth";
+
+const DashboardPage = () => {
   return (
     <>
       <h1>Dashboard</h1>
@@ -7,4 +10,4 @@ const Page = () => {
   );
 }
 
-export default Page;
+export default withAuth(DashboardPage);
