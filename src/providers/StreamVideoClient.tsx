@@ -6,7 +6,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 import { getUser } from "@/actions/authActions";
 
-import Loader from "@/components/shared/Loader";
+import Loader from "@/app/dashboard/_components/Loader";
 
 const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 

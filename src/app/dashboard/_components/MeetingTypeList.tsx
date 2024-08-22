@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import MeetingModal from "@/components/shared/MettingModel";
+import MeetingModal from "@/app/dashboard/_components/MettingModel";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {useUser} from "@/hooks/useUser";

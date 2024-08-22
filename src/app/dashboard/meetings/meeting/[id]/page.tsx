@@ -1,8 +1,8 @@
 "use client";
 
-import Loader from "@/components/shared/Loader";
-import MeetingRoom from "@/components/shared/MeetingRoom";
-import MeetingSetup from "@/components/shared/MeetingSetup";
+import Loader from "@/app/dashboard/_components/Loader";
+import MeetingRoom from "@/app/dashboard/_components/MeetingRoom";
+import MeetingSetup from "@/app/dashboard/_components/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallById";
 // import { useUser } from "@clerk/nextjs";
 import {useUser} from "@/hooks/useUser";

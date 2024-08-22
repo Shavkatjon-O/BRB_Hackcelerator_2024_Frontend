@@ -2,7 +2,7 @@
 
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
 
-import MeetingCard from "@/components/shared/MeetingCard";
+import MeetingCard from "@/app/dashboard/_components/MeetingCard";
 import { useGetCalls } from "@/hooks/useGetCalls";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

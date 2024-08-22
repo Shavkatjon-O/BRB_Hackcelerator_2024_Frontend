@@ -1,4 +1,4 @@
-import MeetingTypeList from "@/components/shared/MeetingTypeList";
+import MeetingTypeList from "@/app/dashboard/_components/MeetingTypeList";
 
 const Home = () => {
    const now = new Date();

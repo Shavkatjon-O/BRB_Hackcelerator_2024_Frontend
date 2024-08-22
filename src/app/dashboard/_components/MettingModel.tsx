@@ -2,8 +2,8 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ReactNode } from "react";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent } from "../ui/dialog";
+import { Button } from "../../../components/ui/button";
+import { Dialog, DialogContent } from "../../../components/ui/dialog";
 
 interface MeetingModalProps {
    isOpen: boolean;
