@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
-import Header from "@/app/dashboard/_components/Header";
-import Sidebar from "@/app/dashboard/_components/SideBar";
+import Header from "@/app/dashboard/_components/header";
+import Sidebar from "@/app/dashboard/_components/sideBar";
 
 
 const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
