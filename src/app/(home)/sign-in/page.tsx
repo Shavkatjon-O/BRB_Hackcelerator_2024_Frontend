@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from 'react';
+import { signIn } from '@/actions/authActions';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-
-import { signInPerform } from './signin.action';
 
 import Cookies from 'js-cookie';
 
@@ -20,13 +19,13 @@ const SignInPage = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const result = await signInPerform(email, password);
+    const result = await signIn(email, password);
 
-    if (result.success) {
-      setSuccess(result.message);
-
+    if (result.success) {      
       Cookies.set('access_token', result.accessToken, { secure: true, sameSite: 'strict' });
       Cookies.set('refresh_token', result.refreshToken, { secure: true, sameSite: 'strict' });
+      
+      setSuccess(result.message);
 
       window.location.href = '/dashboard/';
     } else {

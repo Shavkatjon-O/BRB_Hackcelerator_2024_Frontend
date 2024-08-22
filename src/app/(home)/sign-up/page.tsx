@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from 'react';
+import { signUp } from '@/actions/authActions';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { signUpPerform } from './signup.action';
-
 import Cookies from 'js-cookie';
-
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -26,12 +24,12 @@ const SignUpPage = () => {
       return;
     }
 
-    const result = await signUpPerform(email, password);
+    const result = await signUp(email, password);
     if (result.success) {
-      setSuccess(result.message);
-
       Cookies.set('access_token', result.accessToken, { secure: true, sameSite: 'strict' });
       Cookies.set('refresh_token', result.refreshToken, { secure: true, sameSite: 'strict' });
+      
+      setSuccess(result.message);
 
       window.location.href = '/sign-in';
     } else {
