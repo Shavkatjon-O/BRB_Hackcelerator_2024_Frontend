@@ -2,15 +2,16 @@
 
 import CoreAPI from '@/lib/coreApi';
 
-export async function loginPerform(email: string, password: string) {
+
+export async function signUpPerform(email: string, password: string) {
   try {
-    const response = await CoreAPI.post('/users/token/', { email, password });
+    const response = await CoreAPI.post('/users/signup/', { email, password });
     
     return {
         success: true,
         accessToken: response.data.access,
         refreshToken: response.data.refresh,
-        message: 'Login successful!',
+        message: 'Account created successfully!',
     };
   
   } catch (error) {

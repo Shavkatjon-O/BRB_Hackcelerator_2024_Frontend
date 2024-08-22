@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { loginPerform } from './loginPerform';
+import { signInPerform } from './signInPerform';
 
 import Cookies from 'js-cookie';
 
-const LoginPage = () => {
+
+const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +20,7 @@ const LoginPage = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const result = await loginPerform(email, password);
+    const result = await signInPerform(email, password);
 
     if (result.success) {
       setSuccess(result.message);
@@ -37,7 +38,7 @@ const LoginPage = () => {
     <>
       <div className='h-screen flex justify-center items-center'>
         <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold mb-6">Login</h1>
+          <h1 className="text-2xl font-bold mb-6">Sign in</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <Label htmlFor="email" className="block mb-3">Email</Label>
@@ -61,7 +62,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <Button type="submit" className="w-full bg-gray-800 text-white">Login</Button>
+            <Button type="submit" className="w-full bg-gray-800 text-white">Sign in</Button>
             {error && (
               <div className='mt-4 p-1.5 flex justify-center items-center border border-red-500 text-red-600 rounded-lg'>
                 <p>{error}</p>
@@ -75,7 +76,7 @@ const LoginPage = () => {
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Do not have an account yet?{' '}
-                <a href="/signup" className="text-blue-600 hover:underline">
+                <a href="/sign-up" className="text-blue-600 hover:underline">
                   Sign up!
                 </a>
               </p>
@@ -87,4 +88,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;

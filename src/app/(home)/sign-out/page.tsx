@@ -3,17 +3,18 @@
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 
+
 const LogoutPage = () => {
   useEffect(() => {
     Cookies.remove('access_token');
     Cookies.remove('refresh_token');
     
     if (typeof window !== 'undefined') {
-      window.location.href = '/login';
+      window.location.href = '/sign-in';
     }
   }, []);
 
-  return <div>Logging out...</div>;
+  return null;
 };
 
 export default LogoutPage;

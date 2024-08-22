@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { signupPerform } from './signupPerform';
+import { signUpPerform } from './signUpPerform';
 
 import Cookies from 'js-cookie';
 
-const SignupPage = () => {
+
+const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,14 +26,14 @@ const SignupPage = () => {
       return;
     }
 
-    const result = await signupPerform(email, password);
+    const result = await signUpPerform(email, password);
     if (result.success) {
       setSuccess(result.message);
 
       Cookies.set('access_token', result.accessToken, { secure: true, sameSite: 'strict' });
       Cookies.set('refresh_token', result.refreshToken, { secure: true, sameSite: 'strict' });
 
-      window.location.href = '/login';
+      window.location.href = '/sign-in';
     } else {
       setError(result.message);
     }
@@ -91,8 +92,8 @@ const SignupPage = () => {
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
-                <a href="/login" className="text-blue-600 hover:underline">
-                  Login!
+                <a href="/sign-in" className="text-blue-600 hover:underline">
+                  Sign in!
                 </a>
               </p>
             </div>
@@ -103,4 +104,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;

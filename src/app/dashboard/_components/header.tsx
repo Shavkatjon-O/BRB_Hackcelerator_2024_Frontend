@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 
+
 const Header = () => {
   return (
-    <header className="h-20 px-4 absolute top-0 left-0 right-0 border-b flex justify-between items-center border-b-gray-300">
+    <header className="h-16 px-4 absolute top-0 left-0 right-0 border-b flex justify-between items-center border-b-gray-300">
       <Link href="/" className="text-2xl font-bold flex items-center">
         <Image 
           src="/brb-titans-logo.png"
@@ -17,7 +18,7 @@ const Header = () => {
         BRB Titans
       </Link>
 
-      <Link href="/signout">
+      <Link href="/sign-out">
         <Button className="font-semibold">Sign Out</Button>
       </Link>
     </header>

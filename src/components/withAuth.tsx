@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
+
 const withAuth = (WrappedComponent: React.ComponentType) => {
   const AuthHOC = (props: any) => {
     const router = useRouter();
@@ -15,14 +16,14 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
       if (!token) {
         console.log("No token found, redirecting...");
-        router.push('/login');
+        router.push('/sign-in');
       } else {
         setIsLoading(false);
       }
     }, [router]);
 
     if (isLoading) {
-      return <div>Loading...</div>;
+      return null;
     }
 
     return <WrappedComponent {...props} />;
