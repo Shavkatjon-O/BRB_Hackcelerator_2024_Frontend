@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { getUser } from '@/actions/authActions'; // Adjust the import path as needed
 
@@ -6,7 +8,7 @@ interface User {
   email: string;
 }
 
-function useUser() {
+export function useUser() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -29,4 +31,12 @@ function useUser() {
   return { user, loading, error };
 }
 
-export default useUser;
+export async function currentUser(): Promise<User | null> {
+  try {
+    const response = await getUser();
+    return response; 
+  } catch (error) {
+    console.error('Error fetching current user:', error);
+    return null;
+  }
+}

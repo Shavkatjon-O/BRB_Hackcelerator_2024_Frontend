@@ -1,7 +1,7 @@
 "use client";
 
 // import { useUser } from "@clerk/nextjs";
-import useUser from "@/hooks/useUser";
+import {useUser} from "@/hooks/useUser";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
 

@@ -5,7 +5,7 @@ import MeetingRoom from "@/components/shared/MeetingRoom";
 import MeetingSetup from "@/components/shared/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallById";
 // import { useUser } from "@clerk/nextjs";
-import useUser from "@/hooks/useUser";
+import {useUser} from "@/hooks/useUser";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import { useParams } from "next/navigation";
 import { useState } from "react";
