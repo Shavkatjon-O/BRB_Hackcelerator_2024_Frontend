@@ -2,7 +2,6 @@
 
 import withAuth from "@/components/auth/withAuth";
 
-// import { currentUser } from "@/hooks/useUser";
 import { useUser } from "@/hooks/useUser";
 
 const DashboardPage = () => {

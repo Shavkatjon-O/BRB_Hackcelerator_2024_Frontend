@@ -1,22 +1,23 @@
-"use server";
+"use client";
 
-import { signInService, signUpService } from '@/services/authServices';
-import CoreAPI from '@/lib/coreApi';
+import CoreAPI from "@/lib/coreApi";
+
 
 export async function signIn(email: string, password: string) {
   try {
-    const response = await signInService(email, password);
-    
+    const response = await CoreAPI.post("/users/token/", { email, password });
+    const successMessage = response.data.detail || "Login successful!";
+
+    console.log(response.data);
+
     return {
       success: true,
-      accessToken: response.access,
-      refreshToken: response.refresh,
-      message: 'Login successful!',
+      accessToken: response.data.access,
+      refreshToken: response.data.refresh,
+      message: successMessage,
     };
   } catch (error: any) {
-    console.error('SignIn Error:', error); // Log error for debugging
-    
-    const errorMessage = error.response?.data?.detail || 'Something went wrong. Please try again.';
+    const errorMessage = error.response?.data?.detail || "Something went wrong. Please try again.";
 
     return {
       success: false,
@@ -27,16 +28,15 @@ export async function signIn(email: string, password: string) {
 
 export async function signUp(email: string, password: string) {
   try {
-    const response = await signUpService(email, password);
-    
+    const response = await CoreAPI.post("/users/signup/", { email, password });
+    const successMessage = response.data.detail || "Account created successfully!";
+
     return {
       success: true,
-      accessToken: response.access,
-      refreshToken: response.refresh,
-      message: 'Account created successfully!',
+      message: successMessage,
     };
   } catch (error: any) {
-    const errorMessage = error.response?.data?.detail || 'Something went wrong. Please try again.';
+    const errorMessage = error.response?.data?.detail || "Something went wrong. Please try again.";
 
     return {
       success: false,
@@ -45,12 +45,20 @@ export async function signUp(email: string, password: string) {
   }
 }
 
-export async function getUser() {
+export async function currentUser() {
   try {
-    const response = await CoreAPI.get('/users/user/');
-    return response.data;
-  } catch (error) {
-    console.error('GetUser Error:', error); // Log error for debugging
-    return null;
+    const response = await CoreAPI.get("/users/user/");
+
+    return {
+      success: true,
+      user: response.data,
+    };
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Something went wrong. Please try again.";
+
+    return {
+      success: false,
+      message: errorMessage,
+    };
   }
-}
+} 

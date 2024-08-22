@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 const isClient = typeof window !== 'undefined';
 
 const CoreAPI = axios.create({
-  baseURL: isClient ? process.env.NEXT_PUBLIC_API_URL : process.env.API_URL,
+  baseURL: isClient ? process.env.NEXT_PUBLIC_BACKEND_URL : process.env.BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },

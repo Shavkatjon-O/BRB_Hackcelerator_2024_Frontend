@@ -1,43 +1,35 @@
-"use client";
-
 import { useState, useEffect } from 'react';
-// import { getUser } from '@/actions/authActions'; // Adjust the import path as needed
-import { getUser } from '@/actions/getUser';
+import { currentUser } from '@/actions/authActions';
 
 interface User {
   id: string;
   email: string;
 }
 
-export function useUser() {
+interface UseUserState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export const useUser = (): UseUserState => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const userData = await getUser();
-        setUser(userData);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
+    const loadUser = async () => {
+      const result = await currentUser();
+      if (result.success) {
+        setUser(result.user);
+      } else {
+        setError(result.message);
       }
-    }
+      setLoading(false);
+    };
 
-    fetchUser();
+    loadUser();
   }, []);
 
   return { user, loading, error };
-}
-
-export async function currentUser(): Promise<User | null> {
-  try {
-    const response = await getUser();
-    return response; 
-  } catch (error) {
-    console.error('Error fetching current user:', error);
-    return null;
-  }
-}
+};
