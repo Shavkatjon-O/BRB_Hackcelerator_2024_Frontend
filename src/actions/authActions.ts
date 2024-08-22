@@ -100,10 +100,8 @@ export async function signUp(email: string, password: string) {
 
 
 
-
 export async function currentUser() {
   try {
-    // Ensure the access token is present
     const token = Cookies.get("access_token");
 
     if (!token) {
@@ -113,17 +111,16 @@ export async function currentUser() {
       };
     }
 
-    // Attach token to headers
     CoreAPI.defaults.headers.Authorization = `Bearer ${token}`;
 
     const response = await CoreAPI.get("/users/user/");
+    console.log('User data received:', response.data); // Debugging
 
     return {
       success: true,
       user: response.data,
     };
   } catch (error: any) {
-    // Handle specific error cases
     const statusCode = error.response?.status;
 
     if (statusCode === 401) {

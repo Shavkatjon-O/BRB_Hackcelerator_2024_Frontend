@@ -22,7 +22,13 @@ export const useUser = (): UseUserState => {
   useEffect(() => {
     const loadUser = async () => {
       const result = await currentUser();
+      console.log('Current user result:', result); // Debugging
       if (result.success) {
+        if (!result.user?.id) {
+          setError("User ID is missing");
+          setLoading(false);
+          return;
+        }
         setUser(result.user);
       } else {
         setError(result.message);
