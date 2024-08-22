@@ -1,6 +1,8 @@
 "use client";
 
 import CoreAPI from "@/lib/coreApi";
+import { access } from "fs";
+import Cookies from "js-cookie";
 
 
 export async function signIn(email: string, password: string) {
@@ -8,7 +10,8 @@ export async function signIn(email: string, password: string) {
     const response = await CoreAPI.post("/users/token/", { email, password });
     const successMessage = response.data.detail || "Login successful!";
 
-    console.log(response.data);
+    Cookies.set("access_token", response.data.access, { secure: true, sameSite: "strict" });
+    Cookies.set("refresh_token", response.data.refresh, { secure: true, sameSite: "strict"});
 
     return {
       success: true,
@@ -31,9 +34,15 @@ export async function signUp(email: string, password: string) {
     const response = await CoreAPI.post("/users/signup/", { email, password });
     const successMessage = response.data.detail || "Account created successfully!";
 
+    Cookies.set("access_token", response.data.access, { secure: true, sameSite: "strict" });
+    Cookies.set("refresh_token", response.data.refresh, { secure: true, sameSite: "strict" });
+
     return {
       success: true,
+      accessToken: response.data.access,
+      refreshToken: response.data.refresh,
       message: successMessage,
+      
     };
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Something went wrong. Please try again.";
