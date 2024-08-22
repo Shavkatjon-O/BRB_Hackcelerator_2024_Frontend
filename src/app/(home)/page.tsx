@@ -6,7 +6,6 @@ import {
   Mail
 } from 'lucide-react';
 
-
 const features = [
   {
     icon: ChartBar,

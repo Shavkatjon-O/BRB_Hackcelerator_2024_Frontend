@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 
 import Cookies from 'js-cookie';
 
-
 const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
