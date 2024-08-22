@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import Cookies from 'js-cookie';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -26,8 +25,6 @@ const SignUpPage = () => {
 
     const result = await signUp(email, password);
     if (result.success) {
-      Cookies.set('access_token', result.accessToken, { secure: true, sameSite: 'strict' });
-      Cookies.set('refresh_token', result.refreshToken, { secure: true, sameSite: 'strict' });
       
       setSuccess(result.message);
 
