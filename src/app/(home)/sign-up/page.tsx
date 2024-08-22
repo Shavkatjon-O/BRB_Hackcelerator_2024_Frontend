@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { signUpPerform } from './signUpPerform';
+import { signUpPerform } from './signup.action';
 
 import Cookies from 'js-cookie';
 
