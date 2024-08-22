@@ -7,10 +7,10 @@ import { useState } from "react";
 import MeetingModal from "@/components/shared/MettingModel";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useUser } from "@clerk/nextjs";
+import useUser from "@/hooks/useUser";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
-import ReactDatePicker from "react-datepicker";
-import toast from "react-hot-toast";
+// import ReactDatePicker from "react-datepicker";
+// import toast from "react-hot-toast";
 import HomeCard from "./HomeCard";
 import Loader from "./Loader";
 
@@ -34,7 +34,7 @@ const MeetingTypeList = () => {
       if (!client || !user) return;
       try {
          if (!values.dateTime) {
-            toast.error("Please select a date and time");
+            // toast.error("Please select a date and time");
             return;
          }
          const id = crypto.randomUUID();
@@ -55,10 +55,10 @@ const MeetingTypeList = () => {
          if (!values.description) {
             router.push(`/meeting/${call.id}`);
          }
-         toast.success("Meeting Created Successfully");
+         // toast.success("Meeting Created Successfully");
       } catch (error) {
          console.error(error);
-         toast.error("Failed to create meeting");
+         // toast.error("Failed to create meeting");
       }
    };
 
@@ -118,7 +118,7 @@ const MeetingTypeList = () => {
                   <label className="text-base font-normal leading-[22.4px] text-sky-2">
                      Select Date and Time
                   </label>
-                  <ReactDatePicker
+                  {/* <ReactDatePicker
                      selected={values.dateTime}
                      onChange={(date: any) =>
                         setValues({ ...values, dateTime: date! })
@@ -129,7 +129,7 @@ const MeetingTypeList = () => {
                      timeCaption="time"
                      dateFormat="MMMM d, yyyy h:mm aa"
                      className="w-full rounded bg-dark-3 p-2 focus:outline-none"
-                  />
+                  /> */}
                </div>
             </MeetingModal>
          ) : (
@@ -139,7 +139,7 @@ const MeetingTypeList = () => {
                title="Meeting Created"
                handleClick={() => {
                   navigator.clipboard.writeText(meetingLink);
-                  toast("Meeting Link Copied");
+                  // toast("Meeting Link Copied");
                }}
                image={"/icons/checked.svg"}
                buttonIcon="/icons/copy.svg"

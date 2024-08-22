@@ -2,6 +2,10 @@
 
 import { signInService, signUpService } from '@/services/authServices';
 
+
+import CoreAPI from '@/lib/coreApi';
+
+
 export async function signIn(email: string, password: string) {
   try {
     const response = await signInService(email, password);
@@ -37,5 +41,15 @@ export async function signUp(email: string, password: string) {
       success: false,
       message: 'Something went wrong. Please try again.',
     };
+  }
+}
+
+
+export async function getUser() {
+  try {
+    const response = await CoreAPI.get('/users/user/');
+    return response.data;
+  } catch (error) {
+    return null;
   }
 }

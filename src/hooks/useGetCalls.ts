@@ -1,5 +1,7 @@
 // import { useUser } from "@clerk/nextjs";
-import { useUser } from "./useUser";
+
+import useUser from "@/hooks/useUser";
+
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 

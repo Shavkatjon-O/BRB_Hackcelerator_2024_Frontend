@@ -4,6 +4,8 @@ import { tokenProvider } from "@/actions/stream.actions";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { ReactNode, useEffect, useState } from "react";
 
+import { getUser } from "@/actions/authActions";
+
 import Loader from "@/components/shared/Loader";
 
 const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
@@ -16,7 +18,7 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
    useEffect(() => {
       const fetchUser = async () => {
          try {
-            const userData = await getUser(); // Custom function to get user info
+            const userData = await getUser();
             setUser(userData);
             setIsLoaded(true);
          } catch (error) {

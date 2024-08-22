@@ -1,91 +1,32 @@
 import { useState, useEffect } from 'react';
-import { signInPerform } from '@/app/(home)/sign-in/signin.action';
-import { signUpPerform } from '@/app/(home)/sign-up/signup.action';
-import Cookies from 'js-cookie';
+import { getUser } from '@/actions/authActions'; // Adjust the import path as needed
 
 interface User {
-  accessToken: string;
-  refreshToken: string;
+  id: string;
+  email: string;
 }
 
-interface UseUserResult {
-  user: User | null;
-  error: string | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signOut: () => void;
-}
-
-export function useUser(): UseUserResult {
+function useUser() {
   const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const accessToken = Cookies.get('access_token');
-    const refreshToken = Cookies.get('refresh_token');
-
-    if (accessToken && refreshToken) {
-      setUser({ accessToken, refreshToken });
-      setLoading(false);
-    } else {
-      setLoading(false);
+    async function fetchUser() {
+      try {
+        const userData = await getUser();
+        setUser(userData);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
     }
+
+    fetchUser();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    setLoading(true);
-    try {
-      const result = await signInPerform(email, password);
-
-      if (result.success) {
-        Cookies.set('access_token', result.accessToken);
-        Cookies.set('refresh_token', result.refreshToken);
-        setUser({ accessToken: result.accessToken, refreshToken: result.refreshToken });
-        setError(null);
-      } else {
-        setError(result.message);
-      }
-    } catch (err) {
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signUp = async (email: string, password: string) => {
-    setLoading(true);
-    try {
-      const result = await signUpPerform(email, password);
-
-      if (result.success) {
-        Cookies.set('access_token', result.accessToken);
-        Cookies.set('refresh_token', result.refreshToken);
-        setUser({ accessToken: result.accessToken, refreshToken: result.refreshToken });
-        setError(null);
-      } else {
-        setError(result.message);
-      }
-    } catch (err) {
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signOut = () => {
-    Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
-    setUser(null);
-  };
-
-  return {
-    user,
-    error,
-    loading,
-    signIn,
-    signUp,
-    signOut,
-  };
+  return { user, loading, error };
 }
+
+export default useUser;

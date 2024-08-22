@@ -10,7 +10,7 @@ import {
    SheetContent,
    SheetTrigger,
 } from "@/components/ui/sheet";
-import { sidebarLinks } from "@/constants";
+// import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 
 const MobileNav = () => {
@@ -41,7 +41,7 @@ const MobileNav = () => {
                <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
                   <SheetClose asChild>
                      <section className=" flex h-full flex-col gap-6 pt-16 text-white">
-                        {sidebarLinks.map((item) => {
+                        {/* {sidebarLinks.map((item) => {
                            const isActive = pathname === item.route;
 
                            return (
@@ -68,7 +68,7 @@ const MobileNav = () => {
                                  </Link>
                               </SheetClose>
                            );
-                        })}
+                        })} */}
                      </section>
                   </SheetClose>
                </div>

@@ -4,19 +4,20 @@ import Loader from "@/components/shared/Loader";
 import MeetingRoom from "@/components/shared/MeetingRoom";
 import MeetingSetup from "@/components/shared/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallById";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
+import useUser from "@/hooks/useUser";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const MeetingPage = () => {
    const { id } = useParams();
-   const { isLoaded, user } = useUser();
+   const { user } = useUser();
    const { call, isCallLoading } = useGetCallById(id);
    const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-   if (!isLoaded || isCallLoading) return <Loader />;
+   // if (!isLoaded || isCallLoading) return <Loader />;
 
    if (!call)
       return (
@@ -29,7 +30,7 @@ const MeetingPage = () => {
       call.type === "invited" &&
       (!user || !call.state.members.find((m) => m.user.id === user.id));
 
-   if (notAllowed) return toast.error("You are not allowed to join this call");
+   // if (notAllowed) return toast.error("You are not allowed to join this call");
 
    return (
       <main className="h-screen w-full">

@@ -1,12 +1,13 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
+import useUser from "@/hooks/useUser";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { useGetCallById } from "@/hooks/useGetCallById";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const Table = ({
    title,
@@ -62,7 +63,7 @@ const PersonalRoom = () => {
          <div className="flex w-full flex-col gap-8 xl:max-w-[900px]">
             <Table
                title="Topic"
-               description={`${user?.username}'s Meeting Room`}
+               description={`${user?.email}'s Meeting Room`}
             />
             <Table title="Meeting ID" description={meetingId!} />
             <Table title="Invite Link" description={meetingLink} />
@@ -75,7 +76,7 @@ const PersonalRoom = () => {
                className="bg-dark-3"
                onClick={() => {
                   navigator.clipboard.writeText(meetingLink);
-                  toast.success("Link Copied");
+                  // toast.success("Link Copied");
                }}
             >
                Copy Invitation
