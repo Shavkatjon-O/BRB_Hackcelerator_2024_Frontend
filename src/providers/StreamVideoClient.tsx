@@ -1,8 +1,6 @@
 "use client";
 
 import { tokenProvider } from "@/actions/stream.actions";
-
-import { useUser } from "@clerk/nextjs";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { ReactNode, useEffect, useState } from "react";
 
@@ -12,7 +10,22 @@ const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
 const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
    const [videoClient, setVideoClient] = useState<StreamVideoClient>();
-   const { user, isLoaded } = useUser();
+   const [user, setUser] = useState<any>(null);
+   const [isLoaded, setIsLoaded] = useState(false);
+
+   useEffect(() => {
+      const fetchUser = async () => {
+         try {
+            const userData = await getUser(); // Custom function to get user info
+            setUser(userData);
+            setIsLoaded(true);
+         } catch (error) {
+            console.error("Error fetching user", error);
+         }
+      };
+
+      fetchUser();
+   }, []);
 
    useEffect(() => {
       if (!isLoaded || !user) return;
@@ -21,9 +34,9 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
       const client = new StreamVideoClient({
          apiKey: API_KEY,
          user: {
-            id: user?.id,
-            name: user?.username || user?.id,
-            image: user?.imageUrl,
+            id: user.id,
+            name: user.username || user.id,
+            image: user.imageUrl,
          },
          tokenProvider,
       });
