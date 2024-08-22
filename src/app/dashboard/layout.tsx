@@ -1,5 +1,5 @@
-import Sidebar from './_components/sidebar-old';
-import Header from './_components/header-old';
+import Sidebar from './_components/Sidebar';
+import Header from './_components/Header';
 
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
