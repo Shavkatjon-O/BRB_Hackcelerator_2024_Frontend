@@ -37,14 +37,20 @@ const MeetingTypeList = () => {
    console.log(client, user);
 
    const createMeeting = async () => {
+      console.log(client, user);
+      
       if (!client || !user) return;
+      console.log("here");
       try {
+         console.log("here");
          if (!values.dateTime) {
             toast.error("Please select a date and time");
             return;
          }
+         console.log("here");
          const id = crypto.randomUUID();
          const call = client.call("default", id);
+         console.log("here");
          if (!call) throw new Error("Failed to create meeting");
          const startsAt =
             values.dateTime.toISOString() || new Date(Date.now()).toISOString();
@@ -70,7 +76,7 @@ const MeetingTypeList = () => {
 
    console.log(!user, !client);
 
-   if (!client || !user) return <Loader />;
+   // if (!client || !user) return <Loader />;
 
    const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetail?.id}`;
 

@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription } from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface MeetingModalProps {
    isOpen: boolean;
@@ -29,12 +30,20 @@ const MeetingModal = ({
    buttonText,
    instantMeeting,
    image,
-   buttonClassName,
    buttonIcon,
 }: MeetingModalProps) => {
    return (
       <Dialog open={isOpen} onOpenChange={onClose}>
          <DialogContent className="flex w-full max-w-[520px] flex-col gap-6 border-none bg-dark-1 px-6 py-9 text-white">
+             <DialogTitle className="text-2xl font-bold leading-[30px] text-white">
+               {title}
+            </DialogTitle>
+
+            <DialogDescription className="text-base font-normal leading-[22.4px] text-sky-2">
+               {instantMeeting ? "Instant Meeting" : "Schedule a Meeting"}
+            </DialogDescription>
+
+
             <div className="flex flex-col gap-6">
                {image && (
                   <div className="flex justify-center">
