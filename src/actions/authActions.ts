@@ -1,7 +1,6 @@
 "use client";
 
 import CoreAPI from "@/lib/coreApi";
-import { access } from "fs";
 import Cookies from "js-cookie";
 
 
