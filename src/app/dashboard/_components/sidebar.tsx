@@ -8,7 +8,6 @@ const Sidebar = () => {
         <li><Link href="#">Home</Link></li>
         <li><Link href="#">Settings</Link></li>
         <li><Link href="#">Profile</Link></li>
-        <li><Link href="/dashboard/meetings">Meetings</Link></li>
       </ul>
     </aside>
   );
