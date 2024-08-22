@@ -4,7 +4,7 @@ import { tokenProvider } from "@/actions/stream.actions";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { ReactNode, useEffect, useState } from "react";
 
-import { getUser } from "@/actions/authActions";
+import { currentUser } from "@/actions/authActions";
 
 import Loader from "@/app/dashboard/_components/Loader";
 
@@ -18,7 +18,7 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
    useEffect(() => {
       const fetchUser = async () => {
          try {
-            const userData = await getUser();
+            const userData = await currentUser();
             setUser(userData);
             setIsLoaded(true);
          } catch (error) {
