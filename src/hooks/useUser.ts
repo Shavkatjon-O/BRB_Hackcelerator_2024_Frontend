@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getUser } from '@/actions/authActions'; // Adjust the import path as needed
+// import { getUser } from '@/actions/authActions'; // Adjust the import path as needed
+import { getUser } from '@/actions/getUser';
 
 interface User {
   id: string;
