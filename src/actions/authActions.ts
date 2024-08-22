@@ -9,8 +9,8 @@ export async function signIn(email: string, password: string) {
     const response = await CoreAPI.post("/users/token/", { email, password });
     const successMessage = response.data.detail || "Login successful!";
 
-    Cookies.set("access_token", response.data.access, { secure: true, sameSite: "strict" });
-    Cookies.set("refresh_token", response.data.refresh, { secure: true, sameSite: "strict"});
+    Cookies.set("access_token", response.data.access);
+    Cookies.set("refresh_token", response.data.refresh);
 
     return {
       success: true,
@@ -33,8 +33,8 @@ export async function signUp(email: string, password: string) {
     const response = await CoreAPI.post("/users/signup/", { email, password });
     const successMessage = response.data.detail || "Account created successfully!";
 
-    Cookies.set("access_token", response.data.access, { secure: true, sameSite: "strict" });
-    Cookies.set("refresh_token", response.data.refresh, { secure: true, sameSite: "strict" });
+    Cookies.set("access_token", response.data.access);
+    Cookies.set("refresh_token", response.data.refresh);
 
     return {
       success: true,
