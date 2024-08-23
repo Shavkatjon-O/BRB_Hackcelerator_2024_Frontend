@@ -8,6 +8,7 @@ import { Mail, Calendar, User, Building, Phone, Book } from "lucide-react";
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
 
+
 const ProfilePage = () => {
   const { user, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
@@ -74,10 +75,15 @@ const ProfilePage = () => {
       {/* Profile Header */}
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <Avatar className="w-32 h-32">
-            <AvatarImage src={user.avatar || "/default-avatar.png"} alt="User Avatar" />
-            <AvatarFallback>{user.first_name?.[0]}</AvatarFallback>
-          </Avatar>
+          {/* <Avatar className="w-32 h-32"> */}
+
+            {/* <AvatarImage src= alt="User Avatar" /> */}
+            {/* <AvatarFallback>{user.first_name?.[0]}</AvatarFallback> */}
+          {/* </Avatar> */}
+          <div className="w-32 h-32 rounded-md border flex justify-center items-center">
+            <User className="w-24 h-24 text-gray-6  00" />
+          </div>
+
           <div className="text-center sm:text-left">
             <CardTitle className="text-2xl font-semibold">{`${user.first_name || "First Name"} ${user.last_name || "Last Name"}`}</CardTitle>
             <CardDescription className="text-sm text-muted-foreground">{user.job_title || "Job Title"}</CardDescription>
