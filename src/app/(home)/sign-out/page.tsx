@@ -1,19 +1,19 @@
-// "use client";
+"use client";
 
-// import { useEffect } from 'react';
-// import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-// const LogoutPage = () => {
-//   useEffect(() => {
-//     Cookies.remove('access_token');
-//     Cookies.remove('refresh_token');
+const LogoutPage = () => {
+  useEffect(() => {
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
     
-//     if (typeof window !== 'undefined') {
-//       window.location.href = '/sign-in';
-//     }
-//   }, []);
+    if (typeof window !== 'undefined') {
+      window.location.href = '/sign-in';
+    }
+  }, []);
 
-//   return null;
-// };
+  return null;
+};
 
-// export default LogoutPage;
+export default LogoutPage;
