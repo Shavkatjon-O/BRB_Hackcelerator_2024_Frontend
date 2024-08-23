@@ -12,6 +12,8 @@ const ProfilePage = () => {
   const { user, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
+    id: user.id,
+    email: user.email,
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     phone_number: user?.phone_number || "",
@@ -46,7 +48,8 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       await coreApi.put("/users/profile/", {
-        email: "asdfasf@gmail.com",
+        id: formData.id,
+        email: formData.email,
         last_name: formData.last_name,
         phone_number: formData.phone_number,
         date_of_birth: formData.date_of_birth,
