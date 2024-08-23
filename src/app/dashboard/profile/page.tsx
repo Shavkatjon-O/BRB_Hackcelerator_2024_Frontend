@@ -66,8 +66,8 @@ const ProfilePage = () => {
             <User className="w-24 h-24 text-gray-600" />
           </div>
           <div className="text-center sm:text-left">
-            <CardTitle className="text-2xl font-semibold">{`${user.first_name || "First Name"} ${user.last_name || "Last Name"}`}</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">{user.job_title || "Job Title"}</CardDescription>
+            <CardTitle className="text-2xl font-semibold">{`${user.first_name || "Erjan"} ${user.last_name || "Stavay"}`}</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">{user.job_title || "IT Support"}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="space-y-4 text-center sm:text-left">
@@ -77,7 +77,7 @@ const ProfilePage = () => {
           </div>
           <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-2">
             <Phone className="h-5 w-5 text-muted-foreground" />
-            <span>{user.phone_number || "Phone not provided"}</span>
+            <span>{user.phone_number || "+99 899 9991122"}</span>
           </div>
         </CardContent>
       </Card>
