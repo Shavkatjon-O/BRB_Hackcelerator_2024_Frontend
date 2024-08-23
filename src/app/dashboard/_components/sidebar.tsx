@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-
 const Sidebar = () => {
   return (
     <aside className="w-60 p-4 border-r border-gray-300">

@@ -1,10 +1,7 @@
 import { Button } from "@/components/ui/button"
 
-import Image from "next/image"
 import Link from "next/link"
-
-import { SignOutButton } from "@clerk/nextjs";
-
+import Image from "next/image"
 
 const Header = () => {
   return (
@@ -20,12 +17,9 @@ const Header = () => {
         BRB Titans
       </Link>
 
-        <SignOutButton>
-          <Button className="font-semibold">Sign Out</Button>
-        </SignOutButton>
-
-      {/* <Link href="/sign-out"> */}
-      {/* </Link> */}
+      <Link href="/sign-out">
+        <Button className="font-semibold">Sign Out</Button>
+      </Link>
     </header>
   );
 };

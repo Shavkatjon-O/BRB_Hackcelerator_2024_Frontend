@@ -1,6 +1,6 @@
 'use client';
 
-// import withAuth from "@/components/auth/withAuth";
+import withAuth from "@/components/auth/withAuth";
 
 import { useUser } from "@/hooks/useUser";
 
@@ -15,5 +15,4 @@ const DashboardPage = () => {
   );
 }
 
-// export default withAuth(DashboardPage);
-export default DashboardPage;
+export default withAuth(DashboardPage);
