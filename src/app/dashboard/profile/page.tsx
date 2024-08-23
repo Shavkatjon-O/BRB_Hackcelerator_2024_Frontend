@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mail, Phone, User } from "lucide-react";
+
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
 
@@ -11,19 +12,36 @@ const ProfilePage = () => {
   const { user, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    first_name: user?.first_name || "",
-    last_name: user?.last_name || "",
-    phone_number: user?.phone_number || "",
-    date_of_birth: user?.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "",
-    address: user?.address || "",
-    job_title: user?.job_title || "",
-    department: user?.department || "",
-    education: user?.education || "",
-    employment_start_date: user?.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "",
-    skills: user?.skills || "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    date_of_birth: "",
+    address: "",
+    job_title: "",
+    department: "",
+    education: "",
+    employment_start_date: "",
+    skills: "",
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        phone_number: user.phone_number || "",
+        date_of_birth: user.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "",
+        address: user.address || "",
+        job_title: user.job_title || "",
+        department: user.department || "",
+        education: user.education || "",
+        employment_start_date: user.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "",
+        skills: user.skills || "",
+      });
+    }
+  }, [user]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -45,12 +63,19 @@ const ProfilePage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await coreApi.put("/users/profile/update/", {
-        ...formData,
-      });
-      alert("Profile updated successfully!");
-      setEditing(false);
-      router.refresh(); // Refresh to get updated data
+      // Filter out unchanged fields
+      const updatedData = Object.entries(formData)
+        .filter(([key, value]) => user[key] !== value)
+        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+      if (Object.keys(updatedData).length > 0) {
+        await coreApi.put("/users/profile/update/", updatedData);
+        alert("Profile updated successfully!");
+        setEditing(false);
+        router.refresh(); // Refresh to get updated data
+      } else {
+        alert("No changes detected.");
+      }
     } catch (error) {
       console.error("Failed to update profile:", error);
       alert("Failed to update profile. Please try again.");
@@ -98,18 +123,107 @@ const ProfilePage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {Object.entries(formData).map(([key, value]) => (
-                <div key={key} className="flex flex-col space-y-2">
-                  <label className="font-medium capitalize">{key.replace(/_/g, ' ')}</label>
-                  <input
-                    type={key.includes("date") ? "date" : "text"}
-                    name={key}
-                    value={value}
-                    onChange={handleChange}
-                    className="border p-2 rounded"
-                  />
-                </div>
-              ))}
+              {/* Only include the editable fields */}
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">First Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Last Name</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Phone Number</label>
+                <input
+                  type="text"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Date of Birth</label>
+                <input
+                  type="date"
+                  name="date_of_birth"
+                  value={formData.date_of_birth}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Address</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Job Title</label>
+                <input
+                  type="text"
+                  name="job_title"
+                  value={formData.job_title}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Department</label>
+                <input
+                  type="text"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Education</label>
+                <input
+                  type="text"
+                  name="education"
+                  value={formData.education}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Employment Start Date</label>
+                <input
+                  type="date"
+                  name="employment_start_date"
+                  value={formData.employment_start_date}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="font-medium">Skills (comma separated)</label>
+                <input
+                  type="text"
+                  name="skills"
+                  value={formData.skills}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
               <button type="submit" className="bg-blue-500 text-white p-2 rounded">
                 Save Changes
               </button>
