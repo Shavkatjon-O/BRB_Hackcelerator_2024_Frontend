@@ -52,8 +52,3 @@ export async function signUp(email: string, password: string) {
     };
   }
 }
-
-export async function currentUser() {
-  const response = await CoreAPI.get("/users/user/");
-  return response.data ? response.data : null;
-}
