@@ -29,6 +29,7 @@ const Header = () => {
           <>
             <div className="mr-2">{user.email}</div>
             {user.image ? (
+              console.log(user.image),
               <Link href="/dashboard/profile">
                 <Image 
                   src={user.image}

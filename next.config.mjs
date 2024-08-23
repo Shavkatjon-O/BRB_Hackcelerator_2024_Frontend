@@ -8,6 +8,12 @@ const nextConfig = {
         port: '8000',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'admin.brb-titans.uz',
+        port: '443',
+        pathname: '/media/**',
+      },
     ],
   },
 };
