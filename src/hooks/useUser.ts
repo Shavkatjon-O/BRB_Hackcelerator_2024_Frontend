@@ -10,34 +10,38 @@ interface User {
 
 interface UseUserState {
   user: User | null;
-  loading: boolean;
+  isLoaded: boolean;
   error: string | null;
 }
 
 export const useUser = (): UseUserState => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadUser = async () => {
-      const result = await currentUser();
-      // console.log('Current user result:', result); // Debugging
-      if (result.success) {
-        if (!result.user?.id) {
-          setError("User ID is missing");
-          setLoading(false);
-          return;
+      try {
+        const user = await currentUser();
+
+        if (user) {
+          if (!user.id) {
+            setError("User ID is missing");
+          } else {
+            setUser(user);
+          }
+        } else {
+          setError("Failed to fetch user data.");
         }
-        setUser(result.user);
-      } else {
-        setError(result.message);
+      } catch (err) {
+        setError("An error occurred while fetching user data.");
+      } finally {
+        setIsLoaded(true);
       }
-      setLoading(false);
     };
 
     loadUser();
   }, []);
 
-  return { user, loading, error };
+  return { user, isLoaded, error };
 };
