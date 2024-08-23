@@ -14,31 +14,34 @@ const CalendarPage = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
-      <div className="w-full md:w-1/4 p-6 bg-white shadow-lg md:sticky top-0">
-        <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
-          <LucideCalendar className="text-gray-600" />
+      <div className="w-full md:w-1/4 p-6 bg-white shadow-lg md:sticky top-0 border-r border-gray-200">
+        <h2 className="text-2xl font-semibold mb-6 flex items-center space-x-2">
+          <LucideCalendar className="text-gray-700" />
           <span>Events</span>
         </h2>
-        <Button className="mb-4 w-full" variant="outline">
+        <Button className="mb-6 w-full" variant="outline" size="lg">
           <Plus className="mr-2" /> Create Event
         </Button>
-        <Separator className="my-4" />
-        <h3 className="text-lg font-semibold mb-2 flex items-center space-x-2">
-          <Tag className="text-gray-600" />
+        <Separator className="my-6" />
+        <h3 className="text-xl font-semibold mb-4 flex items-center space-x-2">
+          <Tag className="text-gray-700" />
           <span>Filter by Category</span>
         </h3>
-        <Select placeholder="Select category" className="mb-4">
-          <option value="meeting">Meeting</option>
-          <option value="workshop">Workshop</option>
-          <option value="social">Social</option>
-        </Select>
-        <Separator className="my-4" />
-        <h3 className="text-lg font-semibold mb-2 flex items-center space-x-2">
-          <Search className="text-gray-600" />
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Meeting</span>
+            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Workshop</span>
+            <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">Social</span>
+          </div>
+        </div>
+        <Separator className="my-6" />
+        <h3 className="text-xl font-semibold mb-4 flex items-center space-x-2">
+          <Search className="text-gray-700" />
           <span>Search</span>
         </h3>
-        <Textarea placeholder="Search events" rows={3} className="resize-none" />
+        <Textarea placeholder="Search events" rows={3} className="resize-none border-gray-300 rounded-md shadow-sm" />
       </div>
+
       <div className="flex-1 p-6">
         <Card className="p-4">
           <div className="flex items-center justify-between mb-4">
