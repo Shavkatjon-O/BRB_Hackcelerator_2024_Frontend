@@ -12,8 +12,8 @@ const ProfilePage = () => {
   const { user, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    id: user.id,
-    email: user.email,
+    id: user?.id,
+    email: user?.email,
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     phone_number: user?.phone_number || "",
