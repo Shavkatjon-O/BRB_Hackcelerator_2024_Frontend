@@ -25,13 +25,30 @@ const Header = () => {
       </Link>
 
       <div className="flex items-center">
-        <User className="w-6 h-6 mr-2" />
-        <span className="font-semibold">{ user ? user.email : "Loading" }</span>
+        {user ? (
+          <>
+            <div className="mr-2">{user.email}</div>
+            {user.image ? (
+              <Link href="/dashboard/profile">
+                <Image 
+                  src={user.image}
+                  alt="User Profile Image"
+                  width={40}
+                  height={40}
+                  className="rounded-full cursor-pointer"
+                />
+              </Link>
+            ) : (
+              <div className="p-2 border border-gray-500">
+                <User className="w-6 h-6" />
+              </div>
+            )}
+          </>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
 
-      {/* <Link href="/sign-out">
-        <Button className="font-semibold">Sign Out</Button>
-      </Link> */}
     </header>
   );
 };

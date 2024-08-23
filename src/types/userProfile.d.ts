@@ -11,4 +11,5 @@ export interface UserProfileType {
     employment_start_date: string;
     education: string;
     skills: string;
+    image: string;
 }
