@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 
+import { SignOutButton } from "@clerk/nextjs";
+
 
 const Header = () => {
   return (
@@ -18,9 +20,12 @@ const Header = () => {
         BRB Titans
       </Link>
 
-      <Link href="/sign-out">
-        <Button className="font-semibold">Sign Out</Button>
-      </Link>
+        <SignOutButton>
+          <Button className="font-semibold">Sign Out</Button>
+        </SignOutButton>
+
+      {/* <Link href="/sign-out"> */}
+      {/* </Link> */}
     </header>
   );
 };
