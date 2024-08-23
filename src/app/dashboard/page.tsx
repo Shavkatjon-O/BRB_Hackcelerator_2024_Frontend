@@ -86,7 +86,7 @@ const DashboardPage = () => {
           {/* Profile Summary Card */}
           <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
-              <User className="text-gray-700" />
+              <User className="text-gray-800" />
               <span>Profile Summary</span>
             </h2>
             <div className="flex flex-col space-y-4">
