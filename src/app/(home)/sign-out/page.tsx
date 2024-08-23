@@ -9,7 +9,7 @@ const LogoutPage = () => {
     Cookies.remove('refresh_token');
     
     if (typeof window !== 'undefined') {
-      window.location.href = '/sign-in';
+      window.location.href = '/';
     }
   }, []);
 
