@@ -71,15 +71,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="container max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       {/* Profile Header */}
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-          {/* <Avatar className="w-32 h-32"> */}
 
-            {/* <AvatarImage src= alt="User Avatar" /> */}
-            {/* <AvatarFallback>{user.first_name?.[0]}</AvatarFallback> */}
-          {/* </Avatar> */}
           <div className="w-32 h-32 rounded-md border flex justify-center items-center">
             <User className="w-24 h-24 text-gray-6  00" />
           </div>
@@ -100,6 +96,14 @@ const ProfilePage = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Toggle Editing Mode */}
+      <button
+        onClick={() => setEditing(prev => !prev)}
+        className="bg-gray-500 text-white p-2 rounded"
+      >
+        {editing ? "Cancel" : "Edit Profile"}
+      </button>
 
       {/* Editable Form */}
       {editing && (
@@ -216,14 +220,6 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
       )}
-
-      {/* Toggle Editing Mode */}
-      <button
-        onClick={() => setEditing(prev => !prev)}
-        className="bg-gray-500 text-white p-2 rounded"
-      >
-        {editing ? "Cancel" : "Edit Profile"}
-      </button>
     </div>
   );
 };
