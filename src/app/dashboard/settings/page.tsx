@@ -54,7 +54,7 @@ const SettingsPage = () => {
                 <Mail className="text-blue-600 w-5 h-5" />
                 <span>Email Notifications</span>
               </label>
-              <Select className="w-full bg-gray-50 border-gray-300">
+              <Select>
                 <option value="enabled">Enabled</option>
                 <option value="disabled">Disabled</option>
               </Select>
@@ -64,7 +64,7 @@ const SettingsPage = () => {
                 <MessageCircle className="text-green-600 w-5 h-5" />
                 <span>SMS Notifications</span>
               </label>
-              <Select className="w-full bg-gray-50 border-gray-300">
+              <Select>
                 <option value="enabled">Enabled</option>
                 <option value="disabled">Disabled</option>
               </Select>
