@@ -26,25 +26,35 @@ const Header = () => {
 
       <div className="flex items-center">
         {user ? (
-          <>
-            <div className="mr-2">{user.email}</div>
-            {user.image ? (
-              console.log(user.image),
-              <Link href="/dashboard/profile">
-                <Image 
-                  src={user.image}
-                  alt="User Profile Image"
-                  width={40}
-                  height={40}
-                  className="rounded-full cursor-pointer"
-                />
-              </Link>
-            ) : (
-              <div className="p-2 border border-gray-500">
+          // <>
+          //   <div className="mr-2">{user.email}</div>
+          //   {user.image ? (
+          //     console.log(user.image),
+          //     <Link href="/dashboard/profile">
+          //       <Image 
+          //         src={user.image}
+          //         alt="User Profile Image"
+          //         width={40}
+          //         height={40}
+          //         className="rounded-full cursor-pointer"
+          //       />
+          //     </Link>
+          //   ) : (
+          //     <div className="p-2 border border-gray-500">
+          //       <User className="w-6 h-6" />
+          //     </div>
+          //   )}
+          // </>
+
+          <Link href="/dashboard/profile">
+            <div className="flex items-center space-x-2">
+              <div className="font-semibold">{ user.email }</div>
+              <div className="p-2 border-2 border-slate-500 bg-gray-50 rounded-full">
                 <User className="w-6 h-6" />
               </div>
-            )}
-          </>
+            </div>
+          </Link>
+
         ) : (
           <div>Loading...</div>
         )}
