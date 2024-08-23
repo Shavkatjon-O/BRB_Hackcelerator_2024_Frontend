@@ -74,10 +74,12 @@ const MeetingsPage = () => {
               </div>
               <div className="flex flex-col space-y-2">
                 <label className="text-gray-700">Date and Time</label>
-                <Select className="w-full">
-                  <option>Aug 30, 2024 | 2:00 PM - 3:00 PM</option>
-                  <option>Sep 5, 2024 | 10:00 AM - 11:00 AM</option>
-                </Select>
+                <div className="w-full">
+                  <Select>
+                    <option>Aug 30, 2024 | 2:00 PM - 3:00 PM</option>
+                    <option>Sep 5, 2024 | 10:00 AM - 11:00 AM</option>
+                  </Select>
+                </div>
               </div>
               <div className="flex flex-col space-y-2">
                 <label className="text-gray-700">Meeting Link</label>
