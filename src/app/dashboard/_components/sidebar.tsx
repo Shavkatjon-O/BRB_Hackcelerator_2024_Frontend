@@ -50,9 +50,11 @@ const Sidebar = () => {
           </li>
         </ul>
         <div className="mt-8">
-          <Button variant="destructive" className="w-full text-left text-white font-semibold">
-            Sign out
-          </Button>
+          <Link href="/sign-out">
+            <Button variant="destructive" className="w-full text-left text-white font-semibold">
+              Sign out
+            </Button>
+          </Link>
         </div>
       </div>
     </aside>
