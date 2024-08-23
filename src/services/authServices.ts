@@ -7,10 +7,7 @@ export async function getUser(): Promise<UserProfileType> {
     try {
         const response = await CoreAPI.get('/users/profile/');
         
-        return {
-            id: response.data.id,
-            email: response.data.email,
-        }
+        return response.data as UserProfileType
 
     } catch (error) {
         console.error("Failed to fetch user data:", error);
