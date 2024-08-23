@@ -5,7 +5,7 @@ import { Home, Calendar, ClipboardList, Settings, User } from 'lucide-react';
 
 const Sidebar = () => {
   return (
-    <aside className={cn('h-full w-60 bg-gray-700 text-white p-4')}>
+    <aside className={cn('h-full w-60 bg-gray-800 text-white p-4')}>
       <div className="flex flex-col justify-between h-full">
         <ul className="space-y-4">
           <li>
