@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 export async function signIn(email: string, password: string) {
   try {
-    const response = await CoreAPI.post("/users/token/", { email, password });
+    const response = await CoreAPI.post("/users/sign-in/", { email, password });
     const successMessage = response.data.detail || "Login successful!";
 
     Cookies.set("access_token", response.data.access);
@@ -30,7 +30,7 @@ export async function signIn(email: string, password: string) {
 
 export async function signUp(email: string, password: string) {
   try {
-    const response = await CoreAPI.post("/users/signup/", { email, password });
+    const response = await CoreAPI.post("/users/sign-up/", { email, password });
     const successMessage = response.data.detail || "Account created successfully!";
 
     Cookies.set("access_token", response.data.access);
