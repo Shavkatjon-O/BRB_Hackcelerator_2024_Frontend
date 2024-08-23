@@ -1,5 +1,3 @@
-"use client";
-
 import CoreAPI from "@/lib/coreApi";
 
 export async function getUser() {
