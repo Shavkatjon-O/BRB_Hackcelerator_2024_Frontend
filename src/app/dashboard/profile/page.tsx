@@ -3,29 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Mail, Calendar, User, Building, Phone, Book } from "lucide-react";
+import { Mail, Phone, User } from "lucide-react";
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
-
 
 const ProfilePage = () => {
   const { user, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    id: user?.id,
-    email: user?.email,
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     phone_number: user?.phone_number || "",
-    date_of_birth: user?.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "", // Handle date format
+    date_of_birth: user?.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "",
     address: user?.address || "",
     job_title: user?.job_title || "",
     department: user?.department || "",
     education: user?.education || "",
-    employment_start_date: user?.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "", // Handle date format
+    employment_start_date: user?.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "",
     skills: user?.skills || "",
   });
+
   const router = useRouter();
 
   if (isLoading) {
@@ -40,26 +37,16 @@ const ProfilePage = () => {
     return <p>Not authorized</p>;
   }
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await coreApi.put("/users/profile/update/", {
-        id: formData.id,
-        email: formData.email,
-        last_name: formData.last_name,
-        phone_number: formData.phone_number,
-        date_of_birth: formData.date_of_birth,
-        address: formData.address,
-        job_title: formData.job_title,
-        department: formData.department,
-        education: formData.education,
-        employment_start_date: formData.employment_start_date,
-        skills: formData.skills,
+        ...formData,
       });
       alert("Profile updated successfully!");
       setEditing(false);
@@ -75,11 +62,9 @@ const ProfilePage = () => {
       {/* Profile Header */}
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-
           <div className="w-32 h-32 rounded-md border flex justify-center items-center">
-            <User className="w-24 h-24 text-gray-6  00" />
+            <User className="w-24 h-24 text-gray-600" />
           </div>
-
           <div className="text-center sm:text-left">
             <CardTitle className="text-2xl font-semibold">{`${user.first_name || "First Name"} ${user.last_name || "Last Name"}`}</CardTitle>
             <CardDescription className="text-sm text-muted-foreground">{user.job_title || "Job Title"}</CardDescription>
@@ -113,106 +98,18 @@ const ProfilePage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">First Name</label>
-                <input
-                  type="text"
-                  name="first_name"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Last Name</label>
-                <input
-                  type="text"
-                  name="last_name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Phone Number</label>
-                <input
-                  type="text"
-                  name="phone_number"
-                  value={formData.phone_number}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Date of Birth</label>
-                <input
-                  type="date"
-                  name="date_of_birth"
-                  value={formData.date_of_birth}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Job Title</label>
-                <input
-                  type="text"
-                  name="job_title"
-                  value={formData.job_title}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Department</label>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Education</label>
-                <input
-                  type="text"
-                  name="education"
-                  value={formData.education}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Employment Start Date</label>
-                <input
-                  type="date"
-                  name="employment_start_date"
-                  value={formData.employment_start_date}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="font-medium">Skills (comma separated)</label>
-                <input
-                  type="text"
-                  name="skills"
-                  value={formData.skills}
-                  onChange={handleChange}
-                  className="border p-2 rounded"
-                />
-              </div>
+              {Object.entries(formData).map(([key, value]) => (
+                <div key={key} className="flex flex-col space-y-2">
+                  <label className="font-medium capitalize">{key.replace(/_/g, ' ')}</label>
+                  <input
+                    type={key.includes("date") ? "date" : "text"}
+                    name={key}
+                    value={value}
+                    onChange={handleChange}
+                    className="border p-2 rounded"
+                  />
+                </div>
+              ))}
               <button type="submit" className="bg-blue-500 text-white p-2 rounded">
                 Save Changes
               </button>
