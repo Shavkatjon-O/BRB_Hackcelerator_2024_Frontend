@@ -11,8 +11,6 @@ const DashboardPage = () => {
   return (
     <>
       <h1>Welcome {user?.email}</h1>
-
-
       <h1>Dashboard</h1>
     </>
   );
