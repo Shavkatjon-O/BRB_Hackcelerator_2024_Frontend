@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Mail, Phone, User } from "lucide-react";
+// import { Mail, Phone, User } from "lucide-react";
+import { Mail, User, Phone, Calendar, Home, Briefcase, Award, CalendarClock, Tag } from 'lucide-react'
 
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
@@ -239,22 +240,50 @@ const ProfilePage = () => {
       )}
 
       {/* Additional Information Card */}
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>All Information</CardTitle>
+      <Card className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
+        <CardHeader className="bg-gray-100 border-b border-gray-200 p-4 rounded-t-lg">
+          <CardTitle className="text-lg font-semibold text-gray-800">All Information</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div><strong>First Name:</strong> {user.first_name}</div>
-            <div><strong>Last Name:</strong> {user.last_name}</div>
-            <div><strong>Phone Number:</strong> {user.phone_number}</div>
-            <div><strong>Date of Birth:</strong> {user.date_of_birth}</div>
-            <div><strong>Address:</strong> {user.address}</div>
-            <div><strong>Job Title:</strong> {user.job_title}</div>
-            <div><strong>Department:</strong> {user.department}</div>
-            <div><strong>Education:</strong> {user.education}</div>
-            <div><strong>Employment Start Date:</strong> {user.employment_start_date}</div>
-            <div><strong>Skills:</strong> {user.skills}</div>
+        <CardContent className="p-4 space-y-4">
+          <div className="flex items-center space-x-2">
+            <User className="text-gray-500" />
+            <span><strong>First Name:</strong> {user.first_name}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <User className="text-gray-500" />
+            <span><strong>Last Name:</strong> {user.last_name}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Phone className="text-gray-500" />
+            <span><strong>Phone Number:</strong> {user.phone_number}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Calendar className="text-gray-500" />
+            <span><strong>Date of Birth:</strong> {user.date_of_birth}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Home className="text-gray-500" />
+            <span><strong>Address:</strong> {user.address}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Briefcase className="text-gray-500" />
+            <span><strong>Job Title:</strong> {user.job_title}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Tag className="text-gray-500" />
+            <span><strong>Department:</strong> {user.department}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Award className="text-gray-500" />
+            <span><strong>Education:</strong> {user.education}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <CalendarClock className="text-gray-500" />
+            <span><strong>Employment Start Date:</strong> {user.employment_start_date}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Tag className="text-gray-500" />
+            <span><strong>Skills:</strong> {user.skills}</span>
           </div>
         </CardContent>
       </Card>
