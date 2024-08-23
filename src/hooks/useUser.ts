@@ -5,7 +5,7 @@ import { getUser } from '@/services/authServices';
 
 const useUser = () => {
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
 
   useEffect(() => {
@@ -16,14 +16,14 @@ const useUser = () => {
       } catch (error) {
         setError(error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchUser();
   }, []);
 
-  return { user, loading, error };
+  return { user, isLoading, error };
 }
 
 export default useUser;
