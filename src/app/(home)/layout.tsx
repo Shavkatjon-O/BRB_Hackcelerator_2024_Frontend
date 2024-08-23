@@ -8,7 +8,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <ClerkProvider>
       <Header />
-      <main>{children}</main>
+      <main className='h-screen flex justify-center items-center pt-16'>{children}</main>
       <Footer />
       </ClerkProvider>
     </>
