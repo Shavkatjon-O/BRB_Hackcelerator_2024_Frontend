@@ -1,17 +1,24 @@
 'use client';
-import { User, Lock, Bell, Edit, Mail, MessageCircle, Save, Shield, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
+import { 
+  User,
+  Bell, 
+  Mail, 
+  MessageCircle, 
+  Save, 
+  Shield, 
+  LogOut 
+} from 'lucide-react';
+
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 const SettingsPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100 p-6">
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        {/* Account Settings Card */}
         <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
             <User className="text-blue-600 w-6 h-6" />
@@ -36,7 +43,6 @@ const SettingsPage = () => {
           </div>
         </Card>
 
-        {/* Notification Preferences Card */}
         <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
             <Bell className="text-yellow-600 w-6 h-6" />
@@ -69,7 +75,6 @@ const SettingsPage = () => {
           </div>
         </Card>
 
-        {/* Security Settings Card */}
         <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
             <Shield className="text-green-600 w-6 h-6" />
@@ -90,7 +95,6 @@ const SettingsPage = () => {
           </div>
         </Card>
 
-        {/* Account Actions Card */}
         <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg col-span-full">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
             <LogOut className="text-red-600 w-6 h-6" />
@@ -100,7 +104,6 @@ const SettingsPage = () => {
             <LogOut className="mr-2 w-5 h-5" /> Logout
           </Button>
         </Card>
-
       </div>
     </div>
   );
