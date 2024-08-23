@@ -1,7 +1,7 @@
 import Sidebar from './_components/sidebar';
 import Header from './_components/header';
 
-import StreamVideoProvider from "@/providers/StreamVideoClient";
+// import StreamVideoProvider from "@/providers/StreamVideoClient";
 
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -11,9 +11,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <Header />
         <div className="flex w-full pt-16 h-screen">
           <Sidebar />
-          <StreamVideoProvider>
+          {/* <StreamVideoProvider> */}
           <main className='p-4'>{children}</main>
-          </StreamVideoProvider>
+          {/* </StreamVideoProvider> */}
         </div>
       </div>
     </>
