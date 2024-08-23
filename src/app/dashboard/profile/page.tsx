@@ -48,7 +48,7 @@ const ProfilePage = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await coreApi.put("/users/profile/", {
+      await coreApi.put("/users/profile/update/", {
         id: formData.id,
         email: formData.email,
         last_name: formData.last_name,
