@@ -17,12 +17,12 @@ const ProfilePage = () => {
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     phone_number: user?.phone_number || "",
-    date_of_birth: user?.date_of_birth || "",
+    date_of_birth: user?.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "", // Handle date format
     address: user?.address || "",
     job_title: user?.job_title || "",
     department: user?.department || "",
     education: user?.education || "",
-    employment_start_date: user?.employment_start_date || "",
+    employment_start_date: user?.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "", // Handle date format
     skills: user?.skills || "",
   });
   const router = useRouter();
