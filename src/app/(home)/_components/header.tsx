@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import {Button} from '@/components/ui/button';
-
+import { User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 
-const Header = () => {
 
+const Header = () => {
   const { user, isLoading, error } = useUser();
 
   return (
@@ -32,17 +32,20 @@ const Header = () => {
           
           {
             user ? (
-              <div>
-                <Link href="/dashboard">
-                  <Button className="font-semibold bg-white text-black hover:text-white rounded-lg">{user.email}</Button>
-                </Link>
-                <Link href="/sign-out" className='ml-1'>
+              <div className='space-x-1'>
+                <Link href="/sign-out">
                   <Button className="font-semibold bg-white text-black hover:text-white rounded-lg">Sign Out</Button>
+                </Link>
+                <Link href="/dashboard">
+                  <Button className="font-semibold bg-white text-black hover:text-white rounded-lg space-x-1">
+                    <span>{user.email}</span>
+                    <User size={20} />
+                  </Button>
                 </Link>
               </div>
             ) : (
               <Link href="/sign-in" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
-                Login
+                Sign in
               </Link>
             )
           }
