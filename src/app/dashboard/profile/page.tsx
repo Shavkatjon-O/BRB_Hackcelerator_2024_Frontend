@@ -7,9 +7,10 @@ import { Mail, Phone, User } from "lucide-react";
 
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
+import { User as UserType } from "@/types/userProfile";
 
 const ProfilePage = () => {
-  const { user, isLoading, error } = useUser();
+  const { user: initialUser, isLoading, error } = useUser();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -23,25 +24,27 @@ const ProfilePage = () => {
     employment_start_date: "",
     skills: "",
   });
+  const [user, setUser] = useState<UserType | null>(initialUser);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (initialUser) {
+      setUser(initialUser);
       setFormData({
-        first_name: user.first_name || "",
-        last_name: user.last_name || "",
-        phone_number: user.phone_number || "",
-        date_of_birth: user.date_of_birth ? new Date(user.date_of_birth).toISOString().split('T')[0] : "",
-        address: user.address || "",
-        job_title: user.job_title || "",
-        department: user.department || "",
-        education: user.education || "",
-        employment_start_date: user.employment_start_date ? new Date(user.employment_start_date).toISOString().split('T')[0] : "",
-        skills: user.skills || "",
+        first_name: initialUser.first_name || "",
+        last_name: initialUser.last_name || "",
+        phone_number: initialUser.phone_number || "",
+        date_of_birth: initialUser.date_of_birth ? new Date(initialUser.date_of_birth).toISOString().split('T')[0] : "",
+        address: initialUser.address || "",
+        job_title: initialUser.job_title || "",
+        department: initialUser.department || "",
+        education: initialUser.education || "",
+        employment_start_date: initialUser.employment_start_date ? new Date(initialUser.employment_start_date).toISOString().split('T')[0] : "",
+        skills: initialUser.skills || "",
       });
     }
-  }, [user]);
+  }, [initialUser]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -65,14 +68,17 @@ const ProfilePage = () => {
     try {
       // Filter out unchanged fields
       const updatedData = Object.entries(formData)
-        .filter(([key, value]) => user[key] !== value)
+        .filter(([key, value]) => user[key as keyof UserType] !== value)
         .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
       if (Object.keys(updatedData).length > 0) {
         await coreApi.put("/users/profile/update/", updatedData);
-        alert("Profile updated successfully!");
+        // Update user state with the new data
+        setUser(prevUser => ({
+          ...prevUser!,
+          ...updatedData,
+        }));
         setEditing(false);
-        router.refresh(); // Refresh to get updated data
       } else {
         alert("No changes detected.");
       }
@@ -231,6 +237,27 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Additional Information Card */}
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>All Information</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div><strong>First Name:</strong> {user.first_name}</div>
+            <div><strong>Last Name:</strong> {user.last_name}</div>
+            <div><strong>Phone Number:</strong> {user.phone_number}</div>
+            <div><strong>Date of Birth:</strong> {user.date_of_birth}</div>
+            <div><strong>Address:</strong> {user.address}</div>
+            <div><strong>Job Title:</strong> {user.job_title}</div>
+            <div><strong>Department:</strong> {user.department}</div>
+            <div><strong>Education:</strong> {user.education}</div>
+            <div><strong>Employment Start Date:</strong> {user.employment_start_date}</div>
+            <div><strong>Skills:</strong> {user.skills}</div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
