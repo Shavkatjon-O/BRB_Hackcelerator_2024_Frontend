@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import {
   ChartBar,
   User,
@@ -5,6 +8,7 @@ import {
   Lock,
   Mail
 } from 'lucide-react';
+import { getUser } from '@/services/authServices';
 
 const features = [
   {
@@ -36,9 +40,24 @@ const testimonials = [
 ];
 
 const HomePage = () => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const fetchedUser = await getUser();
+        setUser(fetchedUser);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <>
-      <div className='mt-16'>        
+      <div className='mt-16'>
         <section className="relative bg-blue-500 text-white">
           <div className="container mx-auto py-16 text-center">
             <h1 className="text-5xl font-bold mb-4">Welcome to BRB Titans</h1>
@@ -47,6 +66,9 @@ const HomePage = () => {
               Get Started
             </button>
           </div>
+      <div>
+        {user ? user.email : 'Loading...'}
+      </div>
         </section>
 
         <section className="py-16 bg-gray-100">
