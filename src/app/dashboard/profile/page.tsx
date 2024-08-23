@@ -1,14 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-// import { Mail, Phone, User } from "lucide-react";
-import { Mail, User, Phone, Calendar, Home, Briefcase, Award, CalendarClock, Tag } from 'lucide-react'
+
+import { 
+  Mail, 
+  User, 
+  Phone, 
+  Calendar, 
+  Home, 
+  Briefcase, 
+  Award, 
+  CalendarClock, 
+  Tag 
+} from 'lucide-react'
+
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription 
+} from "@/components/ui/card";
+
+import { User as UserType } from "@/types/userProfile";
 
 import useUser from "@/hooks/useUser";
 import coreApi from "@/lib/coreApi";
-import { User as UserType } from "@/types/userProfile";
 
 const ProfilePage = () => {
   const { user: initialUser, isLoading, error } = useUser();
@@ -26,8 +43,6 @@ const ProfilePage = () => {
     skills: "",
   });
   const [user, setUser] = useState<UserType | null>(initialUser);
-
-  const router = useRouter();
 
   useEffect(() => {
     if (initialUser) {
@@ -67,14 +82,12 @@ const ProfilePage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Filter out unchanged fields
       const updatedData = Object.entries(formData)
         .filter(([key, value]) => user[key as keyof UserType] !== value)
         .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
       if (Object.keys(updatedData).length > 0) {
         await coreApi.put("/users/profile/update/", updatedData);
-        // Update user state with the new data
         setUser(prevUser => ({
           ...prevUser!,
           ...updatedData,
@@ -91,7 +104,6 @@ const ProfilePage = () => {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-      {/* Profile Header */}
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <div className="w-32 h-32 rounded-md border flex justify-center items-center">
@@ -114,7 +126,6 @@ const ProfilePage = () => {
         </CardContent>
       </Card>
 
-      {/* Toggle Editing Mode */}
       <button
         onClick={() => setEditing(prev => !prev)}
         className="bg-gray-500 text-white p-2 rounded"
@@ -122,7 +133,6 @@ const ProfilePage = () => {
         {editing ? "Cancel" : "Edit Profile"}
       </button>
 
-      {/* Editable Form */}
       {editing && (
         <Card className="w-full max-w-2xl mx-auto">
           <CardHeader>
@@ -130,7 +140,6 @@ const ProfilePage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Only include the editable fields */}
               <div className="flex flex-col space-y-2">
                 <label className="font-medium">First Name</label>
                 <input
@@ -239,7 +248,6 @@ const ProfilePage = () => {
         </Card>
       )}
 
-      {/* Additional Information Card */}
       <Card className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
         <CardHeader className="bg-gray-100 border-b border-gray-200 p-4 rounded-t-lg">
           <CardTitle className="text-lg font-semibold text-gray-800">All Information</CardTitle>

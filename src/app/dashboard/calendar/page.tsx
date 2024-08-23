@@ -1,8 +1,16 @@
 'use client';
 
-import { Calendar as LucideCalendar, ChevronLeft, CalendarIcon, ChevronRight, Search, Tag, Plus } from 'lucide-react';
+import { 
+  Calendar as LucideCalendar, 
+  ChevronLeft, 
+  CalendarIcon, 
+  ChevronRight, 
+  Search, 
+  Tag, 
+  Plus 
+} from 'lucide-react';
+
 import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
 import { Separator } from '@radix-ui/react-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,7 +18,7 @@ import { Card } from '@/components/ui/card';
 import { useState } from 'react';
 
 const CalendarPage = () => {
-  const [selectedMonth, setSelectedMonth] = useState('August 2024');
+  const [selectedMonth] = useState('August 2024');
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
@@ -64,14 +72,13 @@ const CalendarPage = () => {
             <div className="font-semibold text-gray-600">Thu</div>
             <div className="font-semibold text-gray-600">Fri</div>
             <div className="font-semibold text-gray-600">Sat</div>
-            {/* Sample Calendar Grid with Events */}
+
             {Array.from({ length: 35 }).map((_, index) => (
               <div
                 key={index}
                 className="relative border border-gray-200 p-2 h-24 bg-white rounded-lg shadow-sm"
               >
                 <div className="text-center font-semibold text-lg">{index + 1}</div>
-                {/* Events with colors */}
                 {index % 5 === 0 && (
                   <div className="absolute bottom-2 left-2 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs shadow-md">
                     <div className="flex items-center">
@@ -88,6 +95,7 @@ const CalendarPage = () => {
                 )}
               </div>
             ))}
+            
           </div>
         </Card>
       </div>

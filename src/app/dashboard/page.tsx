@@ -1,20 +1,23 @@
 'use client';
 
 import withAuth from "@/components/auth/withAuth";
+
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import { User, Wallet, TrendingUp, Clock, Calendar, Bell } from 'lucide-react';
-import { useState } from 'react';
+
+import { 
+  User, 
+  TrendingUp, 
+  Calendar, 
+  Bell 
+} from 'lucide-react';
 
 const DashboardPage = () => {
-  const [activeSection, setActiveSection] = useState('overview');
 
   return (
     <div className="flex flex-col h-screen bg-gray-200">
       <div className="flex flex-1 p-6">
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Performance Metrics Card */}
           <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
               <TrendingUp className="text-green-600" />
@@ -37,7 +40,6 @@ const DashboardPage = () => {
             <Button variant="outline" className="mt-4">View Detailed Report</Button>
           </Card>
 
-          {/* Upcoming Events Card */}
           <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
               <Calendar className="text-blue-600" />
@@ -60,7 +62,6 @@ const DashboardPage = () => {
             <Button variant="outline" className="mt-4">See All Events</Button>
           </Card>
 
-          {/* Notifications Card */}
           <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
               <Bell className="text-red-600" />
