@@ -66,9 +66,6 @@ const HomePage = () => {
               Get Started
             </button>
           </div>
-      <div>
-        {user ? user.email : 'Loading...'}
-      </div>
         </section>
 
         <section className="py-16 bg-gray-100">
