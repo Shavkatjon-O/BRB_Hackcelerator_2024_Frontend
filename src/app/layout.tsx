@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 import './globals.css';
 
 interface RootLayoutProps {
@@ -13,7 +14,7 @@ const RootLayout = ({ children }: RootLayoutProps) => (
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta charSet="UTF-8" />
     </head>
-    <body>
+    <body className={cn("min-h-[100dvh]")}>
       {children}
     </body>
   </html>
