@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import currentUser from '@/actions/authActions';
+import { currentUser } from '@/actions/authActions';
 
 interface User {
   id: string;
@@ -22,7 +22,7 @@ export const useUser = (): UseUserState => {
   useEffect(() => {
     const loadUser = async () => {
       const result = await currentUser();
-      console.log('Current user result:', result); // Debugging
+      // console.log('Current user result:', result); // Debugging
       if (result.success) {
         if (!result.user?.id) {
           setError("User ID is missing");

@@ -16,7 +16,7 @@ import ReactDatePicker from "react-datepicker";
 import toast from "react-hot-toast";
 
 import HomeCard from "./HomeCard";
-import Loader from "./Loader";
+// import Loader from "./Loader";
 
 const initialValues = {
    dateTime: new Date(),
@@ -34,7 +34,7 @@ const MeetingTypeList = () => {
    const client = useStreamVideoClient();
    const { user } = useUser();
 
-   console.log(client, user);
+   // console.log(client, user);
 
    const createMeeting = async () => {
       console.log(client, user);
