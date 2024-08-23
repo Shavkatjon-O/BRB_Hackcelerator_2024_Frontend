@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { currentUser } from '@/actions/authActions';
+import currentUser from '@/actions/authActions';
 
 interface User {
   id: string;

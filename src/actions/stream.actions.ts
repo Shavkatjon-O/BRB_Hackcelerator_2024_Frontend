@@ -1,6 +1,6 @@
 "use server";
 
-import { currentUser } from "./authActions";
+import currentUser from "./authActions";
 
 import { StreamClient } from "@stream-io/node-sdk";
 

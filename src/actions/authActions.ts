@@ -100,7 +100,7 @@ export async function signUp(email: string, password: string) {
 
 
 
-export async function currentUser() {
+export default   async function currentUser() {
   try {
     const token = Cookies.get("access_token");
 
