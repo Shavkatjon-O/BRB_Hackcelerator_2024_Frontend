@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { currentUser } from '@/actions/authActions';
+import { getUser } from '@/services/authServices';
 
 interface User {
   id: string;
@@ -22,16 +22,12 @@ export const useUser = (): UseUserState => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const user = await currentUser();
+        const user = await getUser();
 
         if (user) {
-          if (!user.id) {
-            setError("User ID is missing");
-          } else {
-            setUser(user);
-          }
+          setUser(user);
         } else {
-          setError("Failed to fetch user data.");
+          setError("User not found.");
         }
       } catch (err) {
         setError("An error occurred while fetching user data.");
