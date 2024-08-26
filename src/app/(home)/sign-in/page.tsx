@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 
 import { signInSchema } from './schemas';
 
+import { Loader } from 'lucide-react';
+
 const SignInPage = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -60,7 +62,7 @@ const SignInPage = () => {
 
   return (
     <div className='h-screen flex justify-center items-center'>
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-sm border">
         <h1 className="text-2xl font-bold mb-6">Sign in</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -86,7 +88,13 @@ const SignInPage = () => {
             />
           </div>
           <Button type="submit" className="w-full bg-gray-800 text-white" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? (
+              <>
+                <Loader className='w-5 h-5 mr-1' /> Signing in...
+              </>
+             ) : (
+              'Sign in'
+             )}
           </Button>
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
