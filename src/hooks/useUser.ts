@@ -1,29 +1,32 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { getUser } from '@/services/authServices';
+import { useEffect, useState } from "react";
+
+import { getUser } from "@/services/auth";
 
 const useUser = () => {
   const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const fetchedUser = await getUser();
-        setUser(fetchedUser);
-      } catch (error) {
+        const user = await getUser();
+
+        setUser(user);
+      } catch (error: any) {
+
         setError(error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  } , []);
 
-  return { user, isLoading, error };
+  return { user, loading, error };
 }
 
 export default useUser;

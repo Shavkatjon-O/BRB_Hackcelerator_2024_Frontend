@@ -1,45 +1,40 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import { Loader } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-const withAuth = (WrappedComponent: React.ComponentType) => {
-  const AuthHOC = (props: any) => {
+import Cookies from "js-cookie";
+
+const withAuth = (Component: React.ComponentType) => {
+  const WithAuthComponent = (props: any) => {
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-      const checkAuth = async () => {
-        try {
-          const token = Cookies.get('access_token');
+      const accessToken = Cookies.get("access_token");
 
-          if (!token) {
-            router.push('/sign-in');
-          } else {
-            setIsLoading(false);
-          }
-        } catch (err) {
-          setError('An error occurred during authentication.');
-        }
-      };
+      if (!accessToken) {
+        router.push("/sign-in");
+      } else {
+        setLoading(false);
+      }
+    }, []);
 
-      checkAuth();
-    }, [router]);
-
-    if (isLoading) {
-      return <div>Loading...</div>;
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <Loader className="w-6 h-6 text-green-500" /> 
+        </div>
+      );
     }
 
-    if (error) {
-      return <div>{error}</div>;
-    }
-
-    return <WrappedComponent {...props} />;
+    return <Component {...props} />;
   };
 
-  return AuthHOC;
+  WithAuthComponent.displayName = `WithAuth(${Component.displayName || Component.name || 'Component'})`;
+
+  return WithAuthComponent;
 };
 
 export default withAuth;
