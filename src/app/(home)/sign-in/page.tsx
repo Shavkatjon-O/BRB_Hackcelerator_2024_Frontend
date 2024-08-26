@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 
 import { signInSchema } from './schemas';
 
-import { Loader } from 'lucide-react';
+import { Loader, X } from 'lucide-react';
 
 const SignInPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -28,9 +28,16 @@ const SignInPage = () => {
     const validatedResult = signInSchema.safeParse({ email, password });
 
     if (!validatedResult.success) {
+
       validatedResult.error.issues.forEach((issue, index) => {
         setTimeout(() => {
-          toast.error(issue.message || "An error occurred during sign-in.");
+          toast("Error", {
+            description: issue.message || "An error occurred during sign-in.",
+            action: {
+              label: <X className='w-4 h-4' />,
+              onClick: () => console.log("Close"),
+            },
+          });
         }, index * 100);
       });
       return;
@@ -47,14 +54,32 @@ const SignInPage = () => {
         Cookies.set('access_token', access);
         Cookies.set('refresh_token', refresh);
 
-        toast.success("Successfully signed in! Redirecting...");
+        toast("Success", {
+          description: "Sign-in successful! Redirecting...",
+          action: {
+            label: <X className='w-4 h-4' />,
+            onClick: () => console.log("Close"),
+          },
+        });
         router.push('/dashboard');
       } else {
-        toast.error(response.data.detail || "An error occurred during sign-in.");
+        toast("Error", {
+          description: response.data.detail || "An error occurred during sign-in.",
+          action: {
+            label: <X className='w-4 h-4' />,
+            onClick: () => console.log("Close"),
+          },
+        });
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || "An error occurred while signing in. Please try again.";
-      toast.error(errorMessage);
+      toast("Error", {
+        description: errorMessage,
+        action: {
+          label: <X className='w-4 h-4' />,
+          onClick: () => console.log("Close"),
+        },
+      });
     } finally {
       setLoading(false);
     }
