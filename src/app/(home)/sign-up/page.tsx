@@ -59,7 +59,7 @@ const SignUpPage = () => {
             onClick: () => console.log("Close"),
           },
         });
-        router.push('/sign-in');
+        router.push('/dashboard');
       } else {
         toast("Error", {
           description: response.data.detail || "An error occurred during sign-up.",
