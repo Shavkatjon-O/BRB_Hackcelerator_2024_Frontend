@@ -4,8 +4,8 @@ import { StreamClient } from "@stream-io/node-sdk";
 import axios from "axios";
 
 export const tokenProvider = async (access_token: any) => {
-  const apiKey = process.env.STREAM_API_KEY;
-  const apiSecret = process.env.STREAM_API_SECRET;
+  const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+  const apiSecret = process.env.STREAM_SECRET_KEY;
   
   const response = await axios.get("http://localhost:8000/api/users/profile/", {
     headers: {
