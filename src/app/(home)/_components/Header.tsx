@@ -34,7 +34,7 @@ const Header = () => {
           <Link href="#" className="hover:text-gray-300">Contact</Link>
           
           {
-            {loading} ? (
+            loading ? (
               <span>Loading...</span>
             ) : (
               user ? (
