@@ -2,11 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
-
 
 const Header = () => {
   const { user, loading, error } = useUser();
