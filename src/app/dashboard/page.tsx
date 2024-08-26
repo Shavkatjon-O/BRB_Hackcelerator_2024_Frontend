@@ -84,7 +84,6 @@ const DashboardPage = () => {
             <Button variant="outline" className="mt-4">View All Notifications</Button>
           </Card>
 
-          {/* Profile Summary Card */}
           <Card className="p-6 bg-white border border-gray-200 shadow-lg rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
               <User className="text-gray-800" />

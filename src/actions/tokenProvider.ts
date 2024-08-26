@@ -1,14 +1,19 @@
 "use server";
 
-import { getUser } from "@/services/auth";
 import { StreamClient } from "@stream-io/node-sdk";
+import axios from "axios";
 
-export const tokenProvider = async () => {
+export const tokenProvider = async (access_token: any) => {
   const apiKey = process.env.STREAM_API_KEY;
   const apiSecret = process.env.STREAM_API_SECRET;
-  const user = await getUser();
+  
+  const response = await axios.get("http://localhost:8000/api/users/profile/", {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
 
-  if (!user) {
+  if (!response) {
     throw new Error("User is not authenticated");
   }
   if (!apiKey || !apiSecret) {
@@ -20,7 +25,7 @@ export const tokenProvider = async () => {
   const expiresAt = Math.round(new Date().getTime() / 1000) + 60 * 60;
   const createdAt = Math.floor(Date.now() / 1000) - 60;
 
-  const token = client.createToken(user.id, expiresAt, createdAt);
+  const token = client.createToken(response.data.id, expiresAt, createdAt);
 
   return token;
 };

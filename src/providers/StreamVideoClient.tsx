@@ -5,6 +5,7 @@ import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 
+import Cookies from "js-cookie";
 import useUser from "@/hooks/useUser";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
@@ -13,27 +14,34 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
   const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
   const { user, loading, error } = useUser();
 
+  useEffect(() => {
+    const access_token = Cookies.get("access_token");
+
+    if (user && apiKey && access_token) {
+      tokenProvider(access_token)
+        .then((token) => {
+          const client = new StreamVideoClient({
+            apiKey: apiKey,
+            user: {
+              id: user.id,
+              name: user.email,
+            },
+            token,
+          });
+          setVideoClient(client);
+        })
+        .catch((error) => {
+          console.error("Failed to retrieve token:", error);
+        });
+    }
+  }, [user, apiKey]);
+
   if (loading) {
     return <Loader />;
   }
   if (error) {
     return <div>{error.message}</div>;
   }
-
-  useEffect(() => {
-    if (user) {
-      tokenProvider().then((token) => {
-        const client = new StreamVideoClient({
-          apiKey: apiKey,
-          userId: user.id,
-          token,
-        });
-
-        setVideoClient(client);
-      });
-    }
-  }, [user]);
-
   if (!videoClient) {
     return <Loader />;
   }
