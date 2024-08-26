@@ -25,7 +25,7 @@ export const tokenProvider = async (access_token: any) => {
   const expiresAt = Math.round(new Date().getTime() / 1000) + 60 * 60;
   const createdAt = Math.floor(Date.now() / 1000) - 60;
 
-  const token = client.createToken(response.data.id, expiresAt, createdAt);
+  const token = client.createToken(String(response.data.id), expiresAt, createdAt);
 
   return token;
 };
