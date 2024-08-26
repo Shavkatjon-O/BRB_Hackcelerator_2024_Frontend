@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 
 const Header = () => {
-  const { user, loading } = useUser();
+  const { user, loading, error } = useUser();
+
+  if (error) {
+    console.error(error);
+  }
 
   return (
     <header className="fixed top-0 right-0 left-0 z-50 h-16 bg-gray-800 text-white">
