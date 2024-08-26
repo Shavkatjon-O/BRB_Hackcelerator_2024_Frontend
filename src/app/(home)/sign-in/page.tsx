@@ -1,30 +1,83 @@
 "use client";
 
 import { useState } from 'react';
-import { signIn } from '@/actions/authActions';
+import { useRouter} from 'next/navigation';
+import { toast } from 'sonner';
+
+import CoreAPI from '@/lib/coreApi';
+import Cookies from 'js-cookie';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
+import { signInSchema } from './schemas';
+
 const SignInPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const result = await signIn(email, password);
+    const validatedResult = signInSchema.safeParse({ email, password });
 
-    if (result.success) {      
+    if (!validatedResult.success) {
+      toast("Error", {
+        description: validatedResult.error.message || "An error occurred during sign-in.",
+        action: {
+          label: "Undo",
+          onClick: () => console.log("Undo"),
+        },
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await CoreAPI.post("/users/token/", { email, password });
       
-      setSuccess(result.message);
+      if (response.status == 200) {
+        const { access, refresh } = response.data;
+        
+        Cookies.set('access_token', access);
+        Cookies.set('refresh_refresh', refresh);
 
-      window.location.href = '/dashboard/';
-    } else {
-      setError(result.message);
+        toast("Success", {
+          description: "Successfully signed in! Redirecting...",
+          action: {
+            label: "Undo",
+            onClick: () => console.log("Undo"),
+          },
+        });
+
+        router.push('/dashboard');
+      } else {
+        toast("Error", {
+          description: response.data.detail || "An error occurred during sign-in.",
+          action: {
+            label: "Undo",
+            onClick: () => console.log("Undo"),
+          },
+        });
+        return;
+      }
+    } catch (error: any) {
+      toast("Error", {
+        description: error.response.data.detail || "An error occurred while signing in. Please try again.",
+        action: {
+          label: "Undo",
+          onClick: () => console.log("Undo"),
+        },
+      });
+      return;
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,16 +110,6 @@ const SignInPage = () => {
               />
             </div>
             <Button type="submit" className="w-full bg-gray-800 text-white">Sign in</Button>
-            {error && (
-              <div className='mt-4 p-1.5 flex justify-center items-center border border-red-500 text-red-600 rounded-lg'>
-                <p>{error}</p>
-              </div>
-            )}
-            {success && (
-              <div className='mt-4 p-1.5 flex justify-center items-center border border-green-500 text-green-600 rounded-lg'>
-                <p>{success}</p>
-              </div>
-            )}
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Do not have an account yet?{' '}
