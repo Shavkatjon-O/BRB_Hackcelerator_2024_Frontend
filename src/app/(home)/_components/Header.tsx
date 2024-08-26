@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 
 const Header = () => {
-  const { user, loading, error } = useUser();
+  const { user, loading } = useUser();
 
   return (
     <header className="fixed top-0 right-0 left-0 z-50 h-16 bg-gray-800 text-white">
@@ -30,22 +30,26 @@ const Header = () => {
           <Link href="#" className="hover:text-gray-300">Contact</Link>
           
           {
-            user ? (
-              <div className='space-x-1'>
-                <Link href="/sign-out">
-                  <Button className="font-semibold bg-white text-black hover:text-white rounded-lg">Sign Out</Button>
-                </Link>
-                <Link href="/dashboard">
-                  <Button className="font-semibold bg-white text-black hover:text-white rounded-lg space-x-1">
-                    <span>{user.email}</span>
-                    <User size={20} />
-                  </Button>
-                </Link>
-              </div>
+            {loading} ? (
+              <span>Loading...</span>
             ) : (
-              <Link href="/sign-in" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
-                Sign in
-              </Link>
+              user ? (
+                <div className='space-x-1'>
+                  <Link href="/sign-out">
+                    <Button className="font-semibold bg-white text-black hover:text-white rounded-lg">Sign Out</Button>
+                  </Link>
+                  <Link href="/dashboard">
+                    <Button className="font-semibold bg-white text-black hover:text-white rounded-lg space-x-1">
+                      <span>{user.email}</span>
+                      <User size={20} />
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <Link href="/sign-in" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
+                  Sign in
+                </Link>
+              )
             )
           }
         
