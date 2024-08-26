@@ -9,9 +9,8 @@ const nextConfig = {
         pathname: '/media/**',
       },
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: 'admin.brb-titans.uz',
-        port: '443',
         pathname: '/media/**',
       },
     ],
