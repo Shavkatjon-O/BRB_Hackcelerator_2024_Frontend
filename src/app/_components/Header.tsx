@@ -52,10 +52,13 @@ const Header = () => {
                 <span>Loading...</span>
               ) : (
                 user ? (
-                  <div className='flex items-center space-x-1'>
+                  <div className='space-x-1'>
+                    <Link href="/sign-out">
+                      <Button variant="default">Sign Out</Button>
+                    </Link>
                     <Link href="/dashboard">
-                      <Button variant="outline">
-                      {user.email} <User size={20} className='ml-1'/>
+                      <Button variant="default">
+                        <User size={20} className='mr-1'/> {user.email}
                       </Button>
                     </Link>
                   </div>
