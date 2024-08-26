@@ -2,18 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader, X } from 'lucide-react';
 import { toast } from 'sonner';
-
-import CoreAPI from '@/lib/coreApi';
-import Cookies from 'js-cookie';
-
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-
 import { signInSchema } from './schemas';
 
-import { Loader, X } from 'lucide-react';
+import CoreAPI from '@/lib/coreApi';
+import Cookies from 'js-cookie';
 
 const SignInPage = () => {
   const [email, setEmail] = useState<string>('');
