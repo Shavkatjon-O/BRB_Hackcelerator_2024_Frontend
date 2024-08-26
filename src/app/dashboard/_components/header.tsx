@@ -20,6 +20,7 @@ const Header = () => {
           width={40}
           height={40}  
           className="mr-2"
+          priority
         />
         BRB Titans
       </Link>
