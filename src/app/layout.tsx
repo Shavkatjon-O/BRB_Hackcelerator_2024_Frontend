@@ -1,23 +1,29 @@
-import { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import './globals.css';
+import type { Metadata } from "next";
 
-interface RootLayoutProps {
-  children: ReactNode;
+import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "BRB Titans - The best place for your banking needs.",
+  description: "BRB Titans - The best place for your banking needs.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={cn("min-h-screen", inter.className)}>
+        <main>{children}</main>
+        <Toaster />
+      </body>
+    </html>
+  );
 }
-
-const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="en">
-    <head>
-      <title>BRB Titans - The best place for your banking needs.</title>
-      <meta name="description" content="BRB Titans - The best place for your banking needs." />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta charSet="UTF-8" />
-    </head>
-    <body className={cn("min-h-[100dvh]")}>
-      {children}
-    </body>
-  </html>
-);
-
-export default RootLayout;
