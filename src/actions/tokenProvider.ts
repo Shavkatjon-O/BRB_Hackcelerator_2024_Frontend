@@ -7,7 +7,7 @@ export const tokenProvider = async (access_token: any) => {
   const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
   const apiSecret = process.env.STREAM_SECRET_KEY;
   
-  const response = await axios.get(`${process.env.BACKEND_URL}/api/users/profile/`, {
+  const response = await axios.get(`${process.env.BACKEND_URL}/users/profile/`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
