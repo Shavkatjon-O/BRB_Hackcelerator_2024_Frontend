@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import CoreAPI from '@/lib/coreApi';
+import Cookies from 'js-cookie';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -49,6 +50,11 @@ const SignUpPage = () => {
       const response = await CoreAPI.post("/users/sign-up/", { email, password });
       
       if (response.status === 201) {
+        const { access, refresh } = response.data;
+        
+        Cookies.set('access_token', access);
+        Cookies.set('refresh_token', refresh);
+
         toast("Success", {
           description: "Sign-up successful! Redirecting...",
           action: {
