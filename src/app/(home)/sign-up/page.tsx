@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import { signUp } from '@/actions/authActions';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
