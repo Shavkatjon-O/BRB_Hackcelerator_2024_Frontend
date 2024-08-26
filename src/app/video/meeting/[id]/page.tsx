@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 const MeetingPage = () => {
    const { id } = useParams();
    const { loading, user } = useUser();
-   const { call, isCallLoading } = useGetCallById(id);
+   const { call, isCallLoading } = useGetCallById(String(id));
    const [isSetupComplete, setIsSetupComplete] = useState(false);
 
    // if (!isLoaded || isCallLoading) return <Loader />;
