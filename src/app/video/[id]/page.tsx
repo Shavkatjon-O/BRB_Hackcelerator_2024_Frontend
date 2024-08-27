@@ -1,8 +1,8 @@
 "use client";
 
-import Loader from "@/components/shared/Loader";
-import MeetingRoom from "@/components/shared/MeetingRoom";
-import MeetingSetup from "@/components/shared/MeetingSetup";
+import Loader from "../../dashboard/_components/Loader";
+import MeetingRoom from "../../dashboard/_components/MeetingRoom";
+import MeetingSetup from "../../dashboard/_components/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallById";
 import useUser from "@/hooks/useUser";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
@@ -16,7 +16,6 @@ const MeetingPage = () => {
    const { call, isCallLoading } = useGetCallById(String(id));
    const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-   // if (!isLoaded || isCallLoading) return <Loader />;
    if (loading || isCallLoading) return <Loader />;
 
    if (!call)

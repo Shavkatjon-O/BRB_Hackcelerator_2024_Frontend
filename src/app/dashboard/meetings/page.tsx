@@ -50,13 +50,13 @@ const PersonalRoom = () => {
          });
       }
 
-      router.push(`/video/meeting/${meetingId}?personal=true`);
+      router.push(`/video/${meetingId}?personal=true`);
    };
 
-   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/video/meeting/${meetingId}?personal=true`;
+   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/video/${meetingId}?personal=true`;
 
    return (
-      <section className="flex size-full flex-col gap-10 text-white">
+      <section className="flex size-full flex-col gap-10 text-black">
          <h1 className="text-xl font-bold lg:text-3xl">
             Personal Meeting Room
          </h1>
@@ -69,11 +69,10 @@ const PersonalRoom = () => {
             <Table title="Invite Link" description={meetingLink} />
          </div>
          <div className="flex gap-5">
-            <Button className="bg-blue-1" onClick={startRoom}>
+            <Button className="" onClick={startRoom}>
                Start Meeting
             </Button>
             <Button
-               className="bg-dark-3"
                onClick={() => {
                   navigator.clipboard.writeText(meetingLink);
                   toast.success("Link Copied");

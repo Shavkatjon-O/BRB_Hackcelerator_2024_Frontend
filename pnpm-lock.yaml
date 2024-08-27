@@ -56,6 +56,9 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      jsx-runtime:
+        specifier: ^1.2.0
+        version: 1.2.0
       lucide:
         specifier: ^0.427.0
         version: 0.427.0
@@ -1611,6 +1614,9 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
+  jsx-runtime@1.2.0:
+    resolution: {integrity: sha512-iCxmRTlUAWmXwHZxN0JSx/T7eRi0SkKAskE0lp+j4W1mzdNp49ja/9QI2ZmlggPM95RqnDw5ioYjw0EcvpIClw==}
+
   jwa@1.4.1:
     resolution: {integrity: sha512-qiLX/xhEEFKUAJ6FiBMbes3w9ATzyk5W7Hvzpa/SLYdxNtng+gcurvrI7TbACjIXlsJyr05/S1oUhZrc63evQA==}
 
@@ -1776,6 +1782,10 @@ packages:
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
+    engines: {node: '>=0.10.0'}
+
+  object-assign@3.0.0:
+    resolution: {integrity: sha512-jHP15vXVGeVh1HuaA2wY6lxk+whK/x4KBG88VXeRma7CCun7iGD5qPc4eYykQ9sdQvg8jkwFKsSxHln2ybW3xQ==}
     engines: {node: '>=0.10.0'}
 
   object-assign@4.1.1:
@@ -4193,6 +4203,10 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.0
 
+  jsx-runtime@1.2.0:
+    dependencies:
+      object-assign: 3.0.0
+
   jwa@1.4.1:
     dependencies:
       buffer-equal-constant-time: 1.0.1
@@ -4344,6 +4358,8 @@ snapshots:
       tslib: 2.6.3
 
   normalize-path@3.0.0: {}
+
+  object-assign@3.0.0: {}
 
   object-assign@4.1.1: {}
 

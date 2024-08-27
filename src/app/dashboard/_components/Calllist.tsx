@@ -2,7 +2,7 @@
 
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
 
-import MeetingCard from "@/components/shared/MeetingCard";
+import MeetingCard from "./MeetingCard";
 import { useGetCalls } from "@/hooks/useGetCalls";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -88,7 +88,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
                   link={
                      type === "recordings"
                         ? (meeting as CallRecording).url
-                        : `${process.env.NEXT_PUBLIC_BASE_URL}/video/meeting/${
+                        : `${process.env.NEXT_PUBLIC_BASE_URL}/video/${
                              (meeting as Call).id
                           }`
                   }
@@ -99,7 +99,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
                   handleClick={
                      type === "recordings"
                         ? () => router.push(`${(meeting as CallRecording).url}`)
-                        : () => router.push(`/video/meeting/${(meeting as Call).id}`)
+                        : () => router.push(`/video/${(meeting as Call).id}`)
                   }
                />
             ))

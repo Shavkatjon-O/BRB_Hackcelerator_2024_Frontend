@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import MeetingModal from "@/components/shared/MettingModel";
+import MeetingModal from "./MettingModel";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useUser from "@/hooks/useUser";
@@ -53,7 +53,7 @@ const MeetingTypeList = () => {
          });
          setCallDetail(call);
          if (!values.description) {
-            router.push(`/video/meeting/${call.id}`);
+            router.push(`/video/${call.id}`);
          }
          toast.success("Meeting Created Successfully");
       } catch (error) {
@@ -64,7 +64,7 @@ const MeetingTypeList = () => {
 
    if (!client || !user) return <Loader />;
 
-   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/video/meeting/${callDetail?.id}`;
+   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/video/${callDetail?.id}`;
 
    return (
       <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
