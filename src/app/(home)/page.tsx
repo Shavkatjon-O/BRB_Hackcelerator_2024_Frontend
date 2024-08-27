@@ -5,14 +5,12 @@ import {
   Lock,
   ChartBar,
   Shield,
-  Globe,
-  Phone,
-  Mail,
   CreditCard,
+  Globe,
   ShieldCheck,
+  Phone,
 } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
 import { 
   Card, 
   CardContent, 
@@ -20,6 +18,8 @@ import {
   CardTitle, 
   CardDescription 
 } from "@/components/ui/card";
+
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const features = [
@@ -68,17 +68,24 @@ const testimonials = [
 
 const LandingPage = () => {
   return (
-    <div className="space-y-24 text-gray-900">
-      {/* Hero Section */}
-      <section className="relative py-32 bg-gradient-to-b from-gray-50 to-white">
+    <div className="text-slate-900">
+
+      <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
           <p className="text-xl text-gray-600">Your trusted partner for innovative banking solutions.</p>
-          <Button variant="default" size="lg" className="bg-black text-white hover:bg-gray-800">Get Started</Button>
+          <Button
+            variant="default" 
+            size="lg" 
+            className="bg-custom text-white hover:bg-red-400"
+          >
+            Get Started
+          </Button>
         </div>
       </section>
 
-      {/* Features Section */}
+      <Separator />
+
       <section className="py-16 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
@@ -86,7 +93,7 @@ const LandingPage = () => {
             {features.map((feature, index) => (
               <Card key={index} className="p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader className="flex justify-center">
-                  <feature.icon className="w-10 h-10 text-black" />
+                  <feature.icon className="w-10 h-10 text-custom" />
                 </CardHeader>
                 <CardContent>
                   <CardTitle className="text-2xl font-semibold">{feature.title}</CardTitle>
@@ -105,17 +112,17 @@ const LandingPage = () => {
           <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="space-y-4">
-              <Shield className="w-12 h-12 mx-auto text-black" />
+              <Shield className="w-12 h-12 mx-auto text-custom" />
               <h3 className="text-xl font-bold">Risk Management</h3>
               <p className="text-gray-700">Identify, assess, and control risks effectively with our comprehensive solutions.</p>
             </div>
             <div className="space-y-4">
-              <CreditCard className="w-12 h-12 mx-auto text-black" />
+              <CreditCard className="w-12 h-12 mx-auto text-custom" />
               <h3 className="text-xl font-bold">Card Services</h3>
               <p className="text-gray-700">Secure and seamless card services for all your banking transactions.</p>
             </div>
             <div className="space-y-4">
-              <ShieldCheck className="w-12 h-12 mx-auto text-black" />
+              <ShieldCheck className="w-12 h-12 mx-auto text-custom" />
               <h3 className="text-xl font-bold">Compliance & Audits</h3>
               <p className="text-gray-700">Stay compliant with evolving regulations and ensure audit readiness.</p>
             </div>
@@ -175,15 +182,6 @@ const LandingPage = () => {
       </section>
 
       {/* Footer Section */}
-      <footer className="py-8 bg-black text-white">
-        <div className="container mx-auto text-center space-y-4">
-          <p>&copy; 2024 BRB Titans. All Rights Reserved.</p>
-          <div className="space-x-6">
-            <a href="#" className="underline">Privacy Policy</a>
-            <a href="#" className="underline">Terms of Service</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
