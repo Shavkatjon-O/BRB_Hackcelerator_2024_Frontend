@@ -1,8 +1,6 @@
 import Header from "./_components/header";
 import Sidebar from "./_components/sidebar";
 
-import StreamVideoProvider from "@/providers/StreamVideoClient";
-
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
