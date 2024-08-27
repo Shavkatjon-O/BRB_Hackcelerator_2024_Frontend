@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import {
   User,
@@ -71,7 +72,7 @@ const testimonials = [
   {
     name: "Alex Johnson",
     feedback: "A remarkable service that has exceeded our expectations!",
-    image: "https://images.pexels.com/photos/3395356/pexels-photo-3395356.jpeg",
+    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
   },
 ];
 
@@ -189,29 +190,29 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100">
-        <div className="container mx-auto space-y-12">
-          <h2 className="text-4xl font-bold text-center text-gray-900">What Our Clients Say</h2>
-          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-12 lg:space-y-0 justify-center">
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto text-center space-y-12">
+          <h2 className="text-3xl font-semibold text-gray-900">What Our Clients Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto transform transition-transform duration-300 hover:scale-105">
-                <div className="relative">
-                  <img
+              <Card key={index} className="bg-white p-8 rounded-lg">
+                <div className="flex justify-center mb-4">
+                  <Image
                     src={testimonial.image}
                     alt={`${testimonial.name}'s photo`}
-                    className="w-full h-40 object-cover rounded-t-lg"
+                    width={64} // 16 * 4 = 64
+                    height={64} // 16 * 4 = 64
+                    className="object-cover rounded-full border border-gray-200"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white opacity-30 rounded-t-lg"></div>
                 </div>
-                <div className="pt-4">
-                  <p className="italic text-gray-800 text-lg">{`"${testimonial.feedback}"`}</p>
-                  <p className="font-semibold text-gray-900 mt-2">- {testimonial.name}</p>
-                </div>
-              </div>
+                <p className="italic text-gray-700 text-lg mb-4">{testimonial.feedback}</p>
+                <p className="font-semibold text-gray-900">{testimonial.name}</p>
+              </Card>
             ))}
           </div>
         </div>
       </section>
+
 
 
       {/* Call to Action Section */}

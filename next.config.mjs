@@ -13,6 +13,10 @@ const nextConfig = {
         hostname: 'admin.brb-titans.uz',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+      },
     ],
   },
 };
