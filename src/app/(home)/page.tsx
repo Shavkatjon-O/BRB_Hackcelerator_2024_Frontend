@@ -9,8 +9,16 @@ import {
   Phone,
   Globe
 } from 'lucide-react';
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription 
+} from "@/components/ui/card";
+
 import { Separator } from "@/components/ui/separator";
 
 const features = [
@@ -45,15 +53,13 @@ const testimonials = [
 const LandingPage = () => {
   return (
     <div className='h-full w-full'>
-      <section className="relative bg-blue-500 text-white py-16">
+      <section className="relative bg-blue-500 text-white py-36">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-5xl font-bold">Welcome to BRB Titans</h1>
           <p className="text-xl">The best place for your banking needs.</p>
-          <Button variant="default" size="lg" className="bg-white text-blue-500">Get Started</Button>
+          <Button variant="default" size="lg" className="bg-white text-black hover:text-white">Get Started</Button>
         </div>
       </section>
-
-      <Separator />
 
       <section className="py-16">
         <div className="container mx-auto text-center space-y-8">
@@ -74,8 +80,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <Separator />
-
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto text-center space-y-8">
           <h2 className="text-3xl font-bold">About Us</h2>
@@ -85,8 +89,6 @@ const LandingPage = () => {
           <Users className="w-16 h-16 mx-auto text-blue-500" />
         </div>
       </section>
-
-      <Separator />
 
       <section className="py-16">
         <div className="container mx-auto text-center space-y-8">
@@ -104,8 +106,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <Separator />
-
       <section className="py-16 bg-blue-500 text-white">
         <div className="container mx-auto text-center space-y-8">
           <h2 className="text-3xl font-bold">Contact Us</h2>
@@ -119,8 +119,6 @@ const LandingPage = () => {
           <p className="mt-4">Or call us: <Phone className="inline w-5 h-5 mx-2" /> +998 71 123 45 67</p>
         </div>
       </section>
-
-      <Separator />
 
       <section className="py-16">
         <div className="container mx-auto text-center space-y-8">
