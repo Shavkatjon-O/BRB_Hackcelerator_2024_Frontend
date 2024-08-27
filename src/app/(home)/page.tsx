@@ -61,14 +61,20 @@ const testimonials = [
   {
     name: "John Doe",
     feedback: "This platform has transformed how we handle our banking operations. Highly recommended!",
-    image: "/path/to/john-doe.jpg",
+    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
   },
   {
     name: "Jane Smith",
     feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!",
-    image: "/path/to/jane-smith.jpg",
+    image: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg",
+  },
+  {
+    name: "Alex Johnson",
+    feedback: "A remarkable service that has exceeded our expectations!",
+    image: "https://images.pexels.com/photos/3395356/pexels-photo-3395356.jpeg",
   },
 ];
+
 
 const LandingPage = () => {
   return (
@@ -183,31 +189,30 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* Testimonials Section */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100">
         <div className="container mx-auto space-y-12">
-          <h2 className="text-4xl font-bold text-center">What Our Clients Say</h2>
-          <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0 justify-center">
+          <h2 className="text-4xl font-bold text-center text-gray-900">What Our Clients Say</h2>
+          <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-12 lg:space-y-0 justify-center">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6 shadow-lg max-w-md mx-auto">
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={testimonial.image}
-                      alt={`${testimonial.name}'s photo`}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="italic text-gray-700">{`"${testimonial.feedback}"`}</p>
-                      <p className="font-semibold text-black">- {testimonial.name}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <div key={index} className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto transform transition-transform duration-300 hover:scale-105">
+                <div className="relative">
+                  <img
+                    src={testimonial.image}
+                    alt={`${testimonial.name}'s photo`}
+                    className="w-full h-40 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white opacity-30 rounded-t-lg"></div>
+                </div>
+                <div className="pt-4">
+                  <p className="italic text-gray-800 text-lg">{`"${testimonial.feedback}"`}</p>
+                  <p className="font-semibold text-gray-900 mt-2">- {testimonial.name}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Call to Action Section */}
       <section className="py-16 bg-custom text-white">
