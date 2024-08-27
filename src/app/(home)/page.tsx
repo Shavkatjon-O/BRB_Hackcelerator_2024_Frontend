@@ -94,16 +94,16 @@ const LandingPage = () => {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 hover:bg-custom group transition"
+                className="p-6 hover:bg-custom group transition-colors duration-300 ease-in-out"
               >
                 <CardHeader className="flex justify-center">
-                  <feature.icon className="w-10 h-10 text-custom group-hover:text-white transition" />
+                  <feature.icon className="w-10 h-10 text-custom group-hover:text-white transition-colors duration-300 ease-in-out" />
                 </CardHeader>
-                <CardContent className="group-hover:text-white transition">
-                  <CardTitle className="text-2xl font-semibold group-hover:text-white transition">
+                <CardContent className="group-hover:text-white transition-colors duration-300 ease-in-out">
+                  <CardTitle className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 ease-in-out">
                     {feature.title}
                   </CardTitle>
-                  <CardDescription className="text-gray-700 group-hover:text-white transition">
+                  <CardDescription className="text-gray-700 group-hover:text-white transition-colors duration-300 ease-in-out">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -112,6 +112,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
 
 
       {/* Services Section */}
