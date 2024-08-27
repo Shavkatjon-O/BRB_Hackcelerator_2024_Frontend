@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky h-14 top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky w-full h-14 top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="h-full container flex justify-between items-center">
           <div className="md:w-1/3 w-1/2">
             <Link href="/" className="font-bold flex items-center">
@@ -31,19 +31,19 @@ const Header = () => {
             </Link>
           </div>
 
-          <nav className="w-1/3 hidden md:flex items-center justify-center">              
-            <Button variant="link">
-              <Link href="/">Home</Link>
-            </Button>
-            <Button variant="link">
-              <Link href="">About</Link>
-            </Button>
-            <Button variant="link">
-              <Link href="">Services</Link>
-            </Button>
-            <Button variant="link">
-              <Link href="">Contact</Link>
-            </Button>
+          <nav className="w-1/3 hidden md:flex items-center justify-center">
+            <Link href="/">
+              <Button variant="link" className='text-gray-600'>Home</Button>
+            </Link>
+            <Link href="">
+              <Button variant="link" className='text-gray-600'>About</Button>
+            </Link>
+            <Link href="">
+              <Button variant="link" className='text-gray-600'>Services</Button>
+            </Link>
+            <Link href="">
+              <Button variant="link" className='text-gray-600'>Contact</Button>
+            </Link>
           </nav>
           
           <div className="md:w-1/3 w-1/2 flex justify-end">
@@ -54,17 +54,15 @@ const Header = () => {
                 user ? (
                   <div className='flex items-center space-x-1'>
                     <Link href="/dashboard">
-                      <Button variant="outline">
+                      <Button variant="outline" className='bg-transparent'>
                       {user.email} <User size={20} className='ml-1'/>
                       </Button>
                     </Link>
                   </div>
                 ) : (
-                  <>
-                    <Button variant="default">
-                      <Link href="/sign-in">Sign In</Link>
-                    </Button>
-                  </>
+                  <Link href="/sign-in">
+                    <Button>Sign in</Button>
+                  </Link>
                 )
               )
             }
