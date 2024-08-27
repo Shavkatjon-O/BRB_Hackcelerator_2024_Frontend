@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "BRB Titans - The best place for your banking needs.",
 };
 
+import StreamVideoProvider from "@/providers/StreamVideoClient";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("min-h-screen", inter.className)}>
+        <StreamVideoProvider>
+
         <main>{children}</main>
+        </StreamVideoProvider>
         <Toaster />
       </body>
     </html>
