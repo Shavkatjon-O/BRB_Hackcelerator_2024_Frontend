@@ -11,7 +11,6 @@ import {
   CreditCard,
   Globe,
   ShieldCheck,
-  Phone,
 } from 'lucide-react';
 
 import { 
@@ -76,7 +75,6 @@ const testimonials = [
   },
 ];
 
-
 const LandingPage = () => {
   return (
     <div className="text-slate-900">
@@ -131,7 +129,7 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">About Us</h2>
           <p className="text-lg text-center text-gray-600">
@@ -143,7 +141,7 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-slate-50">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
           <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
@@ -200,23 +198,22 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-custom text-white">
+      <section className="py-28 bg-custom text-white">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
           <p className="text-lg">Join thousands of satisfied clients. Contact us today!</p>
           <Button variant="default" size="lg" className="bg-white text-black hover:text-white">
             Get Started
-            </Button>
+          </Button>
         </div>
       </section>
-
 
       <section className="py-16 bg-white">
         <div className="container mx-auto text-center space-y-12">
           <h2 className="text-3xl font-semibold text-gray-900">What Our Clients Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white p-8 rounded-lg flex flex-col justify-between">
+              <Card key={index} className="bg-white p-8 rounded-lg flex flex-col justify-between shadow">
                 <div className="flex justify-center mb-4">
                   <Image
                     src={testimonial.image}
@@ -231,6 +228,54 @@ const LandingPage = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      <Separator />
+
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">Contact Us</h2>
+          <p className="text-lg text-center text-gray-600">We'd love to hear from you. Please fill out the form below, and our team will get in touch with you.</p>
+          <form className="max-w-4xl mx-auto bg-white p-8 rounded-lg border shadow">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom"
+                />
+              </div>
+            </div>
+            <div className="mt-6">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                required
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom"
+              />
+            </div>
+            <div className="mt-6 text-center">
+              <Button variant="default" size="lg" className="bg-custom text-white hover:bg-red-400">
+                Send Message
+              </Button>
+            </div>
+          </form>
         </div>
       </section>
 
