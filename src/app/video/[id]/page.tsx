@@ -32,7 +32,7 @@ const MeetingPage = () => {
    if (notAllowed) return toast.error("You are not allowed to join this call");
 
    return (
-      <main className="h-screen w-full">
+      <main className="min-h-screen w-full bg-gray-700">
          <StreamCall call={call}>
             <StreamTheme>
                {!isSetupComplete ? (

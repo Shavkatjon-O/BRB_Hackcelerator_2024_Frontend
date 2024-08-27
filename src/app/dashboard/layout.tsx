@@ -1,5 +1,5 @@
-import Header from "./_components/Header";
-import Sidebar from "./_components/Sidebar";
+import Header from "./_components/header";
+import Sidebar from "./_components/sidebar";
 
 import StreamVideoProvider from "@/providers/StreamVideoClient";
 
