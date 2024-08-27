@@ -135,7 +135,7 @@ const LandingPage = () => {
           <p className="text-lg text-center text-gray-600">
             At BRB Titans, we are committed to delivering innovative banking solutions that meet the highest standards of security and reliability. Our team of experts is dedicated to helping you achieve your financial goals.
           </p>
-          <Globe className="w-12 h-12 mx-auto text-black" />
+          <Globe className="w-12 h-12 mx-auto text-custom" />
         </div>
       </section>
 
