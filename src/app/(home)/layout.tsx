@@ -1,12 +1,16 @@
-import Header from '../(auth)/_components/Header';
-import Footer from '../(auth)/_components/Footer';
+import Header from "./_components/Header";
+import Footer from "../_components/Footer";
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
+      <main className="min-h-screen flex flex-col justify-between">
       <Header />
-      <main>{children}</main>
+      <div className="flex justify-center items-center">
+        {children}
+      </div>
       <Footer />
+        </main>
     </>
   );
 };

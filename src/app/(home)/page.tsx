@@ -39,7 +39,7 @@ const testimonials = [
 
 const LandingPage = () => {
   return (
-    <div className='mt-16'>
+    <div className='h-full w-full'>
       <section className="relative bg-blue-500 text-white">
         <div className="container mx-auto py-16 text-center">
           <h1 className="text-5xl font-bold mb-4">Welcome to BRB Titans</h1>

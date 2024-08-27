@@ -14,57 +14,64 @@ const Header = () => {
   }
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 h-16 bg-gray-800 text-white">
-      <div className="h-full container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold flex items-center">
-          <Image 
-            src="/brb-titans-logo.png"
-            alt="BRB Titans Logo"
-            width={40}
-            height={40}  
-            className="mr-2"
-            priority
-          />
-          BRB Titans
-        </Link>
-        <nav className="space-x-6 hidden md:flex items-center justify-center">
-          <Link href="/" className="hover:text-gray-300">Home</Link>
-          <Link href="#" className="hover:text-gray-300">About</Link>
-          <Link href="#" className="hover:text-gray-300">Services</Link>
-          <Link href="#" className="hover:text-gray-300">Contact</Link>
+    <>
+      <header className="sticky h-14 top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="h-full container flex justify-between items-center">
+          <div className="md:w-1/3 w-1/2">
+            <Link href="/" className="font-bold flex items-center">
+              <Image 
+                src="/brb-titans-logo.png"
+                alt="BRB Titans Logo"
+                width={40}
+                height={40}  
+                className="mr-2 w-8 h-8"
+                priority
+              />
+              BRB Titans
+            </Link>
+          </div>
+
+          <nav className="w-1/3 hidden md:flex items-center justify-center">              
+            <Button variant="link">
+              <Link href="/">Home</Link>
+            </Button>
+            <Button variant="link">
+              <Link href="">About</Link>
+            </Button>
+            <Button variant="link">
+              <Link href="">Services</Link>
+            </Button>
+            <Button variant="link">
+              <Link href="">Contact</Link>
+            </Button>
+          </nav>
           
-          {
-            loading ? (
-              <span>Loading...</span>
-            ) : (
-              user ? (
-                <div className='space-x-1'>
-                  <Link href="/sign-out">
-                    <Button className="font-semibold bg-white text-black hover:text-white rounded-lg">Sign Out</Button>
-                  </Link>
-                  <Link href="/dashboard">
-                    <Button className="font-semibold bg-white text-black hover:text-white rounded-lg space-x-1">
-                      <span>{user.email}</span>
-                      <User size={20} />
-                    </Button>
-                  </Link>
-                </div>
+          <div className="md:w-1/3 w-1/2 flex justify-end">
+            {
+              loading ? (
+                <span>Loading...</span>
               ) : (
-                <Link href="/sign-in" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
-                  Sign in
-                </Link>
+                user ? (
+                  <div className='flex items-center space-x-1'>
+                    <Link href="/dashboard">
+                      <Button variant="outline">
+                      {user.email} <User size={20} className='ml-1'/>
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <Button variant="default">
+                      <Link href="/sign-in">Sign In</Link>
+                    </Button>
+                  </>
+                )
               )
-            )
-          }
-        
-        </nav>
-        <button className="md:hidden">
-          <Link href="/sign-in" className="bg-white text-gray-800 font-semibold py-2 px-4 rounded-lg">
-            Login
-          </Link>
-        </button>
-      </div>
-    </header>
+            }
+          </div>
+        </div>
+      </header>
+    </>
   );
 };
 
