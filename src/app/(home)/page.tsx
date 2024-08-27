@@ -1,5 +1,7 @@
 "use client";
 
+import Link from 'next/link';
+
 import {
   User,
   Lock,
@@ -74,19 +76,23 @@ const LandingPage = () => {
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
           <p className="text-xl text-gray-600">Your trusted partner for innovative banking solutions.</p>
-          <Button
-            variant="default" 
-            size="lg" 
-            className="bg-custom text-white hover:bg-red-400"
-          >
-            Get Started
-          </Button>
+          <div>
+            <Link href="/sign-up">
+              <Button
+                variant="default" 
+                size="lg" 
+                className="bg-custom text-white hover:bg-red-400"
+              >
+                Get Started
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       <Separator />
 
-      <section className="py-12 bg-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
 
@@ -99,6 +105,7 @@ const LandingPage = () => {
                 <CardHeader className="flex justify-center">
                   <feature.icon className="w-10 h-10 text-custom group-hover:text-white transition-colors duration-300 ease-in-out" />
                 </CardHeader>
+
                 <CardContent className="group-hover:text-white transition-colors duration-300 ease-in-out">
                   <CardTitle className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 ease-in-out">
                     {feature.title}
