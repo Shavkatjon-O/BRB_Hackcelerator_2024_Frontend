@@ -5,8 +5,13 @@ import {
   Users,
   Lock,
   ChartBar,
-  Mail
+  Mail,
+  Phone,
+  Globe
 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const features = [
   {
@@ -40,67 +45,90 @@ const testimonials = [
 const LandingPage = () => {
   return (
     <div className='h-full w-full'>
-      <section className="relative bg-blue-500 text-white">
-        <div className="container mx-auto py-16 text-center">
-          <h1 className="text-5xl font-bold mb-4">Welcome to BRB Titans</h1>
-          <p className="text-xl mb-8">The best place for your banking needs.</p>
-          <button className="bg-white text-blue-500 py-2 px-4 rounded-lg">
-            Get Started
-          </button>
+      <section className="relative bg-blue-500 text-white py-16">
+        <div className="container mx-auto text-center space-y-6">
+          <h1 className="text-5xl font-bold">Welcome to BRB Titans</h1>
+          <p className="text-xl">The best place for your banking needs.</p>
+          <Button variant="default" size="lg" className="bg-white text-blue-500">Get Started</Button>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-100">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Key Features</h2>
+      <Separator />
+
+      <section className="py-16">
+        <div className="container mx-auto text-center space-y-8">
+          <h2 className="text-3xl font-bold">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex justify-center mb-4">
+              <Card key={index} className="p-6">
+                <CardHeader className="flex justify-center">
                   <feature.icon className="w-12 h-12 text-blue-500" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p>{feature.description}</p>
-              </div>
+                </CardHeader>
+                <CardContent>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                  <CardDescription>{feature.description}</CardDescription>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-200">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">About Us</h2>
-          <p className="text-lg mb-8">
+      <Separator />
+
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto text-center space-y-8">
+          <h2 className="text-3xl font-bold">About Us</h2>
+          <p className="text-lg">
             We are dedicated to providing the best banking experience for you. Our team is passionate about delivering top-notch services.
           </p>
           <Users className="w-16 h-16 mx-auto text-blue-500" />
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">What Our Users Say</h2>
-          <div className="flex flex-col items-center">
+      <Separator />
+
+      <section className="py-16">
+        <div className="container mx-auto text-center space-y-8">
+          <h2 className="text-3xl font-bold">What Our Users Say</h2>
+          <div className="flex flex-col items-center space-y-6">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg mb-6 max-w-md">
-                <p className="italic">{`"${testimonial.feedback}"`}</p>
-                <p className="font-semibold mt-4">- {testimonial.name}</p>
-              </div>
+              <Card key={index} className="max-w-md p-6">
+                <CardContent>
+                  <p className="italic">{`"${testimonial.feedback}"`}</p>
+                  <p className="font-semibold mt-4">- {testimonial.name}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
+      <Separator />
+
       <section className="py-16 bg-blue-500 text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
-          <p className="text-lg mb-8">
+        <div className="container mx-auto text-center space-y-8">
+          <h2 className="text-3xl font-bold">Contact Us</h2>
+          <p className="text-lg">
             Have any questions or need support? Feel free to reach out to us.
           </p>
           <Mail className="w-16 h-16 mx-auto mb-4" />
-          <a href="mailto:support@yourbank.com" className="text-lg underline">
+          <a href="mailto:support@brb-titans.uz" className="text-lg underline">
             support@brb-titans.uz
           </a>
+          <p className="mt-4">Or call us: <Phone className="inline w-5 h-5 mx-2" /> +998 71 123 45 67</p>
+        </div>
+      </section>
+
+      <Separator />
+
+      <section className="py-16">
+        <div className="container mx-auto text-center space-y-8">
+          <h2 className="text-3xl font-bold">Our Global Presence</h2>
+          <Globe className="w-16 h-16 mx-auto text-blue-500" />
+          <p className="text-lg">
+            We serve clients across the globe with a strong commitment to excellence.
+          </p>
         </div>
       </section>
     </div>
