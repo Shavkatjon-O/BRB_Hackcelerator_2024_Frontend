@@ -1,12 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-
 import CoreAPI from '@/lib/coreApi';
 import { Send, MessageCircle, Loader } from 'lucide-react';
 
@@ -25,14 +22,17 @@ const ChatBotPage = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    setMessages([...messages, { text: input, fromUser: true }]);
+    // Add the user's message to the state
+    setMessages((prevMessages) => [...prevMessages, { text: input, fromUser: true }]);
     setInput('');
     setLoading(true);
     setError(null);
 
     try {
+
       const response = await CoreAPI.post('/bot/chat/', { question: input });
-      setMessages([...messages, { text: input, fromUser: true }, { text: response.data.answer, fromUser: false }]);
+
+      setMessages((prevMessages) => [...prevMessages, { text: response.data, fromUser: false }]);
     } catch (error) {
       console.error('Error sending message:', error);
       setError('Something went wrong. Please try again.');
@@ -45,7 +45,10 @@ const ChatBotPage = () => {
     <div className="flex flex-col h-full">
       <div className="flex-grow p-4 overflow-y-auto">
         {messages.map((msg, index) => (
-          <Card key={index} className={`mb-2 p-2 ${msg.fromUser ? 'bg-blue-100 text-blue-900' : 'bg-gray-100 text-gray-900'}`}>
+          <Card
+            key={index}
+            className={`mb-2 p-2 ${msg.fromUser ? 'bg-blue-100 text-blue-900' : 'bg-gray-100 text-gray-900'}`}
+          >
             {msg.text}
           </Card>
         ))}
