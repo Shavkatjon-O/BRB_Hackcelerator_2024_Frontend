@@ -5,7 +5,7 @@ import Image from "next/image";
 import { avatarImages } from "@/constants";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface MeetingCardProps {
    title: string;
