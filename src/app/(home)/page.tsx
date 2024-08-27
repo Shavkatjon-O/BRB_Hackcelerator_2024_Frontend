@@ -236,7 +236,7 @@ const LandingPage = () => {
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Contact Us</h2>
-          <p className="text-lg text-center text-gray-600">We'd love to hear from you. Please fill out the form below, and our team will get in touch with you.</p>
+          <p className="text-lg text-center text-gray-600">We would love to hear from you. Please fill out the form below, and our team will get in touch with you.</p>
           <form className="max-w-4xl mx-auto bg-white p-8 rounded-lg border shadow">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
