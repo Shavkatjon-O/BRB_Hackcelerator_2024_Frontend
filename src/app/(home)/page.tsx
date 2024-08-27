@@ -74,7 +74,7 @@ const LandingPage = () => {
   return (
     <div className="text-slate-900">
 
-      <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative py-24 bg-white">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
           <p className="text-xl text-gray-600">Your trusted partner for innovative banking solutions.</p>

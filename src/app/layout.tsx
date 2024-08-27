@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen bg-slate-100", inter.className)}>
+      <body className={cn("min-h-screen", inter.className)}>
         <main>{children}</main>
         <Toaster />
       </body>
