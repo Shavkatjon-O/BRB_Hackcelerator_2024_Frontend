@@ -94,7 +94,7 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
 
@@ -184,7 +184,7 @@ const LandingPage = () => {
       <Separator />
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">What Our Clients Say</h2>
           <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0 justify-center">
@@ -210,7 +210,7 @@ const LandingPage = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-16 bg-black text-white">
+      <section className="py-16 bg-custom text-white">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
           <p className="text-lg text-gray-300">Join thousands of satisfied clients. Contact us today!</p>
