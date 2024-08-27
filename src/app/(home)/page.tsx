@@ -61,10 +61,12 @@ const testimonials = [
   {
     name: "John Doe",
     feedback: "This platform has transformed how we handle our banking operations. Highly recommended!",
+    image: "/path/to/john-doe.jpg",
   },
   {
     name: "Jane Smith",
     feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!",
+    image: "/path/to/jane-smith.jpg",
   },
 ];
 
@@ -120,32 +122,66 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <Separator />
 
-
-      {/* Services Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
           <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="space-y-4">
-              <Shield className="w-12 h-12 mx-auto text-custom" />
-              <h3 className="text-xl font-bold">Risk Management</h3>
-              <p className="text-gray-700">Identify, assess, and control risks effectively with our comprehensive solutions.</p>
-            </div>
-            <div className="space-y-4">
-              <CreditCard className="w-12 h-12 mx-auto text-custom" />
-              <h3 className="text-xl font-bold">Card Services</h3>
-              <p className="text-gray-700">Secure and seamless card services for all your banking transactions.</p>
-            </div>
-            <div className="space-y-4">
-              <ShieldCheck className="w-12 h-12 mx-auto text-custom" />
-              <h3 className="text-xl font-bold">Compliance & Audits</h3>
-              <p className="text-gray-700">Stay compliant with evolving regulations and ensure audit readiness.</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card
+              className="p-6 hover:bg-custom group transition-colors duration-300 ease-in-out"
+            >
+              <CardHeader className="flex justify-center">
+                <Shield className="w-10 h-10 text-custom group-hover:text-white transition-colors duration-300 ease-in-out" />
+              </CardHeader>
+
+              <CardContent className="group-hover:text-white transition-colors duration-300 ease-in-out">
+                <CardTitle className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Risk Management
+                </CardTitle>
+                <CardDescription className="text-gray-700 group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Identify, assess, and control risks effectively with our comprehensive solutions.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            <Card
+              className="p-6 hover:bg-custom group transition-colors duration-300 ease-in-out"
+            >
+              <CardHeader className="flex justify-center">
+                <CreditCard className="w-10 h-10 text-custom group-hover:text-white transition-colors duration-300 ease-in-out" />
+              </CardHeader>
+
+              <CardContent className="group-hover:text-white transition-colors duration-300 ease-in-out">
+                <CardTitle className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Card Services
+                </CardTitle>
+                <CardDescription className="text-gray-700 group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Secure and seamless card services for all your banking transactions.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            <Card
+              className="p-6 hover:bg-custom group transition-colors duration-300 ease-in-out"
+            >
+              <CardHeader className="flex justify-center">
+                <ShieldCheck className="w-10 h-10 text-custom group-hover:text-white transition-colors duration-300 ease-in-out" />
+              </CardHeader>
+
+              <CardContent className="group-hover:text-white transition-colors duration-300 ease-in-out">
+                <CardTitle className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Compliance & Audits
+                </CardTitle>
+                <CardDescription className="text-gray-700 group-hover:text-white transition-colors duration-300 ease-in-out">
+                  Stay compliant with evolving regulations and ensure audit readiness.
+                </CardDescription>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
+
+      <Separator />
 
       {/* Testimonials Section */}
       <section className="py-16 bg-white">
@@ -155,8 +191,17 @@ const LandingPage = () => {
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="p-6 shadow-lg max-w-md mx-auto">
                 <CardContent className="space-y-4">
-                  <p className="italic text-gray-700">{`"${testimonial.feedback}"`}</p>
-                  <p className="font-semibold text-black">- {testimonial.name}</p>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={testimonial.image}
+                      alt={`${testimonial.name}'s photo`}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="italic text-gray-700">{`"${testimonial.feedback}"`}</p>
+                      <p className="font-semibold text-black">- {testimonial.name}</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -197,8 +242,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer Section */}
     </div>
   );
 };
