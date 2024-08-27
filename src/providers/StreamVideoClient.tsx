@@ -14,25 +14,25 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
   const { user, loading, error } = useUser();
 
   useEffect(() => {
-    const access_token = Cookies.get("access_token");
-
-    if (user && apiKey && access_token) {
-      const client = new StreamVideoClient({
-        apiKey: apiKey,
-        token: access_token,
-      });
-      setVideoClient(client);
+    if (user && apiKey) {
+      const accessToken = Cookies.get("access_token");
+      
+      if (accessToken) {
+        const client = new StreamVideoClient({
+          apiKey,
+          token: accessToken,
+        });
+        setVideoClient(client);
+      }
     }
   }, [user, apiKey]);
 
-  if (loading) {
+  if (loading || !videoClient) {
     return <Loader />;
   }
+
   if (error) {
     return <div>{error.message}</div>;
-  }
-  if (!videoClient) {
-    return <Loader />;
   }
 
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;
