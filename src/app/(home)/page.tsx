@@ -2,12 +2,14 @@
 
 import {
   User,
-  Users,
   Lock,
   ChartBar,
-  Mail,
+  Shield,
+  Globe,
   Phone,
-  Globe
+  Mail,
+  CreditCard,
+  ShieldCheck,
 } from 'lucide-react';
 
 import { Button } from "@/components/ui/button";
@@ -18,61 +20,77 @@ import {
   CardTitle, 
   CardDescription 
 } from "@/components/ui/card";
-
 import { Separator } from "@/components/ui/separator";
 
 const features = [
   {
     icon: ChartBar,
     title: 'Financial Insights',
-    description: 'Gain deep insights into your financial data with interactive charts and reports.'
+    description: 'Gain insights into your financial data with interactive reports and analytics.',
   },
   {
     icon: User,
     title: 'User Management',
-    description: 'Manage user roles and permissions easily with our intuitive interface.'
+    description: 'Manage roles and permissions with an easy-to-use interface.',
   },
   {
     icon: Lock,
     title: 'Secure Access',
-    description: 'Ensure the highest level of security with advanced authentication methods.'
-  }
+    description: 'Advanced security features to protect your data and assets.',
+  },
+  {
+    icon: Shield,
+    title: 'Fraud Detection',
+    description: 'AI-powered systems to detect and prevent fraudulent activities.',
+  },
+  {
+    icon: CreditCard,
+    title: 'Payment Solutions',
+    description: 'Seamless payment processing tailored to your banking needs.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Compliance',
+    description: 'Ensuring compliance with financial regulations and standards.',
+  },
 ];
 
 const testimonials = [
   {
     name: "John Doe",
-    feedback: "This platform has transformed how we handle our banking operations. Highly recommended!"
+    feedback: "This platform has transformed how we handle our banking operations. Highly recommended!",
   },
   {
     name: "Jane Smith",
-    feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!"
-  }
+    feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!",
+  },
 ];
 
 const LandingPage = () => {
   return (
-    <div className='h-full w-full'>
-      <section className="relative bg-blue-500 text-white py-36">
+    <div className="space-y-24 text-gray-900">
+      {/* Hero Section */}
+      <section className="relative py-32 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto text-center space-y-6">
-          <h1 className="text-5xl font-bold">Welcome to BRB Titans</h1>
-          <p className="text-xl">The best place for your banking needs.</p>
-          <Button variant="default" size="lg" className="bg-white text-black hover:text-white">Get Started</Button>
+          <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
+          <p className="text-xl text-gray-600">Your trusted partner for innovative banking solutions.</p>
+          <Button variant="default" size="lg" className="bg-black text-white hover:bg-gray-800">Get Started</Button>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">Key Features</h2>
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="p-6">
+              <Card key={index} className="p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader className="flex justify-center">
-                  <feature.icon className="w-12 h-12 text-blue-500" />
+                  <feature.icon className="w-10 h-10 text-black" />
                 </CardHeader>
                 <CardContent>
-                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
+                  <CardTitle className="text-2xl font-semibold">{feature.title}</CardTitle>
+                  <CardDescription className="text-gray-700">{feature.description}</CardDescription>
                 </CardContent>
               </Card>
             ))}
@@ -80,25 +98,41 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Services Section */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">About Us</h2>
-          <p className="text-lg">
-            We are dedicated to providing the best banking experience for you. Our team is passionate about delivering top-notch services.
-          </p>
-          <Users className="w-16 h-16 mx-auto text-blue-500" />
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">Our Services</h2>
+          <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="space-y-4">
+              <Shield className="w-12 h-12 mx-auto text-black" />
+              <h3 className="text-xl font-bold">Risk Management</h3>
+              <p className="text-gray-700">Identify, assess, and control risks effectively with our comprehensive solutions.</p>
+            </div>
+            <div className="space-y-4">
+              <CreditCard className="w-12 h-12 mx-auto text-black" />
+              <h3 className="text-xl font-bold">Card Services</h3>
+              <p className="text-gray-700">Secure and seamless card services for all your banking transactions.</p>
+            </div>
+            <div className="space-y-4">
+              <ShieldCheck className="w-12 h-12 mx-auto text-black" />
+              <h3 className="text-xl font-bold">Compliance & Audits</h3>
+              <p className="text-gray-700">Stay compliant with evolving regulations and ensure audit readiness.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">What Our Users Say</h2>
-          <div className="flex flex-col items-center space-y-6">
+      {/* Testimonials Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">What Our Clients Say</h2>
+          <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0 justify-center">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="max-w-md p-6">
-                <CardContent>
-                  <p className="italic">{`"${testimonial.feedback}"`}</p>
-                  <p className="font-semibold mt-4">- {testimonial.name}</p>
+              <Card key={index} className="p-6 shadow-lg max-w-md mx-auto">
+                <CardContent className="space-y-4">
+                  <p className="italic text-gray-700">{`"${testimonial.feedback}"`}</p>
+                  <p className="font-semibold text-black">- {testimonial.name}</p>
                 </CardContent>
               </Card>
             ))}
@@ -106,29 +140,50 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-blue-500 text-white">
-        <div className="container mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">Contact Us</h2>
-          <p className="text-lg">
-            Have any questions or need support? Feel free to reach out to us.
-          </p>
-          <Mail className="w-16 h-16 mx-auto mb-4" />
-          <a href="mailto:support@brb-titans.uz" className="text-lg underline">
-            support@brb-titans.uz
-          </a>
-          <p className="mt-4">Or call us: <Phone className="inline w-5 h-5 mx-2" /> +998 71 123 45 67</p>
+      {/* Call to Action Section */}
+      <section className="py-16 bg-black text-white">
+        <div className="container mx-auto text-center space-y-6">
+          <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
+          <p className="text-lg text-gray-300">Join thousands of satisfied clients. Contact us today!</p>
+          <Button variant="outline" size="lg" className="hover:bg-white hover:text-black">Get Started</Button>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">Our Global Presence</h2>
-          <Globe className="w-16 h-16 mx-auto text-blue-500" />
-          <p className="text-lg">
-            We serve clients across the globe with a strong commitment to excellence.
+      {/* About Us Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">About Us</h2>
+          <p className="text-lg text-center text-gray-600">
+            At BRB Titans, we are committed to delivering innovative banking solutions that meet the highest standards of security and reliability. Our team of experts is dedicated to helping you achieve your financial goals.
           </p>
+          <Globe className="w-12 h-12 mx-auto text-black" />
         </div>
       </section>
+
+      {/* Contact Us Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto space-y-12 text-center">
+          <h2 className="text-4xl font-bold">Contact Us</h2>
+          <p className="text-lg text-gray-600">Have any questions or need support? Reach out to us!</p>
+          <div className="space-y-4">
+            <a href="mailto:support@brb-titans.uz" className="text-lg underline">support@brb-titans.uz</a>
+            <p className="text-lg">
+              Or call us: <Phone className="inline w-5 h-5 mx-2" /> +998 71 123 45 67
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="py-8 bg-black text-white">
+        <div className="container mx-auto text-center space-y-4">
+          <p>&copy; 2024 BRB Titans. All Rights Reserved.</p>
+          <div className="space-x-6">
+            <a href="#" className="underline">Privacy Policy</a>
+            <a href="#" className="underline">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
