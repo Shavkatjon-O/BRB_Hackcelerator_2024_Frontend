@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Home, Calendar, ClipboardList, Settings, User, Video, Bot } from 'lucide-react';
+import { Home, Calendar, ClipboardList, Settings, User, Video, Bot, MessageSquareMore } from 'lucide-react';
 
 const Sidebar = () => {
   return (
@@ -47,7 +47,7 @@ const Sidebar = () => {
           <li>
             <Link href="/dashboard/messenger">
               <Button variant="ghost" className="flex items-center justify-start w-full text-left text-white">
-                <ClipboardList className="w-5 h-5 mr-3" />
+                <MessageSquareMore className="w-5 h-5 mr-3" />
                 Messenger
               </Button>
             </Link>
