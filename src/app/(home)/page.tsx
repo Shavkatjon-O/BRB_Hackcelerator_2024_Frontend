@@ -131,7 +131,19 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto space-y-12">
+          <h2 className="text-4xl font-bold text-center">About Us</h2>
+          <p className="text-lg text-center text-gray-600">
+            At BRB Titans, we are committed to delivering innovative banking solutions that meet the highest standards of security and reliability. Our team of experts is dedicated to helping you achieve your financial goals.
+          </p>
+          <Globe className="w-12 h-12 mx-auto text-black" />
+        </div>
+      </section>
+
+      <Separator />
+
+      <section className="py-16 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
           <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
@@ -204,33 +216,21 @@ const LandingPage = () => {
           <h2 className="text-3xl font-semibold text-gray-900">What Our Clients Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white p-8 rounded-lg">
+              <Card key={index} className="bg-white p-8 rounded-lg flex flex-col justify-between">
                 <div className="flex justify-center mb-4">
                   <Image
                     src={testimonial.image}
                     alt={`${testimonial.name}'s photo`}
-                    width={64} // 16 * 4 = 64
-                    height={64} // 16 * 4 = 64
-                    className="object-cover rounded-full border border-gray-200"
+                    width={64}
+                    height={64}
+                    className="object-cover w-32 h-32 rounded-full border-2 p-1 border-custom"
                   />
                 </div>
-                <p className="italic text-gray-700 text-lg mb-4">{testimonial.feedback}</p>
+                <p className="text-gray-700 text-lg mb-4">{testimonial.feedback}</p>
                 <p className="font-semibold text-gray-900">{testimonial.name}</p>
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      <Separator />
-
-      <section className="py-16 bg-slate-50">
-        <div className="container mx-auto space-y-12">
-          <h2 className="text-4xl font-bold text-center">About Us</h2>
-          <p className="text-lg text-center text-gray-600">
-            At BRB Titans, we are committed to delivering innovative banking solutions that meet the highest standards of security and reliability. Our team of experts is dedicated to helping you achieve your financial goals.
-          </p>
-          <Globe className="w-12 h-12 mx-auto text-black" />
         </div>
       </section>
 
