@@ -131,7 +131,7 @@ const LandingPage = () => {
 
       <Separator />
 
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
           <p className="text-lg text-center text-gray-600">We offer a range of banking services tailored to meet your needs.</p>
@@ -188,9 +188,18 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <Separator />
+      <section className="py-24 bg-custom text-white">
+        <div className="container mx-auto text-center space-y-6">
+          <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
+          <p className="text-lg">Join thousands of satisfied clients. Contact us today!</p>
+          <Button variant="default" size="lg" className="bg-white text-black hover:text-white">
+            Get Started
+            </Button>
+        </div>
+      </section>
 
-      <section className="py-16 bg-gray-50">
+
+      <section className="py-16 bg-white">
         <div className="container mx-auto text-center space-y-12">
           <h2 className="text-3xl font-semibold text-gray-900">What Our Clients Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -213,19 +222,9 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <Separator />
 
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-custom text-white">
-        <div className="container mx-auto text-center space-y-6">
-          <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
-          <p className="text-lg text-gray-300">Join thousands of satisfied clients. Contact us today!</p>
-          <Button variant="outline" size="lg" className="hover:bg-white hover:text-black">Get Started</Button>
-        </div>
-      </section>
-
-      {/* About Us Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">About Us</h2>
           <p className="text-lg text-center text-gray-600">
@@ -235,19 +234,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Contact Us Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto space-y-12 text-center">
-          <h2 className="text-4xl font-bold">Contact Us</h2>
-          <p className="text-lg text-gray-600">Have any questions or need support? Reach out to us!</p>
-          <div className="space-y-4">
-            <a href="mailto:support@brb-titans.uz" className="text-lg underline">support@brb-titans.uz</a>
-            <p className="text-lg">
-              Or call us: <Phone className="inline w-5 h-5 mx-2" /> +998 71 123 45 67
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
