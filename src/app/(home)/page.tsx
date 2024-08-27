@@ -92,19 +92,27 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="p-6 hover:bg-custom group hover:text-white transition">
+              <Card
+                key={index}
+                className="p-6 hover:bg-custom group transition"
+              >
                 <CardHeader className="flex justify-center">
-                  <feature.icon className="w-10 h-10 text-custom" />
+                  <feature.icon className="w-10 h-10 text-custom group-hover:text-white transition" />
                 </CardHeader>
-                <CardContent className='group-hover:text-white'>
-                  <CardTitle className="text-2xl font-semibold">{feature.title}</CardTitle>
-                  <CardDescription className="text-gray-700">{feature.description}</CardDescription>
+                <CardContent className="group-hover:text-white transition">
+                  <CardTitle className="text-2xl font-semibold group-hover:text-white transition">
+                    {feature.title}
+                  </CardTitle>
+                  <CardDescription className="text-gray-700 group-hover:text-white transition">
+                    {feature.description}
+                  </CardDescription>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Services Section */}
       <section className="py-16 bg-gray-50">
