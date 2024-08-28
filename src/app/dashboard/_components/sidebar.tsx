@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 
 import {
@@ -46,7 +45,7 @@ const Sidebar = () => {
   return (
     <div>
       <Button
-        variant="ghost"
+        variant="secondary"
         className={`lg:hidden text-white fixed top-2 z-50 transition-transform ${
           isOpen ? "left-64 ml-2" : "left-4"
         }`}
