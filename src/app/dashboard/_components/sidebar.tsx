@@ -46,7 +46,7 @@ const Sidebar = () => {
     <div>
       <Button
         variant="secondary"
-        className={`lg:hidden text-white fixed top-2 z-50 transition-transform ${
+        className={`lg:hidden fixed top-2 z-50 transition-transform ${
           isOpen ? "left-64 ml-2" : "left-4"
         }`}
         onClick={toggleSidebar}
