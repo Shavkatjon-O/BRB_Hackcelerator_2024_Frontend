@@ -75,7 +75,6 @@ const Sidebar = () => {
         </div>
 
         <div className="space-y-4 px-4">
-          {/* <Separator className="bg-slate-600" /> */}
           <ul className="space-y-2">
             {links.map((link) => (
               <li key={link.href}>
@@ -88,7 +87,6 @@ const Sidebar = () => {
               </li>
             ))}
           </ul>
-          {/* <Separator className="bg-slate-500" /> */}
         </div>
           
         <div className="p-4">
