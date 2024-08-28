@@ -12,15 +12,15 @@ const Calendar = () => {
     setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
-  const getDaysInMonth = (month, year) => {
+  const getDaysInMonth = (month: any, year:any) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  const getFirstDayOfMonth = (month, year) => {
+  const getFirstDayOfMonth = (month: any, year:any) => {
     return new Date(year, month, 1).getDay();
   };
 
-  const getDaysOfPreviousMonth = (month, year) => {
+  const getDaysOfPreviousMonth = (month:any, year:any) => {
     const prevMonth = new Date(year, month - 1, 1);
     return getDaysInMonth(prevMonth.getMonth(), prevMonth.getFullYear());
   };
