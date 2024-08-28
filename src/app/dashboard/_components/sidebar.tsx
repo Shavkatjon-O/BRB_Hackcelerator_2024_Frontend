@@ -16,6 +16,7 @@ import {
   Settings,
   SquareCheckBig,
   LogOut,
+  Menu,
 } from "lucide-react"
 
 const links = [
@@ -33,17 +34,23 @@ const links = [
 
 const Sidebar = () => {
   return (
-    <div className="bg-slate-950 text-slate-100 max-w-64 min-h-screen p-4 flex flex-col justify-between">
-      <div className="px-4 flex items-center text-lg font-bold">
-        {/* <Image
-          alt="BRB Titans Logo"
-          src="/brb-titans-logo.png"
-          width={32}
-          height={32}
-          
-          priority
-        />  */}
-        <span className="ml- hidden lg:flex">BRB Titans</span>
+    <div className="bg-slate-950 text-slate-100 max-w-64 min-h-screen p-4 space-y-4 flex flex-col justify-between">
+      <div className="px-0 lg:px-4 h-12 flex items-center">
+        <div className="hidden lg:flex items-center text-lg font-bold">
+          <Image
+            alt="BRB Titans Logo"
+            src="/brb-titans-logo.png"
+            width={32}
+            height={32}
+            className="w-8 h-8"
+            priority
+          /> 
+          <span className="ml-2 hidden lg:flex">BRB Titans</span>
+        </div>
+
+        <Button variant="ghost" className="w-full justify-start lg:hidden">
+          <Menu />
+        </Button>
       </div>
 
       <div className="space-y-4">
