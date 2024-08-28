@@ -58,7 +58,7 @@ const Sidebar = () => {
         className={`bg-slate-950 text-slate-100 max-w-64 min-h-screen p-4 space-y-4 flex flex-col justify-between
           transition-transform transform ${
             isOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:static z-40 lg:z-auto max-w-64 lg:w-auto`}
+          } lg:translate-x-0 fixed lg:static z-50 lg:z-auto max-w-64 lg:w-auto`}
       >
         <div className="px-4 h-12 flex items-center">
           <div className="flex items-center text-lg font-bold">
@@ -103,7 +103,7 @@ const Sidebar = () => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-30"
+          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
           onClick={toggleSidebar}
         />
       )}
