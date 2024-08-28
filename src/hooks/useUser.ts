@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { getUser } from "@/services/auth";
+import { getUser } from "@/services/authServices";
 
 import Cookies from "js-cookie";
 
