@@ -4,9 +4,10 @@ import Header from "./_components/header";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Header />
-      <main>{children}</main>
-      <Sidebar />
+      <div className="flex">
+        <Sidebar />
+        <main>{children}</main>
+      </div>
     </>
   );
 };
