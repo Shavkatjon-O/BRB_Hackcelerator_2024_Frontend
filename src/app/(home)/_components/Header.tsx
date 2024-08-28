@@ -1,32 +1,12 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 
-import CoreAPI from '@/lib/coreApi';
-
 const Header = () => {
   const { user, loading, error } = useUser();
-  const [desktop_exe, setDesktop_exe] = useState<string>("");
-
-  useEffect(() => {
-
-    const fetchDesktopExe = async () => {
-      try {
-        const response = await CoreAPI.get('/common/desktop/1/');
-        setDesktop_exe(response.data.desktop_exe);
-      } catch (error) {
-        console.error('Error fetching desktop exe:', error);
-      }
-    };
-
-    fetchDesktopExe();
-
-  }, []);
 
   if (error) {
     console.error(error);
@@ -66,12 +46,6 @@ const Header = () => {
           </nav>
           
           <div className="md:w-1/3 w-1/2 flex justify-end space-x-2">
-            <a href={desktop_exe} download>
-              <Button variant="default">
-                Desktop
-              </Button>
-            </a>
-
             {
               loading ? (
                 <span>Loading...</span>
