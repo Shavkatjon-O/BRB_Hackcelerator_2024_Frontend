@@ -46,22 +46,22 @@ const Sidebar = () => {
   return (
     <div>
       <Button
-        variant="secondary"
-        className={`lg:hidden fixed top-4 z-50 transition-transform ${
-          isOpen ? "left-64 ml-4" : "left-4"
+        variant="ghost"
+        className={`lg:hidden text-white fixed top-2 z-50 transition-transform ${
+          isOpen ? "left-64 ml-2" : "left-4"
         }`}
         onClick={toggleSidebar}
       >
-        {isOpen ? <X /> : <Menu />}
+        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </Button>
       <div
-        className={`bg-slate-950 text-slate-100 w-64 min-h-screen p-4 space-y-4 flex flex-col justify-between
+        className={`bg-slate-950 text-slate-100 w-64 min-h-screen space-y-4 flex flex-col justify-between
           transition-transform transform ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 fixed lg:static z-50 lg:z-auto w-64 lg:w-auto`}
       >
-        <div className="px-4 h-12 flex items-center">
-          <div className="flex items-center text-lg font-bold">
+        <div className="px-8 h-14 flex items-center border-b border-b-slate-600">
+          <Link href="/" className="flex items-center text-lg font-bold">
             <Image
               alt="BRB Titans Logo"
               src="/brb-titans-logo.png"
@@ -71,11 +71,11 @@ const Sidebar = () => {
               priority
             />
             <span className="ml-2">BRB Titans</span>
-          </div>
+          </Link>
         </div>
 
-        <div className="space-y-4">
-          <Separator className="bg-slate-600" />
+        <div className="space-y-4 px-4">
+          {/* <Separator className="bg-slate-600" /> */}
           <ul className="space-y-2">
             {links.map((link) => (
               <li key={link.href}>
@@ -88,18 +88,21 @@ const Sidebar = () => {
               </li>
             ))}
           </ul>
-          <Separator className="bg-slate-500" />
+          {/* <Separator className="bg-slate-500" /> */}
         </div>
-
-        <Button asChild variant="destructive" className="w-full justify-start">
-          <Link href="/sign-out">
-            <LogOut />
-            <span className="ml-2 flex font-bold">
-              Sign out
-            </span>
-          </Link>
-        </Button>
+          
+        <div className="p-4">
+          <Button asChild variant="destructive" className="w-full justify-start">
+            <Link href="/sign-out">
+              <LogOut />
+              <span className="ml-2 flex font-bold">
+                Sign out
+              </span>
+            </Link>
+          </Button>
+        </div>
       </div>
+
 
       {isOpen && (
         <div
