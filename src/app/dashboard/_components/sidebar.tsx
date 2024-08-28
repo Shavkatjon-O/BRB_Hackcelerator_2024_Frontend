@@ -79,7 +79,7 @@ const Sidebar = () => {
           <ul className="space-y-2">
             {links.map((link) => (
               <li key={link.href}>
-                <Button asChild variant="ghost" className="w-full justify-start">
+                <Button asChild variant="ghost" className="w-full justify-start" onClick={toggleSidebar}>
                   <Link href={link.href}>
                     <link.icon className="mr-2" />
                     <span className="flex">{link.label}</span>
