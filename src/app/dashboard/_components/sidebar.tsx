@@ -69,7 +69,7 @@ const Sidebar = () => {
       <Button asChild variant="destructive" className="w-full justify-start">
         <Link href="/sign-out">
           <LogOut />
-          <span className="ml-0 lg:ml-2 hidden lg:flex">Sign out</span>
+          <span className="ml-0 lg:ml-2 hidden lg:flex font-bold">Sign out</span>
         </Link>
       </Button>
     </div>
