@@ -1,22 +1,11 @@
 "use client";
 
-import { format } from "date-fns";
+import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addMonths, subMonths, eachDayOfInterval, isToday, isSameDay, isSameMonth } from "date-fns";
 import { useState, useEffect, FormEvent } from "react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar as CalendarIcon } from "lucide-react";
-
 import { getEventsList, createEvent } from "@/services/eventsServices";
 
 interface Event {
@@ -26,6 +15,54 @@ interface Event {
   start_date: string;
   end_date: string;
 }
+
+const Calendar = ({ events, onDateClick }: { events: Event[], onDateClick: (date: Date) => void }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handlePreviousMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const handleNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+  const start = startOfMonth(currentDate);
+  const end = endOfMonth(currentDate);
+
+  const days = eachDayOfInterval({
+    start: startOfWeek(start),
+    end: endOfWeek(end)
+  });
+
+  const eventsByDate = events.reduce((acc, event) => {
+    const date = new Date(event.start_date).toDateString();
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(event);
+    return acc;
+  }, {} as Record<string, Event[]>);
+
+  return (
+    <div className="calendar">
+      <div className="flex justify-between items-center mb-4">
+        <Button onClick={handlePreviousMonth}>Previous</Button>
+        <h2 className="text-xl">{format(currentDate, "MMMM yyyy")}</h2>
+        <Button onClick={handleNextMonth}>Next</Button>
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {days.map(day => (
+          <div
+            key={day.toString()}
+            className={`p-2 border ${isToday(day) ? 'bg-blue-100' : ''} ${isSameMonth(day, currentDate) ? 'text-black' : 'text-gray-400'} cursor-pointer`}
+            onClick={() => onDateClick(day)}
+          >
+            <div>{format(day, "d")}</div>
+            <div className="relative">
+              {eventsByDate[day.toDateString()]?.map(event => (
+                <div key={event.id} className="text-green-500 text-xs">{event.title}</div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -59,6 +96,11 @@ const EventsPage = () => {
       setEvents(data);
     });
   }, []);
+
+  const handleDateClick = (date: Date) => {
+    // Handle date click if needed
+    console.log(date);
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-4">
@@ -142,16 +184,7 @@ const EventsPage = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="space-y-4 mt-4">
-        {events.map((event) => (
-          <div key={event.id} className="p-4 border rounded-md shadow">
-            <h3 className="text-xl font-semibold">{event.title}</h3>
-            <p className="text-gray-600">{format(new Date(event.start_date), "PPP p")}</p>
-            <p className="text-gray-600">{format(new Date(event.end_date), "PPP p")}</p>
-            <p>{event.description}</p>
-          </div>
-        ))}
-      </div>
+      <Calendar events={events} onDateClick={handleDateClick} />
     </div>
   );
 };
