@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useState, useEffect, FormEvent } from "react";
 
@@ -13,8 +12,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,8 +30,8 @@ interface Event {
 const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -47,8 +44,8 @@ const EventsPage = () => {
     const eventData = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
-      start_date: `${startDate.toISOString().split("T")[0]}T${startTime}:00`,
-      end_date: `${endDate.toISOString().split("T")[0]}T${endTime}:00`,
+      start_date: `${startDate}T${startTime}:00`,
+      end_date: `${endDate}T${endTime}:00`,
     };
 
     createEvent(eventData).then((data) => {
@@ -97,73 +94,43 @@ const EventsPage = () => {
             />
 
             <div className="flex items-center space-x-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !startDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {startDate ? format(startDate, "PPP") : <span>Pick a start date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 z-50">
-                  <Calendar
-                    mode="single"
-                    selected={startDate}
-                    onSelect={(date) => {
-                      setStartDate(date);
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
+              <Input
+                type="date"
+                name="start_date"
+                id="start_date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full"
+                required
+              />
               <Input
                 type="time"
                 name="start_time"
                 id="start_time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
+                className="w-full"
                 required
               />
             </div>
 
             <div className="flex items-center space-x-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !endDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {endDate ? format(endDate, "PPP") : <span>Pick an end date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 z-50">
-                  <Calendar
-                    mode="single"
-                    selected={endDate}
-                    onSelect={(date) => {
-                      setEndDate(date);
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
+              <Input
+                type="date"
+                name="end_date"
+                id="end_date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full"
+                required
+              />
               <Input
                 type="time"
                 name="end_time"
                 id="end_time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
+                className="w-full"
                 required
               />
             </div>
