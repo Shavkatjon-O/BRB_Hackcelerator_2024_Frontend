@@ -43,7 +43,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
               href="#"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9"
+                "h-9 w-9 py-8"
               )}
             >
               <MoreHorizontal size={20} />
@@ -61,7 +61,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
           </div>
         </div>
       )}
-      <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+      <nav className="grid gap-2 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {chats.map((chat, index) =>
           isCollapsed ? (
             <TooltipProvider key={index}>
@@ -71,7 +71,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                     href="#"
                     className={cn(
                       buttonVariants({ variant: chat.variant, size: "icon" }),
-                      "h-11 w-11 md:h-16 md:w-16",
+                      "h-11 w-11 md:h-16 md:w-16 py-8",
                       chat.variant === "secondary" &&
                       "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                     )}
@@ -104,7 +104,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                 buttonVariants({ variant: chat.variant, size: "sm" }),
                 chat.variant === "secondary" &&
                 "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
-                "justify-start gap-4"
+                "justify-start gap-4 py-8"
               )}
             >
               <Avatar className="flex justify-center items-center">
