@@ -15,10 +15,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+import { EventType } from "../_types/event";
+
 interface EventFormDialogProps {
   isDialogOpen: boolean;
   setIsDialogOpen: (isOpen: boolean) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>, eventData: Partial<Event>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>, eventData: Partial<EventType>) => void;
 }
 
 const EventFormDialog: React.FC<EventFormDialogProps> = ({ isDialogOpen, setIsDialogOpen, handleSubmit }) => {
