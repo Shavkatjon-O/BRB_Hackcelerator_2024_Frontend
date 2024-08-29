@@ -2,6 +2,7 @@
 
 import useUser from "@/hooks/useUser";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 import { User, Loader } from "lucide-react";
 import Link from "next/link";
 
@@ -19,12 +20,15 @@ const Header = () => {
         ) : error ? (
           <span>Error: {error.message}</span>
         ) : (
-          <Button asChild variant="link" className="text-slate-100">
-            <Link href="/dashboard/profile" className="space-x-2">
-              <span>{user?.email}</span>
-              <User className="w-5 h-5" />
-            </Link>
-          </Button>
+          <>
+            <Button asChild variant="link" className="text-slate-100">
+              <Link href="/dashboard/profile" className="space-x-2">
+                <span>{user?.email}</span>
+                <User className="w-5 h-5" />
+              </Link>
+            </Button>
+            <ModeToggle />
+          </>
         )
       }
     </header>
