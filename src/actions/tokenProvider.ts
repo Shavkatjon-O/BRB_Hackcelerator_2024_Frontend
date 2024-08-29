@@ -1,38 +1,31 @@
 "use server";
 
-import CoreAPI from "@/lib/coreApi";
-import { UserProfileType } from "@/types/authTypes";
 import { StreamClient } from "@stream-io/node-sdk";
+import axios from "axios";
 
-export async function getToken(access_token: string) {
-  const streamApiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
-  const streamApiSecret = process.env.STREAM_VIDEO_API_SECRET;
-
-  if (!streamApiKey || !streamApiSecret) {
-    throw new Error("Stream API Key and Secret are required");
-  }
-
-  const response = await CoreAPI.get("/users/profile/", {
+export const tokenProvider = async (access_token: any) => {
+  const apiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
+  const apiSecret = process.env.STREAM_VIDEO_API_SECRET;
+  
+  const response = await axios.get(`${process.env.BACKEND_URL}/users/profile/`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
   });
-  const user = response.data as UserProfileType;
 
-  console.log("Generating token for user: ", user.id);
-
-  if (!user) {
-    throw new Error("User not found");
+  if (!response) {
+    throw new Error("User is not authenticated");
+  }
+  if (!apiKey || !apiSecret) {
+    throw new Error("Stream Chat API key or secret is missing");
   }
 
-  const streamClient = new StreamClient(streamApiKey, streamApiSecret);
+  const client = new StreamClient(apiKey, apiSecret);
 
-  const expirationTime = Math.floor(Date.now() / 1000) + 3600;
-  const issuedAt = Math.floor(Date.now() / 1000) - 60;
+  const expiresAt = Math.round(new Date().getTime() / 1000) + 60 * 60;
+  const createdAt = Math.floor(Date.now() / 1000) - 60;
 
-  const token = streamClient.createToken(user.id, expirationTime, issuedAt);
-
-  console.log("Successfully generated token: ", token);
+  const token = client.createToken(String(response.data.id), expiresAt, createdAt);
 
   return token;
-}
+};
