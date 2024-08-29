@@ -1,77 +1,100 @@
 "use client";
-import React, { useState } from 'react';
 
-const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  
-  const handlePrevMonth = () => {
-    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+import { useState, useEffect, FormEvent } from "react";
+import {
+  getEvent,
+  getEventsList,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from "@/services/eventsServices";
+
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+}
+
+const EventsPage = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const eventData = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      start_date: formData.get("start_date") as string,
+      end_date: formData.get("end_date") as string,
+    };
+
+    createEvent(eventData).then((data) => {
+      setEvents([...events, data]);
+    });
   };
 
-  const handleNextMonth = () => {
-    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
-  };
-
-  const getDaysInMonth = (month: any, year:any) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (month: any, year:any) => {
-    return new Date(year, month, 1).getDay();
-  };
-
-  const getDaysOfPreviousMonth = (month:any, year:any) => {
-    const prevMonth = new Date(year, month - 1, 1);
-    return getDaysInMonth(prevMonth.getMonth(), prevMonth.getFullYear());
-  };
-
-  const currentYear = currentMonth.getFullYear();
-  const currentMonthIndex = currentMonth.getMonth();
-  
-  const daysInMonth = getDaysInMonth(currentMonthIndex, currentYear);
-  const firstDay = getFirstDayOfMonth(currentMonthIndex, currentYear);
-
-  const prevMonthDays = getDaysOfPreviousMonth(currentMonthIndex, currentYear);
-  const daysArray = Array.from({ length: 35 }, (_, i) => {
-    let day;
-    if (i < firstDay) {
-      day = prevMonthDays - firstDay + i + 1;
-      return { day, isCurrentMonth: false };
-    } else if (i >= firstDay + daysInMonth) {
-      day = i - firstDay - daysInMonth + 1;
-      return { day, isCurrentMonth: false };
-    } else {
-      day = i - firstDay + 1;
-      return { day, isCurrentMonth: true };
-    }
-  });
+  useEffect(() => {
+    getEventsList().then((data) => {
+      setEvents(data);
+    });
+  }, []);
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <button onClick={handlePrevMonth} className="px-4 py-2 bg-gray-300 rounded">Previous</button>
-        <span className="text-lg font-bold">{currentMonth.toLocaleString('default', { month: 'long' })} {currentYear}</span>
-        <button onClick={handleNextMonth} className="px-4 py-2 bg-gray-300 rounded">Next</button>
+    <div className="max-w-3xl mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Create Event</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Event Title"
+          className="w-full px-4 py-2 border rounded-md"
+          required
+        />
+        <textarea
+          name="description"
+          id="description"
+          placeholder="Event Description"
+          className="w-full px-4 py-2 border rounded-md"
+        />
+        <input
+          type="datetime-local"
+          name="start_date"
+          id="start_date"
+          className="w-full px-4 py-2 border rounded-md"
+          required
+        />
+        <input
+          type="datetime-local"
+          name="end_date"
+          id="end_date"
+          className="w-full px-4 py-2 border rounded-md"
+          required
+        />
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md"
+        >
+          Create Event
+        </button>
+      </form>
+
+      <h2 className="text-2xl font-bold mt-8">Events</h2>
+      <div className="space-y-4 mt-4">
+        {events.map((event) => (
+          <div key={event.id} className="p-4 border rounded-md shadow">
+            <h3 className="text-xl font-semibold">{event.title}</h3>
+            <p className="text-gray-600">{event.start_date}</p>
+            <p className="text-gray-600">{event.end_date}</p>
+            <p>{event.description}</p>
+          </div>
+        ))}
       </div>
-      <main className="flex-1 overflow-auto">
-        <div className="grid grid-cols-7 border-l border-b border-gray-300">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
-            <div key={index} className="flex items-center justify-center border-t border-r border-gray-300 h-10 bg-gray-100">
-              {day}
-            </div>
-          ))}
-          {daysArray.map((item, index) => (
-            <div
-              key={index}
-              className={`flex items-center justify-center border-t border-r border-gray-300 h-28 ${item.isCurrentMonth ? 'bg-white text-black' : 'bg-gray-100 text-gray-400'}`}
-            >
-              {item.day}
-            </div>
-          ))}
-        </div>
-      </main>
     </div>
   );
 };
 
-export default Calendar;
+export default EventsPage;
