@@ -1,15 +1,24 @@
-'use client'
+'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
+import { ChatBubble, ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import useChatStore from "@/hooks/useChatStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { CopyIcon, CornerDownLeft, Mic, Paperclip, RefreshCcw, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import CoreAPI from "@/lib/coreApi";
 
+interface Message {
+  id: number;
+  avatar: string;
+  name: string;
+  role: "user" | "ai";
+  message: string;
+  isLoading?: boolean;
+}
 
 const ChatAiIcons = [
   {
@@ -35,14 +44,14 @@ export default function Page() {
   const handleInputChange = useChatStore((state) => state.handleInputChange);
   const hasInitialAIResponse = useChatStore((state) => state.hasInitialAIResponse);
   const setHasInitialAIResponse = useChatStore((state) => state.setHasInitialAIResponse);
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const getMessageVariant = (role: string) => role === "ai" ? "received" : "sent";
+  const getMessageVariant = (role: "user" | "ai") => role === "ai" ? "received" : "sent";
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
@@ -55,10 +64,11 @@ export default function Page() {
     }
   }
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input) return;
 
+    // Add user message to the state
     setMessages((messages) => [
       ...messages,
       {
@@ -67,11 +77,35 @@ export default function Page() {
         name: selectedUser.name,
         role: "user",
         message: input,
-      }
+      } as Message
     ]);
 
     setInput("");
     formRef.current?.reset();
+
+    try {
+      setIsLoading(true);
+
+      // Send message to the API
+      const response = await CoreAPI.post("/bot/chat/", { question: input });
+      const botMessage = response.data;
+
+      // Add bot response to the state
+      setMessages((messages) => [
+        ...messages,
+        {
+          id: messages.length + 1,
+          avatar: "/chatbot.svg",
+          name: "ChatBot",
+          role: "ai",
+          message: botMessage,
+        } as Message
+      ]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -79,35 +113,40 @@ export default function Page() {
       inputRef.current.focus();
     }
 
-    // Simulate AI response
-    if (!hasInitialAIResponse) {
-      setisLoading(true);
-      setTimeout(() => {
-        setMessages((messages) => [
-          ...messages.slice(0, messages.length - 1),
-          {
-            id: messages.length + 1,
-            avatar: "/chatbot.svg",
-            name: "ChatBot",
-            role: "ai",
-            message: "Sure! If you have any more questions, feel free to ask.",
-          }
-        ]);
-        setisLoading(false);
-        setHasInitialAIResponse(true);
-      }, 2500);
-    }
+    // Set initial AI response if no messages are present
+    if (!hasInitialAIResponse && messages.length === 0) {
+      setIsLoading(true);
+      setMessages((prevMessages) => [
+        {
+          id: 1,
+          avatar: "/chatbot.svg",
+          name: "ChatBot",
+          role: "ai",
+          message: "How can I help you today?",
+          isLoading: true,
+        } as Message
+      ]);
 
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages.map((message) =>
+            message.isLoading ? { ...message, isLoading: false } : message
+          )
+        ]);
+        setIsLoading(false);
+        setHasInitialAIResponse(true);
+      }, 2000);
+    }
   }, []);
 
   return (
-    <div className="h-full w-full">
-      <div className="relative flex h-full flex-col rounded-xl bg-muted/20 dark:bg-muted/40 p-4 lg:col-span-2">
+    <div className="h-full flex justify-center p-4">
+      <div className="w-[800px] relative flex h-full flex-col shadow-lg rounded-xl bg-muted/20 dark:bg-muted/40 p-4 lg:col-span-2">
         <ChatMessageList ref={messagesContainerRef}>
           {/* Chat messages */}
           <AnimatePresence>
             {messages.map((message, index) => {
-              const variant = getMessageVariant(message.role!);
+              const variant = getMessageVariant(message.role as "user" | "ai");
               return (
                 <motion.div
                   key={index}
@@ -127,7 +166,7 @@ export default function Page() {
                   className="flex flex-col gap-2 p-4"
                 >
                   <ChatBubble key={index} variant={variant}>
-                    <Avatar >
+                    <Avatar>
                       <AvatarImage src={message.avatar} alt="Avatar" className={message.role === "ai" ? "dark:invert" : ""} />
                       <AvatarFallback>{message.name}</AvatarFallback>
                     </Avatar>
@@ -165,29 +204,30 @@ export default function Page() {
         <form
           ref={formRef}
           onSubmit={handleSendMessage}
-          className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
+          className="relative rounded-lg border p-1 bg-background focus-within:ring-1 focus-within:ring-ring"
+        >
           <ChatInput
             ref={inputRef}
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
             placeholder="Type your message here..."
-            className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
+            className="min-h-12 resize-none bg-background border-none rounded-none p-3 shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center p-3 pt-0">
             <Button variant="ghost" size="icon">
               <Paperclip className="size-4" />
               <span className="sr-only">Attach file</span>
             </Button>
-
-
             <Button variant="ghost" size="icon">
               <Mic className="size-4" />
               <span className="sr-only">Use Microphone</span>
             </Button>
-
             <Button
               disabled={!input || isLoading}
-              type="submit" size="sm" className="ml-auto gap-1.5">
+              type="submit"
+              size="sm"
+              className="ml-auto gap-1.5"
+            >
               Send Message
               <CornerDownLeft className="size-3.5" />
             </Button>
