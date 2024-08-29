@@ -11,7 +11,7 @@ import {
 import { LayoutList, Users } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-
+import '@stream-io/video-react-sdk/dist/css/styles.css';
 import {
    DropdownMenu,
    DropdownMenuContent,
