@@ -44,17 +44,17 @@ const Calendar = ({ events, onDateClick }: { events: Event[], onDateClick: (date
         <h2 className="text-xl">{format(currentDate, "MMMM yyyy")}</h2>
         <Button onClick={handleNextMonth}>Next</Button>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 border-l border-t my-4">
         {days.map(day => (
           <div
             key={day.toString()}
-            className={`p-2 border ${isToday(day) ? 'bg-blue-100' : ''} ${isSameMonth(day, currentDate) ? 'text-black' : 'text-gray-400'} cursor-pointer`}
+            className={`h-28 border-r border-b p-2 ${isToday(day) ? 'bg-blue-100' : ''} ${isSameMonth(day, currentDate) ? 'text-black' : 'text-gray-400'} cursor-pointer`}
             onClick={() => onDateClick(day)}
           >
             <div>{format(day, "d")}</div>
             <div className="relative">
               {eventsByDate[day.toDateString()]?.map(event => (
-                <div key={event.id} className="text-green-500 text-xs">{event.title}</div>
+                <div key={event.id} className="text-green-500 ">{event.title}</div>
               ))}
             </div>
           </div>
@@ -103,7 +103,7 @@ const EventsPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="h-full mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Events</h1>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
