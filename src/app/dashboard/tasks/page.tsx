@@ -63,11 +63,11 @@ export default function TaskPage() {
   return (
     <div className="bg-gray-100 h-full">
       {/* Header Section */}
-      <header className="flex justify-between items-center p-6 bg-gray-800 text-white">
-        <h1 className="text-3xl font-bold">Task Management</h1>
+      <header className="flex justify-between items-center p-4 border-b">
+        <h1 className="text-2xl font-bold">Task Management</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="flex items-center space-x-2 text-gray-800 border-gray-600 hover:bg-gray-100">
+            <Button variant="outline" className="flex items-center space-x-2 text-gray-800 hover:bg-gray-100">
               <Plus />
               <span className="font-medium">{editingTask ? 'Edit Task' : 'Add Task'}</span>
             </Button>
@@ -148,8 +148,8 @@ export default function TaskPage() {
             </div>
             <p className="text-gray-700">{task.description}</p>
             <div className="mt-auto flex space-x-2">
-              <Button onClick={() => handleEditTask(task)}><Edit /></Button>
-              <Button onClick={() => handleDeleteTask(task.id)}><Trash /></Button>
+              <Button variant="outline" onClick={() => handleEditTask(task)}><Edit /></Button>
+              <Button variant="outline" onClick={() => handleDeleteTask(task.id)}><Trash /></Button>
             </div>
           </div>
         ))}
@@ -190,8 +190,8 @@ export default function TaskPage() {
                     </span>
                   </TableCell>
                   <TableCell className="flex space-x-2">
-                    <Button onClick={() => handleEditTask(task)}><Edit /></Button>
-                    <Button onClick={() => handleDeleteTask(task.id)}><Trash /></Button>
+                    <Button variant="outline" onClick={() => handleEditTask(task)}><Edit /></Button>
+                    <Button variant="outline" onClick={() => handleDeleteTask(task.id)}><Trash /></Button>
                   </TableCell>
                 </TableRow>
               ))
