@@ -1,13 +1,12 @@
 "use client";
 
-import { Loader } from "lucide-react"
+import { Loader } from "lucide-react";
 import { useState, useEffect } from "react";
 import { UserProfileType } from "@/types/authTypes";
 import { profileDataType } from "./_types/profileDataType";
 import { toast } from "sonner";
 import EditProfileDialog from "./_components/edit-profile-dialog";
 import coreApi from "@/lib/coreApi";
-
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState<UserProfileType | null>(null);
@@ -28,6 +27,7 @@ export default function ProfilePage() {
   }, []);
 
   const handleProfileUpdate = async (updatedData: profileDataType) => {
+    console.log("updatedData", updatedData);
     try {
       const response = await coreApi.put("/users/profile/update/", updatedData);
       setProfileData(response.data);
