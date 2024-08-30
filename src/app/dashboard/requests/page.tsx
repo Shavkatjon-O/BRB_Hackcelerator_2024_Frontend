@@ -11,16 +11,24 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 import coreApi from "@/lib/coreApi";
 
+// Define status colors
+const statusColors: Record<string, string> = {
+  PENDING: 'bg-yellow-100 text-yellow-800',
+  APPROVED: 'bg-green-100 text-green-800',
+  REJECTED: 'bg-red-100 text-red-800',
+  CANCELLED: 'bg-gray-100 text-gray-800',
+};
+
 // RequestFormDialog component
 const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
   const [requestType, setRequestType] = useState<string>('');
   const [requestDetails, setRequestDetails] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false); // Added loading state
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
-    setLoading(true); // Show loader
+    setLoading(true);
     const formData = {
       request_type: requestType,
       description: requestDetails,
@@ -30,11 +38,11 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
 
     try {
       const response = await coreApi.post("/approvals/create/", formData);
-      onSubmit(response.data); // Assuming the API returns the created request
+      onSubmit(response.data);
     } catch (error) {
       console.error("Failed to create request:", error);
     } finally {
-      setLoading(false); // Hide loader
+      setLoading(false);
     }
   };
 
@@ -45,7 +53,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
           <span>Create Request</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Create a New Request</DialogTitle>
           <DialogDescription>Select the type of request and provide details.</DialogDescription>
@@ -76,23 +84,25 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
             onChange={(e) => setRequestDetails(e.target.value)}
             className="bg-gray-100 border rounded-md"
           />
-          <Input
-            type="date"
-            placeholder="Start Date"
-            value={startDate || ""}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="bg-gray-100 border rounded-md"
-          />
-          <Input
-            type="date"
-            placeholder="End Date"
-            value={endDate || ""}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="bg-gray-100 border rounded-md"
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              type="date"
+              placeholder="Start Date"
+              value={startDate || ""}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="bg-gray-100 border rounded-md"
+            />
+            <Input
+              type="date"
+              placeholder="End Date"
+              value={endDate || ""}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="bg-gray-100 border rounded-md"
+            />
+          </div>
           <Button
             onClick={handleSubmit}
-            disabled={loading} // Disable button while loading
+            disabled={loading}
             className="w-full bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
           >
             {loading ? <Loader2 className="animate-spin mr-2" /> : 'Submit'}
@@ -106,28 +116,32 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
 // RequestsTable component
 const RequestsTable = ({ requests }: { requests: any[] }) => (
   <Table className="min-w-full bg-white shadow-md rounded-md overflow-hidden">
-    <TableHead>
+    <TableHeader>
       <TableRow>
-        <TableHeader>Type</TableHeader>
-        <TableHeader>Details</TableHeader>
-        <TableHeader>Start Date</TableHeader>
-        <TableHeader>End Date</TableHeader>
-        <TableHeader>Status</TableHeader>
+        <TableHead>Type</TableHead>
+        <TableHead>Details</TableHead>
+        <TableHead>Start Date</TableHead>
+        <TableHead>End Date</TableHead>
+        <TableHead>Status</TableHead>
       </TableRow>
-    </TableHead>
+    </TableHeader>
     <TableBody>
       {requests.length === 0 ? (
         <TableRow>
-          <TableCell colSpan={5} className="text-center py-4">No requests available.</TableCell>
+          <TableCell colSpan={5} className="text-center py-4 text-gray-600">No requests available.</TableCell>
         </TableRow>
       ) : (
         requests.map((request, index) => (
-          <TableRow key={index} className="hover:bg-gray-100">
+          <TableRow key={index} className="hover:bg-gray-50">
             <TableCell>{request.request_type}</TableCell>
             <TableCell>{request.description}</TableCell>
             <TableCell>{request.start_date}</TableCell>
             <TableCell>{request.end_date}</TableCell>
-            <TableCell>{request.status}</TableCell>
+            <TableCell>
+              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${statusColors[request.status]}`}>
+                {request.status}
+              </span>
+            </TableCell>
           </TableRow>
         ))
       )}
@@ -138,17 +152,17 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
 // Page component
 const Page = () => {
   const [requests, setRequests] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Added loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchRequests = async () => {
-    setLoading(true); // Show loading state
+    setLoading(true);
     try {
       const response = await coreApi.get("/approvals/");
       setRequests(response.data);
     } catch (error) {
       console.error("Failed to fetch requests:", error);
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 
@@ -160,11 +174,11 @@ const Page = () => {
     fetchRequests();
   }, []);
 
-  if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>; // Show loading state
+  if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Requests & Approvals</h1>
+    <div className="p-6 space-y-6 bg-gray-50 h-full">
+      <h1 className="text-3xl font-bold text-gray-800">Requests & Approvals</h1>
       <RequestFormDialog onSubmit={handleFormSubmit} />
       <RequestsTable requests={requests} />
     </div>
