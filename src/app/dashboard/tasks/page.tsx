@@ -1,125 +1,185 @@
-'use client';
+"use client";
 
-import { Calendar as LucideCalendar, ChevronLeft, ChevronRight, Plus, Edit, Trash, Video, Phone, Link } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Select } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Plus, Edit, Trash } from 'lucide-react';
 
-const MeetingsPage = () => {
-  const [selectedMonth, setSelectedMonth] = useState('August 2024');
+export interface Task {
+  id: number;
+  title: string;
+  dueDate: string;
+  status: 'Pending' | 'Completed' | '';
+  description: string;
+  priority: 'Low' | 'Medium' | 'High' | '';
+}
+
+export interface TaskPageState {
+  tasks: Task[];
+  newTask: Omit<Task, 'id'>;
+  showDialog: boolean;
+  loading: boolean;
+  editingTask: Task | null;
+}
+
+export default function TaskPage() {
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: 1, title: 'Task 1', dueDate: '2024-09-01', status: 'Pending', description: 'Complete the project report', priority: 'High' },
+    { id: 2, title: 'Task 2', dueDate: '2024-09-05', status: 'Completed', description: 'Prepare presentation slides', priority: 'Medium' },
+  ]);
+
+  const [newTask, setNewTask] = useState<Omit<Task, 'id'>>({ title: '', dueDate: '', status: '', description: '', priority: '' });
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const handleAddTask = () => {
+    setLoading(true);
+    setTimeout(() => { // Simulating async operation
+      if (editingTask) {
+        // Update task
+        setTasks(tasks.map(task =>
+          task.id === editingTask.id
+            ? { ...task, ...newTask }
+            : task
+        ));
+        setEditingTask(null);
+      } else {
+        // Add new task
+        setTasks([...tasks, { ...newTask, id: tasks.length + 1 }]);
+      }
+      setNewTask({ title: '', dueDate: '', status: '', description: '', priority: '' });
+      setShowDialog(false);
+      setLoading(false);
+    }, 500);
+  };
+
+  const handleEditTask = (task: Task) => {
+    setEditingTask(task);
+    setNewTask(task);
+    setShowDialog(true);
+  };
+
+  const handleDeleteTask = (taskId: number) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Upcoming Video Meetings Card */}
-          <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold flex items-center space-x-2">
-                <Video className="text-blue-600 w-6 h-6" />
-                <span>Upcoming Video Meetings</span>
-              </h2>
-              <Button variant="outline" className="p-2" aria-label="Add meeting">
-                <Plus className="text-blue-600 w-6 h-6" />
+    <div className="p-6 space-y-6 bg-gray-50 h-full">
+      <header className="flex items-center justify-between mb-4">
+        <h1 className="text-3xl font-bold text-gray-800">Task Management</h1>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="flex items-center space-x-2">
+              <Plus />
+              <span>{editingTask ? 'Edit Task' : 'Add Task'}</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>{editingTask ? 'Edit Task' : 'Add New Task'}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <Input
+                placeholder="Enter task title"
+                value={newTask.title}
+                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                className="bg-white border rounded-md"
+              />
+              <Input
+                type="date"
+                value={newTask.dueDate}
+                onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                className="bg-white border rounded-md"
+              />
+              <Select
+                value={newTask.status}
+                onValueChange={(value) => setNewTask({ ...newTask, status: value as Task['status'] })}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Pending">Pending</SelectItem>
+                  <SelectItem value="Completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+              <Textarea
+                placeholder="Enter task description"
+                value={newTask.description}
+                onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                className="bg-white border rounded-md"
+              />
+              <Select
+                value={newTask.priority}
+                onValueChange={(value) => setNewTask({ ...newTask, priority: value as Task['priority'] })}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Low">Low</SelectItem>
+                  <SelectItem value="Medium">Medium</SelectItem>
+                  <SelectItem value="High">High</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={handleAddTask}
+                disabled={loading}
+                className="w-full bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
+              >
+                {loading ? <Loader2 className="animate-spin mr-2" /> : (editingTask ? 'Save Changes' : 'Add Task')}
               </Button>
             </div>
-            <div className="flex items-center justify-between mb-4">
-              <Button variant="outline" size="icon" aria-label="Previous month">
-                <ChevronLeft className="w-6 h-6" />
-              </Button>
-              <span className="text-lg font-semibold">{selectedMonth}</span>
-              <Button variant="outline" size="icon" aria-label="Next month">
-                <ChevronRight className="w-6 h-6" />
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Card key={index} className="p-4 bg-gray-50 border border-gray-200 shadow-sm rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div className="text-gray-700 font-medium">Meeting with Team {index + 1}</div>
-                    <div className="flex items-center space-x-2">
-                      <Button variant="outline" size="icon" aria-label="Join meeting">
-                        <Link className="text-green-600 w-5 h-5" />
-                      </Button>
-                      <Button variant="outline" size="icon" aria-label="Edit meeting">
-                        <Edit className="text-blue-600 w-5 h-5" />
-                      </Button>
-                      <Button variant="outline" size="icon" aria-label="Delete meeting">
-                        <Trash className="text-red-600 w-5 h-5" />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="text-gray-500 text-sm">Aug {10 + index}, 2024 | 2:00 PM - 3:00 PM</div>
-                </Card>
-              ))}
-            </div>
-          </Card>
+          </DialogContent>
+        </Dialog>
+      </header>
 
-          {/* Schedule Video Meeting Card */}
-          <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
-              <Plus className="text-gray-600 w-6 h-6" />
-              <span>Schedule a Video Meeting</span>
-            </h2>
-            <div className="flex flex-col space-y-4">
-              <div className="flex flex-col space-y-2">
-                <label className="text-gray-700">Meeting Title</label>
-                <Textarea placeholder="Enter meeting title" rows={2} className="resize-none" />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-gray-700">Description</label>
-                <Textarea placeholder="Enter meeting description" rows={4} className="resize-none" />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-gray-700">Date and Time</label>
-                <div className="w-full">
-                  <Select>
-                    <option>Aug 30, 2024 | 2:00 PM - 3:00 PM</option>
-                    <option>Sep 5, 2024 | 10:00 AM - 11:00 AM</option>
-                  </Select>
-                </div>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-gray-700">Meeting Link</label>
-                <Textarea placeholder="Enter meeting link" rows={2} className="resize-none" />
-              </div>
-              <Button variant="outline" className="w-full">Save Meeting</Button>
-            </div>
-          </Card>
-
-          {/* Recent Calls Card */}
-          <Card className="p-6 bg-white border border-gray-200 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
-              <Phone className="text-purple-600 w-6 h-6" />
-              <span>Recent Calls</span>
-            </h2>
-            <ul className="space-y-3">
-              <li className="flex justify-between items-center text-gray-700">
-                <span>Call with Client A - Aug 15, 2024</span>
-                <Button variant="outline" size="icon" aria-label="View details">
-                  <Link className="text-gray-600 w-5 h-5" />
-                </Button>
-              </li>
-              <li className="flex justify-between items-center text-gray-700">
-                <span>Team Sync - Aug 8, 2024</span>
-                <Button variant="outline" size="icon" aria-label="View details">
-                  <Link className="text-gray-600 w-5 h-5" />
-                </Button>
-              </li>
-              <li className="flex justify-between items-center text-gray-700">
-                <span>Project Update - Jul 30, 2024</span>
-                <Button variant="outline" size="icon" aria-label="View details">
-                  <Link className="text-gray-600 w-5 h-5" />
-                </Button>
-              </li>
-            </ul>
-          </Card>
-        </div>
-      </div>
+      <Table className="min-w-full bg-white shadow-md rounded-md overflow-hidden">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Due Date</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Priority</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tasks.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center py-4 text-gray-600">No tasks available.</TableCell>
+            </TableRow>
+          ) : (
+            tasks.map(task => (
+              <TableRow key={task.id} className="hover:bg-gray-50">
+                <TableCell>{task.title}</TableCell>
+                <TableCell>{task.dueDate}</TableCell>
+                <TableCell>
+                  <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${task.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                    {task.status}
+                  </span>
+                </TableCell>
+                <TableCell>{task.description}</TableCell>
+                <TableCell>
+                  <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${task.priority === 'High' ? 'bg-red-100 text-red-800' : task.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                    {task.priority}
+                  </span>
+                </TableCell>
+                <TableCell className="flex space-x-2">
+                  <Button onClick={() => handleEditTask(task)}><Edit /></Button>
+                  <Button onClick={() => handleDeleteTask(task.id)}><Trash /></Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }
-
-export default MeetingsPage;
