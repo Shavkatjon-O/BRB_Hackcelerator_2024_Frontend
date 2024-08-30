@@ -1,180 +1,216 @@
 "use client";
 
-import { useState } from "react";
-import useUser from "@/hooks/useUser";
-import { 
-  Loader,
-  User,
-  Mail,
-  Edit,
-} from "lucide-react";
-import Image from "next/image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
+// import { Separator } from "@/components/ui/separator"
+
+// export function SeparatorDemo() {
+//   return (
+//     <div>
+//       <div className="space-y-1">
+//         <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
+//         <p className="text-sm text-muted-foreground">
+//           An open-source UI component library.
+//         </p>
+//       </div>
+//       <Separator className="my-4" />
+//       <div className="flex h-5 items-center space-x-4 text-sm">
+//         <div>Blog</div>
+//         <Separator orientation="vertical" />
+//         <div>Docs</div>
+//         <Separator orientation="vertical" />
+//         <div>Source</div>
+//       </div>
+//     </div>
+//   )
+// }
+
+
+
+import EditProfileDialog from "./_components/edit-profile-dialog";
 
 export default function Page() {
-  const { user, loading, error } = useUser();
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      firstName: user?.first_name || '',
-      lastName: user?.last_name || '',
-      email: user?.email || '',
-      jobTitle: user?.job_title || '',
-      image: user?.image || '',
-    }
-  });
-
-  const handleFormSubmit = async (data: any) => {
-    // Make an API call to update user details
-    try {
-      // Example API call, replace with your endpoint
-      await fetch('/api/user/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      // Close dialog and refresh user data
-      setDialogOpen(false);
-      // Refresh user data (you might need to re-fetch or update state here)
-    } catch (error) {
-      console.error('Failed to update user', error);
-    }
-  };
-
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-    reset(); // Reset form values
-  };
-
   return (
-    <div className="h-full p-4 flex justify-center items-center">
-      {
-        loading ? (
-          <div className="w-full h-full flex justify-center items-center">
-            <Loader className="text-slate-950 animate-spin" />
-          </div>
-        ) : (
-          <div className="w-full max-w-[700px] h-full p-4 rounded">
-            <div className="flex">
-              <div className="w-1/3">
-                <div className="w-36 h-36 border-2 flex justify-center items-center rounded-full border-slate-950">
-                  {
-                    user.image ? (
-                      <Image 
-                        src={user.image}
-                        alt="Profile Image"
-                        className="rounded-full w-32 h-32"
-                        width={200}
-                        height={200}
-                      />
-                    ) : (
-                      <div className="w-32 h-32 rounded-full flex justify-center items-center bg-slate-50">
-                        <User className="w-20 h-20 text-slate-950" />
-                      </div>
-                    )
-                  }
-                </div>
-              </div>
-              
-              <div className="w-2/3">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="text-2xl font-semibold">{user.first_name} {user.last_name}</div>
-                    <div className="text-sm text-slate-950">{user.job_title}</div>
-                    <div className="flex space-x-2 items-center mt-2">
-                      <Mail className="w-5 h-5 text-slate-950" />
-                      <div>{user.email}</div>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={handleOpenDialog}
-                    className="text-slate-950 flex items-center space-x-2 bg-slate-200 px-4 py-2 rounded"
-                  >
-                    <Edit className="w-5 h-5" />
-                    <span>Edit</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <div>ID: {user.id}</div>
-              <div>Email: {user.email}</div>
-              <div>First Name: {user.first_name}</div>
-              <div>Last Name: {user.last_name}</div>
-              <div>Image: {user.image}</div>
-            </div>
-
-            <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
-              <DialogTrigger />
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Edit Profile</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-                  <div>
-                    <label htmlFor="firstName">First Name</label>
-                    <input
-                      id="firstName"
-                      {...register("firstName")}
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="lastName">Last Name</label>
-                    <input
-                      id="lastName"
-                      {...register("lastName")}
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      {...register("email")}
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="jobTitle">Job Title</label>
-                    <input
-                      id="jobTitle"
-                      {...register("jobTitle")}
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="image">Image URL</label>
-                    <input
-                      id="image"
-                      {...register("image")}
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                  <button 
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    Save Changes
-                  </button>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-        )
-      }
+    <div className="container p-6">
+      <EditProfileDialog />
     </div>
   );
 }
+
+
+// import { useState } from "react";
+// import useUser from "@/hooks/useUser";
+// import { 
+//   Loader,
+//   User,
+//   Mail,
+//   Edit,
+// } from "lucide-react";
+// import Image from "next/image";
+// import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+// import { useForm } from "react-hook-form";
+
+// export default function Page() {
+//   const { user, loading, error } = useUser();
+//   const [isDialogOpen, setDialogOpen] = useState(false);
+//   const { register, handleSubmit, reset } = useForm({
+//     defaultValues: {
+//       firstName: user?.first_name || '',
+//       lastName: user?.last_name || '',
+//       email: user?.email || '',
+//       jobTitle: user?.job_title || '',
+//       image: user?.image || '',
+//     }
+//   });
+
+//   const handleFormSubmit = async (data: any) => {
+//     // Make an API call to update user details
+//     try {
+//       // Example API call, replace with your endpoint
+//       await fetch('/api/user/update', {
+//         method: 'PUT',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(data),
+//       });
+//       // Close dialog and refresh user data
+//       setDialogOpen(false);
+//       // Refresh user data (you might need to re-fetch or update state here)
+//     } catch (error) {
+//       console.error('Failed to update user', error);
+//     }
+//   };
+
+//   const handleOpenDialog = () => {
+//     setDialogOpen(true);
+//   };
+
+//   const handleCloseDialog = () => {
+//     setDialogOpen(false);
+//     reset(); // Reset form values
+//   };
+
+//   return (
+//     <div className="h-full p-4 flex justify-center items-center">
+//       {
+//         loading ? (
+//           <div className="w-full h-full flex justify-center items-center">
+//             <Loader className="text-slate-950 animate-spin" />
+//           </div>
+//         ) : (
+//           <div className="w-full max-w-[700px] h-full p-4 rounded">
+//             <div className="flex">
+//               <div className="w-1/3">
+//                 <div className="w-36 h-36 border-2 flex justify-center items-center rounded-full border-slate-950">
+//                   {
+//                     user.image ? (
+//                       <Image 
+//                         src={user.image}
+//                         alt="Profile Image"
+//                         className="rounded-full w-32 h-32"
+//                         width={200}
+//                         height={200}
+//                       />
+//                     ) : (
+//                       <div className="w-32 h-32 rounded-full flex justify-center items-center bg-slate-50">
+//                         <User className="w-20 h-20 text-slate-950" />
+//                       </div>
+//                     )
+//                   }
+//                 </div>
+//               </div>
+              
+//               <div className="w-2/3">
+//                 <div className="flex justify-between items-center">
+//                   <div>
+//                     <div className="text-2xl font-semibold">{user.first_name} {user.last_name}</div>
+//                     <div className="text-sm text-slate-950">{user.job_title}</div>
+//                     <div className="flex space-x-2 items-center mt-2">
+//                       <Mail className="w-5 h-5 text-slate-950" />
+//                       <div>{user.email}</div>
+//                     </div>
+//                   </div>
+//                   <button 
+//                     onClick={handleOpenDialog}
+//                     className="text-slate-950 flex items-center space-x-2 bg-slate-200 px-4 py-2 rounded"
+//                   >
+//                     <Edit className="w-5 h-5" />
+//                     <span>Edit</span>
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="mt-4">
+//               <div>ID: {user.id}</div>
+//               <div>Email: {user.email}</div>
+//               <div>First Name: {user.first_name}</div>
+//               <div>Last Name: {user.last_name}</div>
+//               <div>Image: {user.image}</div>
+//             </div>
+
+//             <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+//               <DialogTrigger />
+//               <DialogContent>
+//                 <DialogHeader>
+//                   <DialogTitle>Edit Profile</DialogTitle>
+//                 </DialogHeader>
+//                 <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+//                   <div>
+//                     <label htmlFor="firstName">First Name</label>
+//                     <input
+//                       id="firstName"
+//                       {...register("firstName")}
+//                       className="w-full p-2 border rounded"
+//                     />
+//                   </div>
+//                   <div>
+//                     <label htmlFor="lastName">Last Name</label>
+//                     <input
+//                       id="lastName"
+//                       {...register("lastName")}
+//                       className="w-full p-2 border rounded"
+//                     />
+//                   </div>
+//                   <div>
+//                     <label htmlFor="email">Email</label>
+//                     <input
+//                       id="email"
+//                       type="email"
+//                       {...register("email")}
+//                       className="w-full p-2 border rounded"
+//                     />
+//                   </div>
+//                   <div>
+//                     <label htmlFor="jobTitle">Job Title</label>
+//                     <input
+//                       id="jobTitle"
+//                       {...register("jobTitle")}
+//                       className="w-full p-2 border rounded"
+//                     />
+//                   </div>
+//                   <div>
+//                     <label htmlFor="image">Image URL</label>
+//                     <input
+//                       id="image"
+//                       {...register("image")}
+//                       className="w-full p-2 border rounded"
+//                     />
+//                   </div>
+//                   <button 
+//                     type="submit"
+//                     className="bg-blue-500 text-white px-4 py-2 rounded"
+//                   >
+//                     Save Changes
+//                   </button>
+//                 </form>
+//               </DialogContent>
+//             </Dialog>
+//           </div>
+//         )
+//       }
+//     </div>
+//   );
+// }
 
 
 
