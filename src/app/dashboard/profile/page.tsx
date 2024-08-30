@@ -27,7 +27,6 @@ export default function ProfilePage() {
   }, []);
 
   const handleProfileUpdate = async (updatedData: profileDataType) => {
-    console.log("updatedData", updatedData);
     try {
       const response = await coreApi.put("/users/profile/update/", updatedData);
       setProfileData(response.data);

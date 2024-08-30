@@ -29,48 +29,30 @@ interface EditProfileDialogProps {
 
 export default function EditProfileDialog({ profileData, onSave }: EditProfileDialogProps) {
   const [formData, setFormData] = useState<profileDataType>({
-    first_name: "",
-    last_name: "",
-    phone_number: "",
-    date_of_birth: "",
-    address: "",
-    job_title: "",
-    department: "",
-    education: "",
-    employment_start_date: "",
-    skills: "",
+    first_name: profileData.first_name,
+    last_name: profileData.last_name,
+    phone_number: profileData.phone_number,
+    date_of_birth: profileData.date_of_birth,
+    address: profileData.address,
+    job_title: profileData.job_title,
+    department: profileData.department,
+    education: profileData.education,
+    employment_start_date: profileData.employment_start_date,
+    skills: profileData.skills,
   });
 
-  useEffect(() => {
-    if (profileData) {
-      setFormData({
-        ...profileData,
-        first_name: profileData.first_name || "",
-        last_name: profileData.last_name || "",
-        phone_number: profileData.phone_number || "",
-        date_of_birth: profileData.date_of_birth || "",
-        address: profileData.address || "",
-        job_title: profileData.job_title || "",
-        department: profileData.department || "",
-        education: profileData.education || "",
-        employment_start_date: profileData.employment_start_date || "",
-        skills: profileData.skills || "",
-      });
-    }
-  }, [profileData]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSave(formData);
   };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
