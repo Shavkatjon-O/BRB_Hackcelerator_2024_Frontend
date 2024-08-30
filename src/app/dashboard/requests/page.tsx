@@ -1,16 +1,19 @@
 "use client";
+
+// Import necessary modules and components
 import { useState, useEffect } from 'react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CalendarIcon } from "lucide-react";
+import { Textarea } from '@/components/ui/textarea';
 import coreApi from "@/lib/coreApi";
 
+// RequestFormDialog component
 const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
-  const [requestType, setRequestType] = useState<any>('');
-  const [requestDetails, setRequestDetails] = useState<any>('');
+  const [requestType, setRequestType] = useState<string>('');
+  const [requestDetails, setRequestDetails] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
@@ -60,7 +63,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
               <SelectItem value="SICK_LEAVE">Sick Leave Request</SelectItem>
             </SelectContent>
           </Select>
-          <Input
+          <Textarea
             placeholder="Request Details"
             value={requestDetails}
             onChange={(e) => setRequestDetails(e.target.value)}
@@ -68,13 +71,13 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
           <Input
             type="date"
             placeholder="Start Date"
-            value={startDate}
+            value={startDate || ""}
             onChange={(e) => setStartDate(e.target.value)}
           />
           <Input
             type="date"
             placeholder="End Date"
-            value={endDate}
+            value={endDate || ""}
             onChange={(e) => setEndDate(e.target.value)}
           />
           <Button onClick={handleSubmit}>Submit</Button>
@@ -84,6 +87,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   );
 };
 
+// RequestsTable component
 const RequestsTable = ({ requests }: { requests: any[] }) => (
   <Table>
     <TableHead>
@@ -96,21 +100,29 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
       </TableRow>
     </TableHead>
     <TableBody>
-      {requests.map((request, index) => (
-        <TableRow key={index}>
-          <TableCell>{request.request_type}</TableCell>
-          <TableCell>{request.description}</TableCell>
-          <TableCell>{request.start_date}</TableCell>
-          <TableCell>{request.end_date}</TableCell>
-          <TableCell>{request.status}</TableCell>
+      {requests.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={5}>No requests available.</TableCell>
         </TableRow>
-      ))}
+      ) : (
+        requests.map((request, index) => (
+          <TableRow key={index}>
+            <TableCell>{request.request_type}</TableCell>
+            <TableCell>{request.description}</TableCell>
+            <TableCell>{request.start_date}</TableCell>
+            <TableCell>{request.end_date}</TableCell>
+            <TableCell>{request.status}</TableCell>
+          </TableRow>
+        ))
+      )}
     </TableBody>
   </Table>
 );
 
+// Page component
 const Page = () => {
-  const [requests, setRequests] = useState<any>([]);
+  const [requests, setRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const fetchRequests = async () => {
     try {
@@ -118,16 +130,20 @@ const Page = () => {
       setRequests(response.data);
     } catch (error) {
       console.error("Failed to fetch requests:", error);
+    } finally {
+      setLoading(false); // Ensure loading is turned off
     }
   };
 
   const handleFormSubmit = (newRequest: any) => {
-    setRequests([...requests, newRequest]);
+    setRequests((prevRequests) => [...prevRequests, newRequest]);
   };
 
   useEffect(() => {
     fetchRequests();
   }, []);
+
+  if (loading) return <div>Loading...</div>; // Show loading state
 
   return (
     <div className="p-6">
