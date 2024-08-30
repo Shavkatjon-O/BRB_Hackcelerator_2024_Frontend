@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   ContactRound,
@@ -28,6 +28,7 @@ interface EditProfileDialogProps {
 }
 
 export default function EditProfileDialog({ profileData, onSave }: EditProfileDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState<profileDataType>({
     first_name: profileData.first_name,
     last_name: profileData.last_name,
@@ -52,11 +53,13 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSave(formData);
+    setIsOpen(false)
   };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Profile</Button>
+        <Button onClick={() => setIsOpen(true)}>Edit Profile</Button>
       </DialogTrigger>
       <DialogContent className="p-0">
         <DialogHeader className="px-6 pt-6">
