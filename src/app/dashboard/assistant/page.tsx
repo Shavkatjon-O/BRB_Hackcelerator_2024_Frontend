@@ -140,7 +140,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="h-full flex justify-center p-4">
+    <div className="h-full flex justify-center p-4 bg-slate-50 dark:bg-slate-950">
       <div className="w-[800px] relative flex h-full flex-col rounded-md bg-muted/20 dark:bg-muted/40 p-4 lg:col-span-2">
         <ChatMessageList ref={messagesContainerRef}>
           {/* Chat messages */}
