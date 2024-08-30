@@ -5,6 +5,8 @@ import { EventType } from "./_types/event";
 import EventFormDialog from "./_components/add-event-dialog";
 import Calendar from "./_components/calendar";
 
+import { Button } from "@/components/ui/button";
+
 import { getEventsList, createEvent } from "@/services/eventsServices";
 
 const CalendarPage = () => {
@@ -75,11 +77,11 @@ const CalendarPage = () => {
       />
 
       <div className="flex justify-around mb-4">
-        <button className={`btn ${view === "daily" ? "btn-primary" : ""}`} onClick={() => setView("daily")}>Day</button>
-        <button className={`btn ${view === "weekly" ? "btn-primary" : ""}`} onClick={() => setView("weekly")}>Week</button>
-        <button className={`btn ${view === "monthly" ? "btn-primary" : ""}`} onClick={() => setView("monthly")}>Month</button>
-        <button className={`btn ${view === "yearly" ? "btn-primary" : ""}`} onClick={() => setView("yearly")}>Year</button>
-        <button className={`btn ${view === "list" ? "btn-primary" : ""}`} onClick={() => setView("list")}>List</button>
+        <Button className={`btn ${view === "daily" ? "btn-primary" : ""}`} onClick={() => setView("daily")}>Day</Button>
+        <Button className={`btn ${view === "weekly" ? "btn-primary" : ""}`} onClick={() => setView("weekly")}>Week</Button>
+        <Button className={`btn ${view === "monthly" ? "btn-primary" : ""}`} onClick={() => setView("monthly")}>Month</Button>
+        <Button className={`btn ${view === "yearly" ? "btn-primary" : ""}`} onClick={() => setView("yearly")}>Year</Button>
+        <Button className={`btn ${view === "list" ? "btn-primary" : ""}`} onClick={() => setView("list")}>List</Button>
       </div>
 
       <Calendar

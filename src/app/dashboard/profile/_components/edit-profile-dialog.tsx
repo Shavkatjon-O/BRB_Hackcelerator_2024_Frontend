@@ -24,7 +24,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 export default function EditProfileDialog() {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Edit Profile</Button>
       </DialogTrigger>
       <DialogContent className="p-0">

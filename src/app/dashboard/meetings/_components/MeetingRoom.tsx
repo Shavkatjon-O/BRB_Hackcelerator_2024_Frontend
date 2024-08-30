@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import EndCallButton from "./EndCallButton";
+import { Button } from "@/components/ui/button";
 
 import { Loader } from "lucide-react";
 
@@ -91,11 +92,11 @@ const MeetingRoom = () => {
                </DropdownMenuContent>
             </DropdownMenu>
             <CallStatsButton />
-            <button onClick={() => setShowParticipants((prev) => !prev)}>
+            <Button onClick={() => setShowParticipants((prev) => !prev)}>
                <div className=" cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]  ">
                   <Users size={20} className="text-white" />
                </div>
-            </button>
+            </Button>
             {!isPersonalRoom && <EndCallButton />}
          </div>
       </section>
