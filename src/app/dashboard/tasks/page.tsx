@@ -63,8 +63,8 @@ export default function TaskPage() {
   return (
     <div className="bg-gray-100 h-full">
       {/* Header Section */}
-      <header className="flex justify-between items-center p-4 border-b">
-        <h1 className="text-2xl font-bold">Task Management</h1>
+      <header className="flex justify-between items-center py-4 px-8 border-b">
+        <h1 className="text-xl font-bold">Tasks</h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="flex items-center space-x-2 text-gray-800 hover:bg-gray-100">
@@ -135,14 +135,14 @@ export default function TaskPage() {
       {/* Creative Task Display Section */}
       <section className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {tasks.map(task => (
-          <div key={task.id} className="bg-white shadow-md rounded-lg p-4 flex flex-col space-y-4 border border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">{task.title}</h2>
+          <div key={task.id} className="bg-white rounded-lg p-4 flex flex-col space-y-4 border border-gray-200">
+            <h2 className="font-semibold text-gray-800">{task.title}</h2>
             <p className="text-gray-500">Due: {task.dueDate}</p>
             <div className="flex space-x-2">
-              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${task.status === 'Pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
+              <span className={`inline-block px-2 text-sm py-1 font-semibold rounded-full ${task.status === 'Pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
                 {task.status}
               </span>
-              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${task.priority === 'High' ? 'bg-red-200 text-red-800' : task.priority === 'Medium' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
+              <span className={`inline-block px-2 text-sm py-1 font-semibold rounded-full ${task.priority === 'High' ? 'bg-red-200 text-red-800' : task.priority === 'Medium' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
                 {task.priority}
               </span>
             </div>
@@ -154,10 +154,14 @@ export default function TaskPage() {
           </div>
         ))}
       </section>
+      
+      <div className='px-8'>
+        <h1 className="text-xl font-bold">Tasks table</h1>
+      </div>
 
       {/* Task List Section */}
       <section className="p-6">
-        <Table className="min-w-full bg-white shadow-md rounded-md overflow-hidden border border-gray-200">
+        <Table className="min-w-full bg-white rounded-md overflow-hidden border border-gray-200">
           <TableHeader>
             <TableRow>
               <TableHead className="text-gray-600">Title</TableHead>
