@@ -1,140 +1,96 @@
 "use client";
+import { useState } from 'react';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { CalendarIcon } from "lucide-react"
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { XCircle, PlusCircle, Trash2 } from "lucide-react";
-
-const RequestsPage = () => {
-  const [requests, setRequests] = useState([
-    { id: "#12345", requester: "John Doe", date: "2024-08-30", status: "Pending", type: "Leave" },
-    { id: "#12346", requester: "Jane Smith", date: "2024-08-29", status: "Approved", type: "Vacation" },
-  ]);
-
-  const [newRequest, setNewRequest] = useState({ type: "", date: "" });
-
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setNewRequest({ ...newRequest, [name]: value });
-  };
+const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
+  const [requestType, setRequestType] = useState<any>('');
+  const [requestDetails, setRequestDetails] = useState<any>('');
 
   const handleSubmit = () => {
-    if (newRequest.type && newRequest.date) {
-      const newRequestEntry = {
-        id: `#${requests.length + 1}`,
-        requester: "Current User",
-        date: newRequest.date,
-        status: "Pending",
-        type: newRequest.type,
-      };
-      setRequests([...requests, newRequestEntry]);
-      setNewRequest({ type: "", date: "" });
-    }
-  };
-
-  const handleDelete = (id: string) => {
-    setRequests(requests.filter((request) => request.id !== id));
-  };
-
-  const handleCancel = (id: string) => {
-    setRequests(
-      requests.map((request) =>
-        request.id === id ? { ...request, status: "Cancelled" } : request
-      )
-    );
+    const formData = {
+      type: requestType,
+      details: requestDetails,
+      date: new Date().toLocaleDateString(),
+      status: 'Pending',
+    };
+    onSubmit(formData);
   };
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Dialog to submit a new request */}
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="default">
-            <PlusCircle className="w-4 h-4 mr-2" /> Create a New Request
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>New Request</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <Input
-              name="type"
-              placeholder="Request Type (e.g., Leave, Vacation)"
-              value={newRequest.type}
-              onChange={handleInputChange}
-              className="w-full"
-            />
-            <Input
-              name="date"
-              type="date"
-              value={newRequest.date}
-              onChange={handleInputChange}
-              className="w-full"
-            />
-            <Button onClick={handleSubmit} variant="default" className="w-full">
-              <PlusCircle className="w-4 h-4 mr-2" /> Submit Request
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="my-4">Create Request</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create a New Request</DialogTitle>
+          <DialogDescription>Select the type of request and provide details.</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <Select value={requestType} onValueChange={setRequestType}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Request Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="absence">Absence Request</SelectItem>
+              <SelectItem value="leave">Leave Request</SelectItem>
+              <SelectItem value="report">Report Request</SelectItem>
+            </SelectContent>
+          </Select>
+          <Input
+            placeholder="Request Details"
+            value={requestDetails}
+            onChange={(e) => setRequestDetails(e.target.value)}
+          />
+          <Button onClick={handleSubmit}>Submit</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-      {/* List of submitted requests */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Requests</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Request ID</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {requests.map((request) => (
-                <TableRow key={request.id}>
-                  <TableCell>{request.id}</TableCell>
-                  <TableCell>{request.type}</TableCell>
-                  <TableCell>{request.date}</TableCell>
-                  <TableCell>
-                    <Badge variant={request.status === "Approved" ? "default" : request.status === "Cancelled" ? "destructive" : "outline"}>
-                      {request.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        onClick={() => handleCancel(request.id)}
-                        className="bg-yellow-500 text-white hover:bg-yellow-600"
-                        disabled={request.status !== "Pending"}
-                      >
-                        <XCircle className="w-4 h-4 mr-1" /> Cancel
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete(request.id)}
-                        className="bg-red-500 text-white hover:bg-red-600"
-                      >
-                        <Trash2 className="w-4 h-4 mr-1" /> Delete
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+const RequestsTable = ({ requests }: { requests: any[] }) => (
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableHead>Type</TableHead>
+        <TableHead>Details</TableHead>
+        <TableHead>Date</TableHead>
+        <TableHead>Status</TableHead>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {requests.map((request, index) => (
+        <TableRow key={index}>
+          <TableCell>{request.type}</TableCell>
+          <TableCell>{request.details}</TableCell>
+          <TableCell>{request.date}</TableCell>
+          <TableCell>{request.status}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+);
+
+const Page = () => {
+  const [requests, setRequests] = useState<any>([]);
+
+  const handleFormSubmit = (newRequest: any) => {
+    setRequests([...requests, newRequest]);
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-6">Requests & Approvals</h1>
+      <RequestFormDialog onSubmit={handleFormSubmit} />
+      <RequestsTable requests={requests} />
     </div>
   );
 };
 
-export default RequestsPage;
+export default Page;
