@@ -63,10 +63,10 @@ const Sidebar = () => {
           <Link href="/" className="flex items-center text-lg font-bold">
             <Image
               alt="BRB Titans Logo"
-              src="/brb-titans-logo.png"
+              src="/brb-titans-logo.jpg"
               width={32}
               height={32}
-              className="w-8 h-8"
+              className="w-8 h-8 rounded-lg"
               priority
             />
             <span className="ml-2">BRB Titans</span>

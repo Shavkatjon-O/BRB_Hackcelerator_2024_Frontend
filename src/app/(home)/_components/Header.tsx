@@ -19,11 +19,11 @@ const Header = () => {
           <div className="md:w-1/3 w-1/2">
             <Link href="/" className="font-bold text-lg flex items-center">
               <Image 
-                src="/brb-titans-logo.png"
+                src="/brb-titans-logo.jpg"
                 alt="BRB Titans Logo"
                 width={40}
                 height={40}  
-                className="mr-2 w-8 h-8"
+                className="mr-2 w-8 h-8 rounded-lg"
                 priority
               />
               BRB Titans
