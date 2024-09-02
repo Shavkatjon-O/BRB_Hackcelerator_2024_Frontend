@@ -20,6 +20,7 @@ import {
   LogOut,
   Menu,
   X,
+  Landmark,
 } from "lucide-react";
 
 const links = [
@@ -33,6 +34,7 @@ const links = [
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/desktop-1", label: "Bank Teller", icon: Landmark },
 ];
 
 const Sidebar = () => {
