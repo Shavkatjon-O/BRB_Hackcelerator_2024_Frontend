@@ -40,10 +40,12 @@ coreApi.interceptors.response.use(
           const response = await coreApi.post('/users/token/refresh/', {
             refresh: refreshToken,
           });
-          const { accessToken } = response.data;
+          const { access, refresh } = response.data;
           
-          Cookies.set('accessToken', accessToken);
-          originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+          Cookies.set('accessToken', access);
+          Cookies.set('refreshToken', refresh);
+          
+          originalRequest.headers['Authorization'] = `Bearer ${access}`;
 
           return coreApi(originalRequest);
         } catch (error) {
