@@ -1,9 +1,9 @@
-import StreamVideoProvider from "@/providers/StreamVideoProvider";
+import StreamClientProvider from "@/providers/StreamClientProvider";
 
 export default function MeetingsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <StreamVideoProvider>
+    <StreamClientProvider>
       {children}
-    </StreamVideoProvider>
+    </StreamClientProvider>
   );
 }

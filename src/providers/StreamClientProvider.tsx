@@ -1,15 +1,15 @@
 "use client";
 
 import Cookies from "js-cookie";
-import { tokenProvider } from "../actions/streamClientTokenProvider";
-import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
-import { ReactNode, useEffect, useState } from "react";
 import { Loader } from "lucide-react";
+import { ReactNode, useEffect, useState } from "react";
+import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
+import { tokenProvider } from "@/actions/tokenProvider";
 import useUser from "@/hooks/useUser";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
 
-const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
+const StreamClientProvider = ({ children }: { children: ReactNode }) => {
   const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
   const { user, isLoaded, error } = useUser();
 
@@ -35,17 +35,10 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user, apiKey]);
 
-  if (!isLoaded) {
-    return <Loader />;
-  }
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-  if (!videoClient) {
-    return <Loader />;
-  }
-
+  if (!isLoaded || !videoClient) return <Loader />;
+  if (error) return <div>{error.message}</div>;
+  
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;
 };
 
-export default StreamVideoProvider;
+export default StreamClientProvider;
