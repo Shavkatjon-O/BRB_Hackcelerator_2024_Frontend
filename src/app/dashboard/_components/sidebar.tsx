@@ -153,14 +153,16 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <aside className={
-      `h-screen ${ isOpen ? "w-64" : "" }`
-    }>
-      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+    <aside
+      className={`h-screen bg-white border-r shadow-sm transition-all duration-300 ease-in-out ${
+        isOpen ? "w-64" : "w-20"
+      }`}
+    >
+      <nav className="h-full flex flex-col">
         <div className="p-4 pb-2 flex justify-between items-center">
           {/* <Link href="/" className="flex items-center text-lg font-bold"> */}
           <Link href="/" className={
-            `flex items-center text-lg font-bold transition-all ${ isOpen ? "block" : "hidden" }`
+            `flex items-center text-lg font-bold transition-opacity duration-200 ${ isOpen ? "block" : "hidden" }`
           }>
             <Image
               alt="BRB Titans Logo"
@@ -170,7 +172,7 @@ const Sidebar = () => {
               className="w-8 h-8 rounded-lg"
               priority
             />
-            <span className="ml-2">BRB Titans</span>
+            <span className="ml-2 text-nowrap">BRB Titans</span>
           </Link>
           <Button variant="ghost" size="icon"
             onClick={() => setIsOpen(!isOpen)}
