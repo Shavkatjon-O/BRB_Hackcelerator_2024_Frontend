@@ -21,8 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import useUser from "@/hooks/useUser";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -39,13 +38,13 @@ const links = [
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user, isLoaded, error } = useUser();
+  const { user, isLoaded } = useUser();
 
   return (
-    <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-sm bg-white dark:bg-slate-950 ${ isOpen ? "w-64" : "w-20"}`}>
+    <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-sm bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
       <div className="h-full flex flex-col justify-between">
         <div className="p-4 border-b flex justify-between items-center">
-          <Link href="/" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${ isOpen ? "block" : "hidden" }`}>
+          <Link href="/" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${isOpen ? "block" : "hidden"}`}>
             <Image
               width={32}
               height={32}
@@ -65,31 +64,27 @@ const Sidebar = () => {
           </Button>
         </div>
 
-        <div className="flex flex-col h-full space-y-4 overflow-y-scroll">
-          {
-            links.map(({ href, label, icon: Icon }) => (
-              <Button asChild variant="ghost" className="flex justify-start p-4">
-                <Link href={href}>
-                  <Icon size={24} className="mr-2" />
-                  <span className={`text-nowrap transition-opacity duration-700 ${ isOpen ? "block" : "hidden" }`}>{label}</span>
-                </Link>
-              </Button>
-            ))
-          }
-        </div>
+        <nav className="flex flex-col h-full space-y-4 overflow-y-scroll">
+          {links.map(({ href, label, icon: Icon }) => (
+            <Button key={href} asChild variant="ghost" className="flex justify-start p-4">
+              <Link href={href} className="flex items-center">
+                <Icon size={24} className="mr-2" />
+                <span className={`text-nowrap transition-opacity duration-700 ${isOpen ? "block" : "hidden"}`}>{label}</span>
+              </Link>
+            </Button>
+          ))}
+        </nav>
 
         <div className="p-4 border-t">
-          {
-            isLoaded && user && (
-              <Link href="/dashboard/profile" className="flex items-center overflow-x-hidden">
-                <Avatar className="w-12 h-12 mr-2">
-                  <AvatarImage src={user.image} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <span className={`text-sm transition-opacity duration-700 ${ isOpen ? "block" : "hidden" }`}>{user.email}</span>
-              </Link>
-            )
-          }
+          {isLoaded && user && (
+            <Link href="/dashboard/profile" className="flex items-center overflow-x-hidden">
+              <Avatar className="w-12 h-12 mr-2">
+                <AvatarImage src={user.image} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className={`text-sm transition-opacity duration-700 ${isOpen ? "block" : "hidden"}`}>{user.email}</span>
+            </Link>
+          )}
         </div>
       </div>
     </aside>
