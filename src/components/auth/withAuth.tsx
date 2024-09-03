@@ -12,7 +12,7 @@ const withAuth = (Component: React.ComponentType) => {
     const router = useRouter();
 
     useEffect(() => {
-      const accessToken = Cookies.get("access_token");
+      const accessToken = Cookies.get("accessToken");
 
       if (!accessToken) {
         router.push("/sign-in");

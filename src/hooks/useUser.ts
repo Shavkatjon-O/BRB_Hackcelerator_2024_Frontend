@@ -2,7 +2,7 @@
 
 import CoreAPI from "@/lib/coreApi";
 import { useEffect, useState } from "react";
-import { UserProfileType } from "@/types/userTypes";
+import { UserProfileType } from "@/types/authTypes";
 import Cookies from "js-cookie";
 
 const useUser = () => {

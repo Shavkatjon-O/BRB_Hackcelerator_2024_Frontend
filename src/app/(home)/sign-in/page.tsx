@@ -48,8 +48,8 @@ const SignInPage = () => {
       if (response.status === 200) {
         const { access, refresh } = response.data;
         
-        Cookies.set('access_token', access);
-        Cookies.set('refresh_token', refresh);
+        Cookies.set('accessToken', access);
+        Cookies.set('refreshToken', refresh);
 
         toast("Success", {
           description: "Sign-in successful! Redirecting...",
