@@ -29,11 +29,12 @@
     "@stream-io/node-sdk": "^0.3.1",
     "@stream-io/video-react-sdk": "^1.2.23",
     "@types/js-cookie": "^3.0.6",
-    "axios": "^1.7.5",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.31",
+    "js-cookie": "^3.0.5",
     "jsx-runtime": "^1.2.0",
     "lucide": "^0.427.0",
     "lucide-react": "^0.427.0",
@@ -52,12 +53,12 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@types/node": "^20.16.2",
-    "@types/react": "^18.3.4",
+    "@types/node": "^20.16.3",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.5",
-    "postcss": "^8.4.41",
+    "postcss": "^8.4.44",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
   }
