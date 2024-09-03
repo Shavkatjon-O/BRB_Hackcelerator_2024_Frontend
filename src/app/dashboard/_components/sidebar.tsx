@@ -65,6 +65,19 @@ const Sidebar = () => {
           </Button>
         </div>
 
+        <div className="flex flex-col h-full space-y-4 overflow-y-scroll">
+          {
+            links.map(({ href, label, icon: Icon }) => (
+              <Button asChild variant="ghost" className="flex justify-start p-4">
+                <Link href={href}>
+                  <Icon size={24} className="mr-2" />
+                  <span className={`text-nowrap transition-opacity duration-700 ${ isOpen ? "block" : "hidden" }`}>{label}</span>
+                </Link>
+              </Button>
+            ))
+          }
+        </div>
+
         <div className="p-4 border-t">
           {
             isLoaded && user && (
