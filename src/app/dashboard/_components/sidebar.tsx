@@ -64,9 +64,9 @@ const Sidebar = () => {
           </Button>
         </div>
 
-        <nav className="flex flex-col h-full space-y-2 overflow-y-auto px-2 py-4">
+        <nav className="flex flex-col h-full space-y-2 overflow-y-scroll px-2 py-4">
           {links.map(({ href, label, icon: Icon }) => (
-            <Button key={href} asChild variant="ghost" className={`w-full flex ${isOpen ? "justify-start" : "justify-center"}`}>
+            <Button key={href} asChild variant="ghost" className={`w-full h-full py-2 flex ${isOpen ? "justify-start" : "justify-center"}`}>
               <Link href={href} className="flex items-center space-x-2 p-4 w-full">
                 <Icon size={24} className="flex-shrink-0" />
                 <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"} ml-2`}>
@@ -79,7 +79,7 @@ const Sidebar = () => {
 
         <div className="p-4 border-t">
           {isLoaded && user && (
-            <Link href="/dashboard/profile" className="flex items-center overflow-x-hidden">
+            <Link href="/dashboard/profile" className="flex items-center">
               <Avatar className="w-10 h-10 mr-2">
                 <AvatarImage src={user.image} />
                 <AvatarFallback>CN</AvatarFallback>
