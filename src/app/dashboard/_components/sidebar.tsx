@@ -154,7 +154,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`h-screen bg-white border-r shadow-sm transition-all duration-300 ease-in-out ${
+      className={`h-screen bg-white dark:bg-slate-950 border-r shadow-sm transition-all duration-300 ease-in-out ${
         isOpen ? "w-64" : "w-20"
       }`}
     >
@@ -174,7 +174,7 @@ const Sidebar = () => {
             />
             <span className="ml-2 text-nowrap">BRB Titans</span>
           </Link>
-          <Button variant="ghost" size="icon"
+          <Button variant="ghost" className="w-12 h-12 p-2"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <ChevronFirst /> : <ChevronLast />}
