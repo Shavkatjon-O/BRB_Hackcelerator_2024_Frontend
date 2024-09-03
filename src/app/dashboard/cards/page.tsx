@@ -69,7 +69,7 @@ const Page = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button variant="default">
+          <Button variant="default" className='bg-blue-500 text-white'>
             <Filter className="w-4 h-4 mr-2" /> Filter
           </Button>
         </div>
