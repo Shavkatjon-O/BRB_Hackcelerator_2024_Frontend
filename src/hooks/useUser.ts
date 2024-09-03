@@ -1,39 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import CoreAPI from "@/lib/coreApi";
+import { useEffect, useState } from "react";
+import { UserProfileType } from "@/types/userTypes";
 import Cookies from "js-cookie";
 
 const useUser = () => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<UserProfileType | null>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = Cookies.get("access_token");
-
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-      
+    const fetchUserProfile = async () => {
       try {
-        const user = await getUserProfile();
-
-        setUser(user);
+        const response = await CoreAPI.get("/users/profile/");
+        setUser(response.data);
       } catch (error: any) {
-
-        setError(error);
+        setError(error.message);
       } finally {
-        setLoading(false);
+        setIsLoaded(true);
       }
-    };
+    }
+    fetchUserProfile();
+  }, []);
 
-    fetchUser();
-  } , []);
-
-  return { user, loading, error };
+  return { user, isLoaded, error };
 }
 
 export default useUser;
