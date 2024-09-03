@@ -37,7 +37,7 @@ const links = [
   { href: "/desktop-1", label: "Bank Teller", icon: Landmark },
 ];
 
-import bankTellerLinks from "../_constants/sidebarLinks";
+import bankTellerLinks from "@/constants/sidebarLinks";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
