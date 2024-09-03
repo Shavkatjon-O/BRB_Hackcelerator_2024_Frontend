@@ -67,13 +67,16 @@ const Sidebar = () => {
         <nav className="flex flex-col h-full space-y-4 overflow-y-scroll">
           {links.map(({ href, label, icon: Icon }) => (
             <Button key={href} asChild variant="ghost" className="flex justify-start p-4">
-              <Link href={href} className="flex items-center">
-                <Icon size={24} className="mr-2" />
-                <span className={`text-nowrap transition-opacity duration-700 ${isOpen ? "block" : "hidden"}`}>{label}</span>
+              <Link href={href} className="flex items-center space-x-2">
+                <Icon size={24} className="flex-shrink-0" />
+                <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"}`}>
+                  {label}
+                </span>
               </Link>
             </Button>
           ))}
         </nav>
+
 
         <div className="p-4 border-t">
           {isLoaded && user && (
