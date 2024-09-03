@@ -16,12 +16,13 @@ import {
   LogOut,
   MoreVertical,
   ChevronFirst,
-  ChevronLast, 
+  ChevronLast,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import useUser from "@/hooks/useUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -39,6 +40,7 @@ const links = [
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, isLoaded } = useUser();
+  const pathname = usePathname();
 
   return (
     <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-sm bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
@@ -64,10 +66,15 @@ const Sidebar = () => {
           </Button>
         </div>
 
-        <nav className="flex flex-col h-full space-y-2 overflow-y-scroll px-2 py-4">
+        <nav className="flex flex-col h-full space-y-3 overflow-y-scroll p-4">
           {links.map(({ href, label, icon: Icon }) => (
-            <Button key={href} asChild variant="ghost" className={`w-full h-full py-2 flex ${isOpen ? "justify-start" : "justify-center"}`}>
-              <Link href={href} className="flex items-center space-x-2 p-4 w-full">
+            <Button
+              key={href}
+              asChild
+              variant={pathname === href ? "default" : "ghost"}
+              className={`w-full px-2 flex ${isOpen ? "justify-start" : "justify-center"}`}
+            >
+              <Link href={href} className="flex items-center space-x-2 w-full">
                 <Icon size={24} className="flex-shrink-0" />
                 <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"} ml-2`}>
                   {label}
