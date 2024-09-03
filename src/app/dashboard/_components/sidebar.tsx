@@ -22,15 +22,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import useUser from "@/hooks/useUser";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { 
+  Avatar, 
+  AvatarFallback, 
+  AvatarImage 
+} from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
-
-
-// cards
-// payments
-// transactions
-// upload
+import useUser from "@/hooks/useUser";
 
 const bankTellerLinks = [
   { href: "/dashboard/cards", label: "Cards", icon: CreditCard },
@@ -62,7 +60,7 @@ const Sidebar = () => {
     <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-sm bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
       <div className="h-full flex flex-col justify-between shadow-sm">
         <div className="p-4 border-b flex justify-between items-center">
-          <Link href="/" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${isOpen ? "block" : "hidden"}`}>
+          <Link href="/dashboard" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${isOpen ? "block" : "hidden"}`}>
             <Image
               width={32}
               height={32}
