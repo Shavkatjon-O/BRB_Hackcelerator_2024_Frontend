@@ -81,7 +81,7 @@ const Sidebar = () => {
         <div className="p-4 border-t">
           {isLoaded && user && (
             <Link href="/dashboard/profile" className="flex items-center overflow-x-hidden">
-              <Avatar className="w-12 h-12 mr-2">
+              <Avatar className="w-10 h-10 mr-2">
                 <AvatarImage src={user.image} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
