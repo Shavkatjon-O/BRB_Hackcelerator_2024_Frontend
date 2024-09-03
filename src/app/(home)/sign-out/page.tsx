@@ -6,8 +6,8 @@ import Cookies from "js-cookie";
 
 const SignOutPage = () => {
   useEffect(() => {
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
 
     window.location.href = "/";
   }, []);

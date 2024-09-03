@@ -14,7 +14,7 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
   const { user, isLoaded, error } = useUser();
 
   useEffect(() => {
-    const accessToken = Cookies.get("access_token");
+    const accessToken = Cookies.get("accessToken");
 
     if (user && apiKey && accessToken) {
       tokenProvider(accessToken)

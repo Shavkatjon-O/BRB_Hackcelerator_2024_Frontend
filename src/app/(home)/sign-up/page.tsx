@@ -49,8 +49,8 @@ const SignUpPage = () => {
       if (response.status === 201) {
         const { access, refresh } = response.data;
         
-        Cookies.set('access_token', access);
-        Cookies.set('refresh_token', refresh);
+        Cookies.set('accessToken', access);
+        Cookies.set('refreshToken', refresh);
 
         toast("Success", {
           description: "Sign-up successful!",
