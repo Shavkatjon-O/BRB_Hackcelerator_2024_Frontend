@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 
 const Header = () => {
-  const { user, loading, error } = useUser();
+  const { user, isLoaded, error } = useUser();
 
   if (error) {
     console.error(error);
@@ -47,7 +47,7 @@ const Header = () => {
           
           <div className="md:w-1/3 w-1/2 flex justify-end space-x-2">
             {
-              loading ? (
+              !isLoaded ? (
                 <span>Loading...</span>
               ) : (
                 user ? (

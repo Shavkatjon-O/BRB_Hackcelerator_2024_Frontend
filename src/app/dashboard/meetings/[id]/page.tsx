@@ -11,12 +11,11 @@ import { useState } from "react";
 
 const MeetingPage = () => {
    const { id } = useParams();
-   const { loading, user } = useUser();
+   const { user, isLoaded, error } = useUser();
    const { call, isCallLoading } = useGetCallById(id);
    const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-   // if (!isLoaded || isCallLoading) return <Loader />;
-   if (loading || isCallLoading) return <Loader className="animage-spin" />;
+   if (!isLoaded || isCallLoading) return <Loader className="animage-spin" />;
 
    if (!call)
       return (
