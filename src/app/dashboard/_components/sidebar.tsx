@@ -37,6 +37,8 @@ const links = [
   { href: "/desktop-1", label: "Bank Teller", icon: Landmark },
 ];
 
+import bankTellerLinks from "../_constants/sidebarLinks";
+
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,7 +79,7 @@ const Sidebar = () => {
 
         <div className="space-y-4 px-4">
           <ul className="space-y-2">
-            {links.map((link) => (
+            {bankTellerLinks.map((link) => (
               <li key={link.href}>
                 <Button asChild variant="ghost" className="w-full justify-start" onClick={toggleSidebar}>
                   <Link href={link.href}>
