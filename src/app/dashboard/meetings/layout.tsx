@@ -1,4 +1,4 @@
-import StreamClientProvider from "@/providers/StreamClientProvider";
+import StreamClientProvider from "@/providers/stream-client-provider";
 
 export default function MeetingsLayout({ children }: { children: React.ReactNode }) {
   return (
