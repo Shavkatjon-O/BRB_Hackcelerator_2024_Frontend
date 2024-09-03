@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { Loader } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
-import { tokenProvider } from "@/actions/tokenProvider";
+import { tokenProvider } from "@/actions/token-provider";
 import useUser from "@/hooks/useUser";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
