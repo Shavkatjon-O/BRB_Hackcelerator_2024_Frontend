@@ -10,11 +10,11 @@ const Header = () => {
   const { user, isLoaded, error } = useUser();
 
   return (
-    <header className="bg-slate-950 dark:border-b h-14 flex items-center">
+    <header className="bg-white dark:bg-slate-950 border-b h-16 flex items-center shadow-sm">
       <div className="h-full container mx-auto px-4 flex items-center justify-end">
         {
           !isLoaded ? (
-            <div className="flex items-center space-x-2 text-sm text-slate-100">
+            <div className="flex items-center space-x-2 text-sm">
               <Loader className="w-4 h-4 animate-spin" />
               <span>Loading...</span>
             </div>
@@ -22,7 +22,7 @@ const Header = () => {
             <span>Error: {error.message}</span>
           ) : (
             <>
-              <Button asChild variant="link" className="text-slate-100">
+              <Button asChild variant="link">
                 <Link href="/dashboard/profile" className="space-x-2">
                   <span>{user?.email}</span>
                   <User className="w-5 h-5" />
