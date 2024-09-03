@@ -20,7 +20,6 @@ import {
   LogOut,
   Menu,
   X,
-  Landmark,
 } from "lucide-react";
 
 const links = [
@@ -34,10 +33,7 @@ const links = [
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/profile", label: "Profile", icon: User },
-  { href: "/desktop-1", label: "Bank Teller", icon: Landmark },
 ];
-
-import bankTellerLinks from "@/constants/sidebarLinks";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +75,7 @@ const Sidebar = () => {
 
         <div className="space-y-4 px-4">
           <ul className="space-y-2">
-            {bankTellerLinks.map((link) => (
+            {links.map((link) => (
               <li key={link.href}>
                 <Button asChild variant="ghost" className="w-full justify-start" onClick={toggleSidebar}>
                   <Link href={link.href}>
