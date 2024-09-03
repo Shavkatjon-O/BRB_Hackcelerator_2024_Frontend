@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { getUser } from "@/services/authServices";
-
+import CoreAPI from "@/lib/coreApi";
 import Cookies from "js-cookie";
 
 const useUser = () => {
@@ -21,7 +19,7 @@ const useUser = () => {
       }
       
       try {
-        const user = await getUser();
+        const user = await getUserProfile();
 
         setUser(user);
       } catch (error: any) {

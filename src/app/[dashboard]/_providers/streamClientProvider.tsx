@@ -1,11 +1,10 @@
 "use client";
 
-import { tokenProvider } from "@/actions/tokenProvider";
+import Cookies from "js-cookie";
+import { tokenProvider } from "../_actions/streamClientTokenProvider";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import { Loader } from "lucide-react";
-
-import Cookies from "js-cookie";
 import useUser from "@/hooks/useUser";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
@@ -15,10 +14,10 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
   const { user, loading, error } = useUser();
 
   useEffect(() => {
-    const access_token = Cookies.get("access_token");
+    const accessToken = Cookies.get("access_token");
 
-    if (user && apiKey && access_token) {
-      tokenProvider(access_token)
+    if (user && apiKey && accessToken) {
+      tokenProvider(accessToken)
         .then((token: any) => {
           const client = new StreamVideoClient({
             apiKey: apiKey,
