@@ -73,7 +73,7 @@ const Sidebar = () => {
                   <AvatarImage src={user.image} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className={`text-sm text-slate-300 transition-opacity duration-700 ${ isOpen ? "block" : "hidden" }`}>{user.email}</span>
+                <span className={`text-sm transition-opacity duration-700 ${ isOpen ? "block" : "hidden" }`}>{user.email}</span>
               </Link>
             )
           }
