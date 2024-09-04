@@ -20,7 +20,7 @@ import {
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import EndCallButton from "./EndCallButton";
+import EndCallButton from "./end-call-button";
 import { Button } from "@/components/ui/button";
 
 import { Loader } from "lucide-react";

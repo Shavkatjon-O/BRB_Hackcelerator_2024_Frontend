@@ -1,8 +1,8 @@
 "use client";
 
 import { Loader } from "lucide-react";
-import MeetingRoom from "../_components/MeetingRoom";
-import MeetingSetup from "../_components/MeetingSetup";
+import MeetingRoom from "../_components/meeting-room";
+import MeetingSetup from "../_components/meeting-room-setup";
 import { useGetCallById } from "../_hooks/useGetCallById";
 import useUser from "@/hooks/useUser";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
