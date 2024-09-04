@@ -6,8 +6,10 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
 
+import { UserProfileType } from "@/types/authTypes";
+
 interface ChatTopbarProps {
-  selectedUser: UserData;
+  selectedUser: UserProfileType;
 }
 
 export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
@@ -19,15 +21,15 @@ export default function ChatTopbar({ selectedUser }: ChatTopbarProps) {
       <div className="flex items-center gap-2">
         <Avatar className="flex justify-center items-center">
           <AvatarImage
-            src={selectedUser.avatar}
-            alt={selectedUser.name}
+            src={selectedUser.image}
+            alt={selectedUser.email}
             width={6}
             height={6}
             className="w-10 h-10 "
           />
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-medium">{selectedUser.name}</span>
+          <span className="font-medium">{selectedUser.email}</span>
           <span className="text-xs">Active 2 mins ago</span>
         </div>
       </div>

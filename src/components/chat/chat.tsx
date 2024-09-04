@@ -4,13 +4,22 @@ import { ChatList } from "./chat-list";
 import React, { useEffect, useState } from "react";
 import useChatStore from "@/hooks/useChatStore";
 
+
+import { UserProfileType } from "@/types/authTypes";
+
 interface ChatProps {
-  messages?: Message[];
-  selectedUser: UserData;
+  messages: any[];
+  selectedUser: UserProfileType;
   isMobile: boolean;
 }
 
+
 export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
+
+  if (!selectedUser) {
+    return <div>No user selected</div>; // Or any fallback UI
+  }
+  
   const messagesState = useChatStore((state) => state.messages);
 
   const sendMessage = (newMessage: Message) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { userData } from "@/app/data";
+// import { userData } from "@/app/data";
 import React, { useEffect, useState } from "react";
 import {
   ResizableHandle,
@@ -10,6 +10,30 @@ import {
 import { cn } from "@/lib/utils";
 import { Sidebar } from "../sidebar";
 import { Chat } from "./chat";
+
+import coreApi from "@/lib/coreApi";
+
+export interface UserProfileType {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  job_title: string;
+  phone_number: string;
+  date_of_birth: string;
+  address: string;
+  department: string;
+  employment_start_date: string;
+  education: string;
+  skills: string;
+  image: string;
+}
+
+
+const getUsers = async () => {
+  const response = await coreApi.get<UserProfileType[]>("/chats/users/");
+  return response.data;
+}
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -23,8 +47,20 @@ export function ChatLayout({
   navCollapsedSize,
 }: ChatLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [selectedUser, setSelectedUser] = React.useState(userData[0]);
+  const [userData, setUserData] = useState<UserProfileType[]>([]);
+  const [selectedUser, setSelectedUser] = React.useState<UserProfileType | null>(null);
+
   const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    getUsers().then((users) => {
+      setUserData(users);
+      if (users.length > 0) {
+        setSelectedUser(users[0]);
+      }
+    });
+  }, []);
+  
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -78,21 +114,25 @@ export function ChatLayout({
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
           chats={userData.map((user) => ({
-            name: user.name,
-            messages: user.messages ?? [],
-            avatar: user.avatar,
-            variant: selectedUser.name === user.name ? "secondary" : "ghost",
+            name: user.email,
+            messages: [],
+            avatar: user.image || "",
+            variant: selectedUser?.email === user.email ? "secondary" : "ghost",
           }))}
           isMobile={isMobile}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <Chat
-          messages={selectedUser.messages}
-          selectedUser={selectedUser}
-          isMobile={isMobile}
-        />
+        {selectedUser ? (
+          <Chat
+            messages={[]}
+            selectedUser={selectedUser}
+            isMobile={isMobile}
+          />
+        ) : (
+          <div>Loading...</div> // Optionally, you can show a loading indicator
+        )}
       </ResizablePanel>
     </ResizablePanelGroup>
   );

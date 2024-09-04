@@ -6,9 +6,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChatBubbleAvatar, ChatBubbleMessage, ChatBubbleTimestamp, ChatBubble } from "../ui/chat/chat-bubble";
 import { ChatMessageList } from "../ui/chat/chat-message-list";
 
+
+import { UserProfileType } from "@/types/authTypes";
+
 interface ChatListProps {
   messages: Message[];
-  selectedUser: UserData;
+  selectedUser: UserProfileType;
   sendMessage: (newMessage: Message) => void;
   isMobile: boolean;
 }
@@ -32,7 +35,7 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
       >
         <AnimatePresence>
           {messages.map((message, index) => {
-            const variant = getMessageVariant(message.name, selectedUser.name);
+            const variant = getMessageVariant(message.name, selectedUser.email);
             return (
               <motion.div
                 key={index}
