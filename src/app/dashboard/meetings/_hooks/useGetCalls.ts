@@ -1,31 +1,53 @@
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
+import useUser from "@/hooks/useUser";
 
-export const useGetCallById = (id: string | string[]) => {
-   const [call, setCall] = useState<Call>();
-   const [isCallLoading, setIsCallLoading] = useState(true);
-
+export const useGetCalls = () => {
+   const { user } = useUser();
    const client = useStreamVideoClient();
+   const [calls, setCalls] = useState<Call[]>();
+   const [isLoading, setIsLoading] = useState(false);
 
    useEffect(() => {
-      if (!client) return;
+      const loadCalls = async () => {
+         if (!client || !user?.id) return;
 
-      const loadCall = async () => {
+         setIsLoading(true);
+
          try {
             const { calls } = await client.queryCalls({
-               filter_conditions: { id },
+               sort: [{ field: "starts_at", direction: -1 }],
+               filter_conditions: {
+                  starts_at: { $exists: true },
+                  $or: [
+                     { created_by_user_id: user.id },
+                     { members: { $in: [user.id] } },
+                  ],
+               },
             });
 
-            if (calls.length > 0) setCall(calls[0]);
-            setIsCallLoading(false);
+            setCalls(calls);
          } catch (error) {
             console.error(error);
-            setIsCallLoading(false);
+         } finally {
+            setIsLoading(false);
          }
       };
 
-      loadCall();
-   }, [client, id]);
+      loadCalls();
+   }, [client, user?.id]);
 
-   return { call, isCallLoading };
+   const now = new Date();
+
+   const endedCalls = calls?.filter(
+      ({ state: { startsAt, endedAt } }: Call) => {
+         return (startsAt && new Date(startsAt) < now) || !!endedAt;
+      }
+   );
+
+   const upcomingCalls = calls?.filter(({ state: { startsAt } }: Call) => {
+      return startsAt && new Date(startsAt) > now;
+   });
+
+   return { endedCalls, upcomingCalls, callRecordings: calls, isLoading };
 };
