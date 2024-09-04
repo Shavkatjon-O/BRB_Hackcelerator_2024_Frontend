@@ -7,6 +7,7 @@ import {
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Mic, MicOff, Video, VideoOff } from "lucide-react";
 
 const MeetingSetup = ({
   setIsSetupComplete,
@@ -22,32 +23,44 @@ const MeetingSetup = ({
     );
   }
 
-  const [isMicCamToggled, setIsMicCamToggled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(true);
+  const [isCameraEnabled, setIsCameraEnabled] = useState(true);
 
   useEffect(() => {
-    if (isMicCamToggled) {
-      call.camera.disable();
-      call.microphone.disable();
-    } else {
-      call.camera.enable();
+    if (isMicEnabled) {
       call.microphone.enable();
+    } else {
+      call.microphone.disable();
     }
-  }, [isMicCamToggled, call.camera, call.microphone]);
+  }, [isMicEnabled, call.microphone]);
+
+  useEffect(() => {
+    if (isCameraEnabled) {
+      call.camera.enable();
+    } else {
+      call.camera.disable();
+    }
+  }, [isCameraEnabled, call.camera]);
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-6 shadow-md">
       <div className="w-full max-w-md">
         <VideoPreview className="mb-6 max-w-md" />
-        <div className="flex items-center justify-between mb-4">
-          <label className="flex items-center gap-2 font-medium">
-            <input
-              type="checkbox"
-              checked={isMicCamToggled}
-              onChange={(e) => setIsMicCamToggled(e.target.checked)}
-              className="form-checkbox"
-            />
-            <span>Join with mic and camera off</span>
-          </label>
+        <div className="flex items-center justify-between mb-4 gap-4">
+          <Button
+            className="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none focus:ring-2"
+            onClick={() => setIsMicEnabled(!isMicEnabled)}
+          >
+            {isMicEnabled ? <Mic size={20} /> : <MicOff size={20} />}
+            <span>{isMicEnabled ? "Mute Microphone" : "Unmute Microphone"}</span>
+          </Button>
+          <Button
+            className="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none focus:ring-2"
+            onClick={() => setIsCameraEnabled(!isCameraEnabled)}
+          >
+            {isCameraEnabled ? <Video size={20} /> : <VideoOff size={20} />}
+            <span>{isCameraEnabled ? "Turn Off Camera" : "Turn On Camera"}</span>
+          </Button>
           <DeviceSettings />
         </div>
         <Button
