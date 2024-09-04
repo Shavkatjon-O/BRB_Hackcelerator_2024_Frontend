@@ -1,96 +1,96 @@
-// const MeetingsPage = () => {
-//   return (
-//     <div>
-//       <h1>Meetings</h1>
-//     </div>
-//   );
-// }
-
-// export default MeetingsPage;
-
 "use client";
 
-
-import useUser from "@/hooks/useUser";
-import { useStreamVideoClient } from "@stream-io/video-react-sdk";
-import { useRouter } from "next/navigation";
-
+import { Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useGetCallById } from "./_hooks/useGetCallById";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import useUser from "@/hooks/useUser";
+import { useState, useEffect } from "react";
 
-const Table = ({
-   title,
-   description,
-}: {
-   title: string;
-   description: string;
-}) => {
-   return (
-      <div className="flex flex-col items-start gap-2 xl:flex-row">
-         <h1 className="text-base font-medium text-sky-1 lg:text-xl xl:min-w-32">
-            {title}:
-         </h1>
-         <h1 className="truncate text-sm font-bold max-sm:max-w-[320px] lg:text-xl">
-            {description}
-         </h1>
-      </div>
-   );
-};
+const Page = () => {
+  const { user } = useUser();
+  const meetingId = user?.id;
 
-const PersonalRoom = () => {
-   const router = useRouter();
-   const { user } = useUser();
-   const client = useStreamVideoClient();
+  const [copied, setCopied] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
-   const meetingId = user?.id;
+  if (!meetingId) {
+    return null;
+  }
 
-   const { call } = useGetCallById(meetingId!);
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/meetings/${meetingId}?personal=true`;
 
-   const startRoom = async () => {
-      if (!client || !user) return;
+  const copyLink = () => {
+    navigator.clipboard.writeText(meetingLink)
+      .then(() => {
+        setCopied(true);
+        setDisabled(true);
+        setTimeout(() => {
+          setCopied(false);
+          setDisabled(false);
+        }, 1000);
+      })
+      .catch(err => {
+        console.error("Failed to copy link: ", err);
+      });
+  };
 
-      const newCall = client.call("default", meetingId!);
-
-      if (!call) {
-         await newCall.getOrCreate({
-            data: {
-               starts_at: new Date().toISOString(),
-            },
-         });
-      }
-
-      router.push(`/dashboard/meetings/${meetingId}?personal=true`);
-   };
-
-   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/meetings/${meetingId}?personal=true`;
-
-   return (
-      <section className="flex size-full flex-col gap-10">
-         <h1 className="text-xl font-bold lg:text-3xl">
-            Personal Meeting Room
-         </h1>
-         <div className="flex w-full flex-col gap-8 xl:max-w-[900px]">
-            <Table
-               title="Topic"
-               description={`${user?.email}'s Meeting Room`}
-            />
-            <Table title="Meeting ID" description={meetingId!} />
-            <Table title="Invite Link" description={meetingLink} />
-         </div>
-         <div className="flex gap-5">
-            <Button onClick={startRoom}>
-               Start Meeting
-            </Button>
+  return (
+    <div className="p-4">
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>Create Meeting Room</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Meeting Room</DialogTitle>
+            <DialogDescription>
+              Anyone who has this link will be able to view this.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <div className="grid flex-1 gap-2">
+              <Label htmlFor="link" className="sr-only">
+                Link
+              </Label>
+              <Input
+                id="link"
+                defaultValue={meetingLink}
+                readOnly
+              />
+            </div>
             <Button
-               onClick={() => {
-                  navigator.clipboard.writeText(meetingLink);
-               }}
+              type="button"
+              size="sm"
+              className="px-3"
+              onClick={copyLink}
+              disabled={disabled}
             >
-               Copy Invitation
+              <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </Button>
-         </div>
-      </section>
-   );
-};
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
-export default PersonalRoom;
+export default Page;
