@@ -8,7 +8,7 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
-import { LayoutList, Users } from "lucide-react";
+import { LayoutList, Users, ChartNoAxesCombined } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import '@stream-io/video-react-sdk/dist/css/styles.css';
@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import EndCallButton from "./end-call-button";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -33,7 +34,6 @@ const MeetingRoom = () => {
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
-
   const callingState = useCallCallingState();
 
   if (callingState !== CallingState.JOINED) return <Loader />;
@@ -54,7 +54,7 @@ const MeetingRoom = () => {
     <section className="size-full flex flex-col p-4">
 
       <div className="size-full flex items-center justify-center overflow-y-scroll">
-        <div className="flex size-full max-w-[1200px] items-center">
+        <div className="flex size-full max-w-[900px] items-center">
           {renderCallLayout()}
           {/* <div
             className={cn(
@@ -72,16 +72,24 @@ const MeetingRoom = () => {
         </div>
       </div>
 
-
       <div className="w-full gap-4 flex items-center justify-center">
         <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
         
-        {/* <CallStatsButton /> */}
+        <Popover>
+          <PopoverTrigger>
+            <Button className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]" size="icon">
+              <ChartNoAxesCombined size={18} className="text-white" fill="currentColor" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="bg-[#19232d] text-white border-none w-[500px] h-[500px] mb-4 overflow-scroll rounded-lg shadow-lg">
+            <CallStats />
+          </PopoverContent>
+        </Popover>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Button className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-              <LayoutList size={20} className="text-white" />
+            <Button className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]" size="icon">
+              <LayoutList size={18} className="text-white" fill="currentColor" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -98,9 +106,10 @@ const MeetingRoom = () => {
         
         <Button 
           onClick={() => setShowParticipants(prev => !prev)}
-          className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]"
+          className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]"
+          size="icon"
         >
-          <Users size={20} className="text-white" />
+          <Users size={18} className="text-white" fill="currentColor" />
         </Button>
 
         {!isPersonalRoom && <EndCallButton />}
