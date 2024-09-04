@@ -6,9 +6,8 @@ import {
    useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
-
-// import Alert from "./Alert";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const MeetingSetup = ({
    setIsSetupComplete,
@@ -41,8 +40,7 @@ const MeetingSetup = ({
 
 
    return (
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white">
-         <h1 className="text-center text-2xl font-bold">Setup</h1>
+      <div className="w-full h-full flex flex-col justify-center items-center">
          <VideoPreview />
          <div className="flex h-16 items-center justify-center gap-3">
             <label className="flex items-center justify-center gap-2 font-medium">

@@ -31,9 +31,9 @@ const MeetingPage = () => {
    if (notAllowed) return console.log("You are not allowed to join this call");
 
    return (
-      <main className="h-screen w-full">
+      <main className="h-full">
          <StreamCall call={call}>
-            <StreamTheme>
+            <StreamTheme className="w-full h-full">
                {!isSetupComplete ? (
                   <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
                ) : (
