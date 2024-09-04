@@ -48,7 +48,7 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
 
   return (
     <div className="relative border-l border-gray-200" ref={calendarRef}>
-      <h3 className="text-lg font-semibold mb-4 ml-4">{format(currentDate, "MMMM d, yyyy")}</h3>
+      <h3 className="text-lg font-semibold mb-4">{format(currentDate, "MMMM d, yyyy")}</h3>
       <div className="relative grid grid-cols-1">
         {hours.map((hour) => (
           <div
