@@ -71,7 +71,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       <div className="fixed bottom-0 w-full z-50 flex items-center justify-center gap-4 py-4">
-        <CallControls onLeave={() => router.push("/dashboard/meetings")} />
+        <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
         <DropdownMenu>
           <DropdownMenuTrigger className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <LayoutList size={20} className="text-white" />
