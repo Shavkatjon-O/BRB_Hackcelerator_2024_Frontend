@@ -102,7 +102,7 @@ const CalendarPage: React.FC = () => {
         <Button variant={view === "list" ? "default" : "outline"} onClick={() => setView("list")}>List</Button>
       </div>
 
-      {view === "daily" && <CalendarDailyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+      {view === "daily" && <CalendarDailyView events={events} currentDate={currentDate} />}
       {view === "weekly" && <CalendarWeeklyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
       {view === "monthly" && <CalendarMonthlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
       {view === "yearly" && <CalendarYearlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
