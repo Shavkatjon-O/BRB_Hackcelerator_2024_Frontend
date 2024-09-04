@@ -46,25 +46,27 @@ const MeetingSetup = ({
     <div className="w-full h-full flex flex-col justify-center items-center p-6 shadow-md">
       <div className="w-full max-w-md">
         <VideoPreview className="mb-6 max-w-md" />
-        <div className="flex items-center justify-between mb-4 gap-4">
+        <div className="flex items-center justify-between mb-4 gap-2">
           <Button
-            className="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none focus:ring-2"
+            variant="outline"
+            className="flex items-center gap-2 w-full"
             onClick={() => setIsMicEnabled(!isMicEnabled)}
           >
             {isMicEnabled ? <Mic size={20} /> : <MicOff size={20} />}
             <span>{isMicEnabled ? "Mute Microphone" : "Unmute Microphone"}</span>
           </Button>
           <Button
-            className="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none focus:ring-2"
+            variant="outline"
+            className="flex items-center gap-2 w-full"
             onClick={() => setIsCameraEnabled(!isCameraEnabled)}
           >
             {isCameraEnabled ? <Video size={20} /> : <VideoOff size={20} />}
             <span>{isCameraEnabled ? "Turn Off Camera" : "Turn On Camera"}</span>
           </Button>
-          <DeviceSettings />
+          <div className="text-white"><DeviceSettings /></div>
         </div>
         <Button
-          className="w-full rounded-md px-4 py-2.5 focus:outline-none focus:ring-2"
+          className="w-full"
           onClick={() => {
             call.join();
             setIsSetupComplete(true);
