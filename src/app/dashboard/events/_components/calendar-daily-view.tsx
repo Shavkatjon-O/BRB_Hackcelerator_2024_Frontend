@@ -47,13 +47,13 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
   }, [currentDate]);
 
   return (
-    <div className="relative border-l border-gray-200" ref={calendarRef}>
+    <div className="relative border-l border-r" ref={calendarRef}>
       <h3 className="text-lg font-semibold mb-4">{format(currentDate, "MMMM d, yyyy")}</h3>
       <div className="relative grid grid-cols-1">
         {hours.map((hour) => (
           <div
             key={hour}
-            className="relative h-32 border-t border-gray-200"
+            className="relative h-32 border-t"
           >
             <div className="absolute top-2 left-2 text-xs text-gray-500">
               {format(new Date(currentDate.setHours(hour, 0, 0)), "HH:mm")}
@@ -66,7 +66,7 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
             className="absolute left-0 right-0 h-0.5 bg-red-500"
             style={currentTimePositionStyle()}
           >
-            <div className="absolute left-2 -top-2 text-xs text-red-500">
+            <div className="absolute left-2 -top-6 text-xs text-red-500">
               {format(new Date(), "HH:mm")}
             </div>
           </div>
