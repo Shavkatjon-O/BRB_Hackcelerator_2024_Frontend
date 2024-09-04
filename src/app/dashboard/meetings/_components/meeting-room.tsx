@@ -2,7 +2,7 @@
 import {
   CallControls,
   CallParticipantsList,
-  CallStatsButton,
+  CallStats,
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
@@ -43,20 +43,20 @@ const MeetingRoom = () => {
       case "grid":
         return <PaginatedGridLayout />;
       case "speaker-right":
-        return <SpeakerLayout participantsBarPosition="left" />;
+        return <SpeakerLayout participantsBarPosition="left" participantsBarLimit={3} />;
       case "speaker-left":
       default:
-        return <SpeakerLayout participantsBarPosition="right" />;
+        return <SpeakerLayout participantsBarPosition="right" participantsBarLimit={3} />;
     }
   };
 
   return (
-    <section className="w-full h-full flex flex-col p-4">
+    <section className="size-full flex flex-col p-4">
 
-      {/* <div className="w-full h-5/6 flex items-center justify-center">
-        <div className="relative flex size-full max-w-[1000px] items-center">
+      <div className="size-full flex items-center justify-center overflow-y-scroll">
+        <div className="flex size-full max-w-[1200px] items-center">
           {renderCallLayout()}
-          <div
+          {/* <div
             className={cn(
               "absolute top-0 right-0 h-full w-full p-4 rounded-lg bg-gray-800 transition-transform",
               {
@@ -68,16 +68,16 @@ const MeetingRoom = () => {
             <CallParticipantsList
               onClose={() => setShowParticipants(false)}
             />
-          </div>
+          </div> */}
         </div>
-      </div> */}
+      </div>
 
 
       <div className="w-full gap-4 flex items-center justify-center">
         <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
         
-        <CallStatsButton />
-        
+        {/* <CallStatsButton /> */}
+
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
