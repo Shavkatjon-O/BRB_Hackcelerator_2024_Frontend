@@ -51,8 +51,9 @@ const MeetingRoom = () => {
   };
 
   return (
-    <section className="w-full h-full p-4">
-      <div className="w-full h-full flex items-center justify-center">
+    <section className="w-full h-full flex flex-col p-4">
+
+      {/* <div className="w-full h-5/6 flex items-center justify-center">
         <div className="relative flex size-full max-w-[1000px] items-center">
           {renderCallLayout()}
           <div
@@ -69,30 +70,39 @@ const MeetingRoom = () => {
             />
           </div>
         </div>
-      </div>
-      <div className="fixed bottom-0 w-full z-50 flex items-center justify-center gap-4 py-4">
+      </div> */}
+
+
+      <div className="w-full gap-4 flex items-center justify-center">
         <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
+        
+        <CallStatsButton />
+        
         <DropdownMenu>
-          <DropdownMenuTrigger className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-            <LayoutList size={20} className="text-white" />
+          <DropdownMenuTrigger>
+            <Button className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+              <LayoutList size={20} className="text-white" />
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="border-dark-1 bg-dark-1 text-white">
+          <DropdownMenuContent>
             {["Grid", "Speaker-Left", "Speaker-Right"].map((item, index) => (
               <div key={index}>
-                <DropdownMenuItem
-                  onClick={() => setLayout(item.toLowerCase() as CallLayoutType)}
-                >
+                <DropdownMenuItem onClick={() => setLayout(item.toLowerCase() as CallLayoutType)}>
                   {item}
                 </DropdownMenuItem>
-                {index < 2 && <DropdownMenuSeparator className="border-dark-1" />}
+                {index < 2 && <DropdownMenuSeparator />}
               </div>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <CallStatsButton />
-        <Button onClick={() => setShowParticipants(prev => !prev)}>
-          <Users size={20} />
+        
+        <Button 
+          onClick={() => setShowParticipants(prev => !prev)}
+          className="cursor-pointer rounded-lg bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]"
+        >
+          <Users size={20} className="text-white" />
         </Button>
+
         {!isPersonalRoom && <EndCallButton />}
       </div>
     </section>

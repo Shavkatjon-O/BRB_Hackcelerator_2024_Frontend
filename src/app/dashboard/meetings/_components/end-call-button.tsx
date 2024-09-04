@@ -30,7 +30,7 @@ const EndCallButton = () => {
    };
 
    return (
-      <Button onClick={endCall} className="bg-red-500">
+      <Button onClick={endCall} className="bg-red-500 hover:bg-red-400 text-white">
          End call for everyone
       </Button>
    );
