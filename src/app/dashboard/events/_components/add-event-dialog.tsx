@@ -1,63 +1,111 @@
 "use client";
 
 import { useState } from "react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { EventType } from "../_types/event";
+import { createEvent } from "@/services/eventsServices"; // Importing createEvent function
 
 interface EventFormDialogProps {
   isDialogOpen: boolean;
   setIsDialogOpen: (isOpen: boolean) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>, eventData: Partial<EventType>) => void;
 }
 
-const EventFormDialog: React.FC<EventFormDialogProps> = ({ isDialogOpen, setIsDialogOpen, handleSubmit }) => {
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+const EventFormDialog: React.FC<EventFormDialogProps> = ({ isDialogOpen, setIsDialogOpen }) => {
+  const [eventData, setEventData] = useState({
+    title: "",
+    description: "",
+    startDate: "",
+    startTime: "",
+    endDate: "",
+    endTime: ""
+  });
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setEventData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    try {
+      const newEvent = {
+        title: eventData.title,
+        description: eventData.description,
+        start_date: new Date(`${eventData.startDate}T${eventData.startTime}`),
+        end_date: new Date(`${eventData.endDate}T${eventData.endTime}`)
+      };
 
-    handleSubmit(e, {
-      title: "Event Title",
-      description: "Event Description",
-      start_date: new Date(startDate + 'T' + startTime),
-      end_date: new Date(endDate + 'T' + endTime)
-    });
-  }
+      await createEvent(newEvent); // Making the backend request to create the event
+      setIsDialogOpen(false);
+      
+      // Optionally, add a success notification or refresh the event list here
+    } catch (error) {
+      console.error("Failed to create event:", error);
+      // Optionally, handle errors (e.g., show an error message)
+    }
+  };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsDialogOpen(true)}>Create Event</Button>
+        <Button onClick={() => setIsDialogOpen(true)}><CalendarIcon /> Add Event</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
-          <DialogDescription>Fill in the details of your event.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleFormSubmit}>
-          <div className="space-y-4">
-            <Input type="text" placeholder="Event Title" required />
-            <Textarea placeholder="Event Description" required />
-            <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
-            <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
-            <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
-            <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+        <form onSubmit={handleFormSubmit} className="space-y-4">
+          <Input 
+            type="text" 
+            name="title" 
+            placeholder="Event Title" 
+            value={eventData.title} 
+            onChange={handleChange} 
+            required 
+          />
+          <Textarea 
+            name="description" 
+            placeholder="Event Description" 
+            value={eventData.description} 
+            onChange={handleChange} 
+            required 
+          />
+          <div className="flex space-x-4">
+            <Input 
+              type="date" 
+              name="startDate" 
+              value={eventData.startDate} 
+              onChange={handleChange} 
+              required 
+            />
+            <Input 
+              type="time" 
+              name="startTime" 
+              value={eventData.startTime} 
+              onChange={handleChange} 
+              required 
+            />
+          </div>
+          <div className="flex space-x-4">
+            <Input 
+              type="date" 
+              name="endDate" 
+              value={eventData.endDate} 
+              onChange={handleChange} 
+              required 
+            />
+            <Input 
+              type="time" 
+              name="endTime" 
+              value={eventData.endTime} 
+              onChange={handleChange} 
+              required 
+            />
           </div>
           <Button type="submit" className="mt-4">Submit</Button>
         </form>
