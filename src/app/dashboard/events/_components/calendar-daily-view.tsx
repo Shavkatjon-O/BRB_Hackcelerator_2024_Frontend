@@ -1,32 +1,97 @@
 "use client";
 
-import { createEvent, getEvent, getEventsList, updateEvent, deleteEvent } from "@/services/eventsServices";
-
-import { useState, useEffect } from "react";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, eachDayOfInterval as eachWeekDayOfInterval, startOfYear, endOfYear, eachMonthOfInterval, isToday, isSameMonth } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useRef } from "react";
+import { format, isToday, differenceInMinutes, getHours, getMinutes } from "date-fns";
 import { EventType } from "../_types/event";
 
-const CalendarDailyView: React.FC<{ events: EventType[], currentDate: Date, onDateClick: (date: Date) => void }> = ({ events, currentDate, onDateClick }) => {
-  const eventsByDate = events.filter(event => new Date(event.start_date).toDateString() === currentDate.toDateString());
+interface CalendarDailyViewProps {
+  events: EventType[];
+  currentDate: Date;
+}
+
+const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDate }) => {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  const getEventPositionStyle = (event: EventType) => {
+    const eventStart = new Date(event.start_date);
+    const eventEnd = new Date(event.end_date);
+    const startMinutes = eventStart.getHours() * 60 + eventStart.getMinutes();
+    const duration = differenceInMinutes(eventEnd, eventStart);
+
+    return {
+      top: `${(startMinutes / (24 * 60)) * 100}%`,
+      height: `${(duration / (24 * 60)) * 100}%`,
+    };
+  };
+
+  const eventsByDate = events.filter(
+    (event) => new Date(event.start_date).toDateString() === currentDate.toDateString()
+  );
+
+  const currentTimePositionStyle = () => {
+    const now = new Date();
+    const minutesSinceMidnight = getHours(now) * 60 + getMinutes(now);
+    return {
+      top: `${(minutesSinceMidnight / (24 * 60)) * 100}%`,
+    };
+  };
+
+  useEffect(() => {
+    if (calendarRef.current && isToday(currentDate)) {
+      const now = new Date();
+      const minutesSinceMidnight = getHours(now) * 60 + getMinutes(now);
+      const scrollToPosition = (minutesSinceMidnight / (24 * 60)) * calendarRef.current.scrollHeight;
+      calendarRef.current.scrollTop = scrollToPosition - 100;
+    }
+  }, [currentDate]);
+
   return (
-    <div className="grid grid-cols-1 gap-4">
-      <h3 className="text-lg font-semibold">{format(currentDate, "MMMM d, yyyy")}</h3>
-      {eventsByDate.length ? (
-        eventsByDate.map(event => (
-          <div key={event.id} className="border p-2 rounded-md bg-white shadow-md">
-            <div className="font-bold">{event.title}</div>
-            <div>{format(new Date(event.start_date), "h:mm a")} - {format(new Date(event.end_date), "h:mm a")}</div>
-            <div className="text-sm text-gray-500">{event.description}</div>
+    <div className="relative border-l border-gray-200" ref={calendarRef}>
+      <h3 className="text-lg font-semibold mb-4 ml-4">{format(currentDate, "MMMM d, yyyy")}</h3>
+      <div className="relative grid grid-cols-1">
+        {hours.map((hour) => (
+          <div
+            key={hour}
+            className="relative h-32 border-t border-gray-200"
+          >
+            <div className="absolute top-2 left-2 text-xs text-gray-500">
+              {format(new Date(currentDate.setHours(hour, 0, 0)), "HH:mm")}
+            </div>
           </div>
-        ))
-      ) : (
-        <div className="text-center text-gray-500">No events for today</div>
-      )}
+        ))}
+
+        {isToday(currentDate) && (
+          <div
+            className="absolute left-0 right-0 h-0.5 bg-red-500"
+            style={currentTimePositionStyle()}
+          >
+            <div className="absolute left-2 -top-2 text-xs text-red-500">
+              {format(new Date(), "HH:mm")}
+            </div>
+          </div>
+        )}
+
+        {eventsByDate.length > 0 ? (
+          eventsByDate.map((event) => (
+            <div
+              key={event.id}
+              className="absolute left-0 right-0 p-4 m-2 rounded-md bg-blue-500 text-white shadow-md"
+              style={getEventPositionStyle(event)}
+            >
+              <div className="font-bold">{event.title}</div>
+              <div className="text-xs">
+                {format(new Date(event.start_date), "HH:mm")} - {format(new Date(event.end_date), "HH:mm")}
+              </div>
+              <div className="text-sm">{event.description}</div>
+            </div>
+          ))
+        ) : (
+          <div className="absolute inset-0 flex justify-center items-center text-gray-500">
+            No events for today
+          </div>
+        )}
+      </div>
     </div>
   );
 };
