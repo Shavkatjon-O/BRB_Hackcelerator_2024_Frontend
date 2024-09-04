@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky w-full h-14 top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky w-full h-14 top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:text-white">
         <div className="h-full container flex justify-between items-center">
           <div className="md:w-1/3 w-1/2">
             <Link href="/" className="font-bold text-lg flex items-center">
@@ -32,16 +32,16 @@ const Header = () => {
 
           <nav className="w-1/3 hidden md:flex items-center justify-center">
             <Link href="/">
-              <Button variant="link" className='text-gray-600'>Home</Button>
+              <Button variant="link" className='text-gray-600 dark:text-white'>Home</Button>
             </Link>
             <Link href="">
-              <Button variant="link" className='text-gray-600'>About</Button>
+              <Button variant="link" className='text-gray-600 dark:text-white'>About</Button>
             </Link>
             <Link href="">
-              <Button variant="link" className='text-gray-600'>Services</Button>
+              <Button variant="link" className='text-gray-600 dark:text-white'>Services</Button>
             </Link>
             <Link href="">
-              <Button variant="link" className='text-gray-600'>Contact</Button>
+              <Button variant="link" className='text-gray-600 dark:text-white'>Contact</Button>
             </Link>
           </nav>
           
