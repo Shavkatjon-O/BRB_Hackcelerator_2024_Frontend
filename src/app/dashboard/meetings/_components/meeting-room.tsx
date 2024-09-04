@@ -52,29 +52,15 @@ const MeetingRoom = () => {
 
   return (
     <section className="size-full flex flex-col p-4">
-
       <div className="size-full flex items-center justify-center overflow-y-scroll">
         <div className="flex size-full max-w-[900px] items-center">
           {renderCallLayout()}
-          {/* <div
-            className={cn(
-              "absolute top-0 right-0 h-full w-full p-4 rounded-lg bg-gray-800 transition-transform",
-              {
-                "translate-x-0": showParticipants,
-                "translate-x-full": !showParticipants,
-              }
-            )}
-          >
-            <CallParticipantsList
-              onClose={() => setShowParticipants(false)}
-            />
-          </div> */}
         </div>
       </div>
 
       <div className="w-full gap-4 flex items-center justify-center">
         <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
-        
+
         <Popover>
           <PopoverTrigger>
             <Button className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]" size="icon">
@@ -103,14 +89,23 @@ const MeetingRoom = () => {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        
-        <Button 
-          onClick={() => setShowParticipants(prev => !prev)}
-          className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]"
-          size="icon"
-        >
-          <Users size={18} className="text-white" fill="currentColor" />
-        </Button>
+
+        <Popover>
+          <PopoverTrigger>
+            <Button 
+              onClick={() => setShowParticipants(prev => !prev)}
+              className="cursor-pointer rounded-full bg-[#19232d] hover:bg-[#4c535b]"
+              size="icon"
+            >
+              <Users size={18} className="text-white" fill="currentColor" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="bg-[#19232d] text-white border-none w-[500px] h-[500px] mb-4 overflow-scroll rounded-lg shadow-lg">
+            <CallParticipantsList onClose={
+              () => setShowParticipants(false)
+            } />
+          </PopoverContent>
+        </Popover>
 
         {!isPersonalRoom && <EndCallButton />}
       </div>
