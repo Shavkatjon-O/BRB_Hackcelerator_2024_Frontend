@@ -38,27 +38,31 @@ const MeetingRoom = () => {
 
   if (callingState !== CallingState.JOINED) return <Loader />;
 
-  const CallLayout = () => {
+  const renderCallLayout = () => {
     switch (layout) {
       case "grid":
         return <PaginatedGridLayout />;
       case "speaker-right":
         return <SpeakerLayout participantsBarPosition="left" />;
+      case "speaker-left":
       default:
         return <SpeakerLayout participantsBarPosition="right" />;
     }
   };
 
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-full p-4">
       <div className="w-full h-full flex items-center justify-center">
         <div className="relative flex size-full max-w-[1000px] items-center">
-          <CallLayout />
+          {renderCallLayout()}
           <div
-            className={cn("absolute top-0 right-0 h-full w-1/4 bg-gray-800 transition-transform", {
-              "translate-x-0": showParticipants,
-              "translate-x-full": !showParticipants,
-            })}
+            className={cn(
+              "absolute top-0 right-0 h-full w-full p-4 rounded-lg bg-gray-800 transition-transform",
+              {
+                "translate-x-0": showParticipants,
+                "translate-x-full": !showParticipants,
+              }
+            )}
           >
             <CallParticipantsList
               onClose={() => setShowParticipants(false)}
