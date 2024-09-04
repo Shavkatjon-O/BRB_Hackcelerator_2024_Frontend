@@ -15,12 +15,12 @@ interface ChatProps {
 
 
 export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
+  const messagesState = useChatStore((state) => state.messages);
 
   if (!selectedUser) {
     return <div>No user selected</div>; // Or any fallback UI
   }
   
-  const messagesState = useChatStore((state) => state.messages);
 
   const sendMessage = (newMessage: Message) => {
     useChatStore.setState((state) => ({
