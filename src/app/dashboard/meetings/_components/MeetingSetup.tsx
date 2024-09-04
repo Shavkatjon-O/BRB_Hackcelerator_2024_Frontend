@@ -1,45 +1,30 @@
 "use client";
+
 import {
-  DeviceSettings,
   VideoPreview,
+  DeviceSettings,
   useCall,
-  useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Mic, MicOff, Video, VideoOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const MeetingSetup = ({
-  setIsSetupComplete,
-}: {
-  setIsSetupComplete: (value: boolean) => void;
-}) => {
-  const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
+const MeetingSetup = ({ setIsSetupComplete }: { setIsSetupComplete: (value: boolean) => void }) => {
   const call = useCall();
 
   if (!call) {
-    throw new Error(
-      "useStreamCall must be used within a StreamCall component."
-    );
+    throw new Error("useStreamCall must be used within a StreamCall component.");
   }
 
   const [isMicEnabled, setIsMicEnabled] = useState(true);
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
 
   useEffect(() => {
-    if (isMicEnabled) {
-      call.microphone.enable();
-    } else {
-      call.microphone.disable();
-    }
+    isMicEnabled ? call.microphone.enable() : call.microphone.disable();
   }, [isMicEnabled, call.microphone]);
 
   useEffect(() => {
-    if (isCameraEnabled) {
-      call.camera.enable();
-    } else {
-      call.camera.disable();
-    }
+    isCameraEnabled ? call.camera.enable() : call.camera.disable();
   }, [isCameraEnabled, call.camera]);
 
   return (
@@ -50,7 +35,7 @@ const MeetingSetup = ({
           <Button
             variant="outline"
             className="flex items-center gap-2 w-full"
-            onClick={() => setIsMicEnabled(!isMicEnabled)}
+            onClick={() => setIsMicEnabled(prev => !prev)}
           >
             {isMicEnabled ? <Mic size={20} /> : <MicOff size={20} />}
             <span>{isMicEnabled ? "Mute Microphone" : "Unmute Microphone"}</span>
@@ -58,12 +43,14 @@ const MeetingSetup = ({
           <Button
             variant="outline"
             className="flex items-center gap-2 w-full"
-            onClick={() => setIsCameraEnabled(!isCameraEnabled)}
+            onClick={() => setIsCameraEnabled(prev => !prev)}
           >
             {isCameraEnabled ? <Video size={20} /> : <VideoOff size={20} />}
             <span>{isCameraEnabled ? "Turn Off Camera" : "Turn On Camera"}</span>
           </Button>
-          <div className="text-white"><DeviceSettings /></div>
+          <div className="text-white">
+            <DeviceSettings />
+          </div>
         </div>
         <Button
           className="w-full"
@@ -72,7 +59,7 @@ const MeetingSetup = ({
             setIsSetupComplete(true);
           }}
         >
-          Join meeting
+          Join Meeting
         </Button>
       </div>
     </div>
