@@ -15,7 +15,11 @@ const MeetingPage = () => {
    const { call, isCallLoading } = useGetCallById(id);
    const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-   if (!isLoaded || isCallLoading) return <Loader className="animage-spin" />;
+   if (!isLoaded || isCallLoading) return (
+      <div className="h-full flex items-center justify-center">
+         <Loader size={20} className="dark:text-white animate-spin" />
+      </div>
+   );
 
    if (!call)
       return (

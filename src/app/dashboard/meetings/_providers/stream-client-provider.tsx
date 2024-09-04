@@ -35,7 +35,11 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user, apiKey]);
 
-  if (!isLoaded || !videoClient) return <Loader />;
+  if (!isLoaded || !videoClient) return (
+    <div className="h-full flex items-center justify-center">
+      <Loader size={20} className="dark:text-white animate-spin" />
+    </div>
+  );
   if (error) return <div>{error.message}</div>;
   
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;

@@ -1,5 +1,7 @@
 "use client";
 
+import '@stream-io/video-react-sdk/dist/css/styles.css';
+
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -32,7 +34,6 @@ import {
 import EndCallButton from "./end-call-button";
 import { Button } from "@/components/ui/button";
 
-
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 const MeetingRoom = () => {
@@ -43,7 +44,11 @@ const MeetingRoom = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const callingState = useCallCallingState();
 
-  if (callingState !== CallingState.JOINED) return <Loader />;
+  if (callingState !== CallingState.JOINED) return (
+    <div className="h-full flex items-center justify-center">
+      <Loader size={20} className="dark:text-white animate-spin" />
+    </div>
+  );
 
   const renderCallLayout = () => {
     switch (layout) {
