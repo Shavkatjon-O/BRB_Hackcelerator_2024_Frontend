@@ -9,11 +9,11 @@ interface UserProfileType {
   image: string;
 }
 
-export interface Message {
+interface Message {
   id: number;
-  message?: string;
+  created_at: string;
+  text: string;
   isLoading?: boolean;
-  timestamp?: string;
 }
 
 interface State {
