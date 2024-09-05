@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import coreApi from "@/lib/coreApi";
 
-
 interface UserProfileType {
   id: number;
   email: string;
@@ -12,8 +11,6 @@ interface UserProfileType {
 
 export interface Message {
   id: number;
-  avatar: string;
-  name: string;
   message?: string;
   isLoading?: boolean;
   timestamp?: string;
@@ -73,17 +70,19 @@ const useChatStore = create<State & Actions>((set, get) => ({
     }
   },
 
-  setMessages: (fn) => set(({ messages }) => ({ messages: fn(messages) })),
+  setMessages: (fn) => set((state) => ({ messages: fn(state.messages) })),
 
   setHasInitialResponse: (hasInitialResponse) =>
     set({ hasInitialResponse }),
 
   fetchUsers: async () => {
+    set({ isLoading: true, error: null });
     try {
       const response = await coreApi.get('/users');
-      set({ users: response.data });
+      set({ users: response.data, isLoading: false });
     } catch (error) {
       set({
+        isLoading: false,
         error: error instanceof Error ? error.message : "An error occurred",
       });
     }
@@ -92,18 +91,26 @@ const useChatStore = create<State & Actions>((set, get) => ({
   setUsers: (users) => set({ users }),
 
   selectUser: async (userId) => {
-    const user = get().users.find((user) => user.id === userId) || null;
-    if (!user) {
-      await get().fetchUsers();
-      const updatedUser = get().users.find((user) => user.id === userId) || null;
-      set({ selectedUser: updatedUser });
+    const { users } = get();
+    const user = users.find((user) => user.id === userId) || null;
 
-      if (updatedUser) {
-        get().fetchMessages(updatedUser.id);
+    if (!user) {
+      try {
+        await get().fetchUsers();
+        const updatedUser = get().users.find((user) => user.id === userId) || null;
+        set({ selectedUser: updatedUser });
+
+        if (updatedUser) {
+          await get().fetchMessages(updatedUser.id);
+        }
+      } catch (error) {
+        set({
+          error: error instanceof Error ? error.message : "An error occurred",
+        });
       }
     } else {
       set({ selectedUser: user });
-      get().fetchMessages(user.id);
+      await get().fetchMessages(user.id);
     }
   },
 }));
