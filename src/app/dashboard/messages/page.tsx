@@ -1,41 +1,43 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-
-import { DefaultUserAvatar } from "./_components/DefaultUserAvatar";
+import { Button } from "@/components/ui/button";
 import coreApi from "@/lib/coreApi";
+import Link from "next/link";
 
 interface UserType {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
-  image: string;
 }
 
 const Page = () => {
   const [users, setUsers] = useState<UserType[]>([]);
-
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  
   useEffect(() => {
     coreApi.get("/chats/users/").then((response) => {
       setUsers(response.data);
+    }).catch((error) => {
+      setError(error.message);
+    }).finally(() => {
+      setIsLoaded(true);
     });
   }, []);
 
+  if (!isLoaded) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  console.log(users);
+  
   return (
     <div className="flex flex-col space-y-4 p-4">
       {users.map((user) => (
-        <Link key={user.id} href={`/dashboard/messages/${user.id}`}>
-          <div className="w-full flex items-center space-x-4 border p-4">
-            <DefaultUserAvatar />
-            <div className="flex flex-col">
-              <span>{user.first_name} {user.last_name}</span>
-              <span className="text-sm">{user.email}</span>
-            </div>
-          </div>
-        </Link>
+        <Button key={user.id} asChild>
+          <Link href={`/dashboard/messages/${user.id}`}>
+            <span>{user.email}</span>
+          </Link>
+        </Button>
       ))}
     </div>
   );
