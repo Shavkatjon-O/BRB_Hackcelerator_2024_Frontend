@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { MoreHorizontal, SquarePen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -11,21 +12,64 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Message } from "@/app/data";
+
+interface Message {
+  id: number;
+  created_at: string;
+  text: string;
+  isLoaded: boolean;
+}
+
+interface Chat {
+  id: number;
+  name: string;
+  messages: Message[];
+  avatar: string;
+  variant: "secondary" | "ghost";
+}
 
 interface SidebarProps {
   isCollapsed: boolean;
-  chats: {
-    name: string;
-    messages: Message[];
-    avatar: string;
-    variant: "secondary" | "ghost";
-  }[];
+  chats: Chat[];
   onClick?: () => void;
   isMobile: boolean;
+  userId: number;
 }
 
-export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
+export function Sidebar({
+  chats,
+  isCollapsed,
+  isMobile,
+  userId,
+}: SidebarProps) {
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  const [chatMessages, setChatMessages] = useState<Record<number, Message[]>>(
+    chats.reduce((acc, chat) => {
+      acc[chat.id] = chat.messages;
+      return acc;
+    }, {} as Record<number, Message[]>)
+  );
+
+  useEffect(() => {
+    if (userId) {
+      const websocket = new WebSocket(`ws://localhost:8001/ws/chats/${userId}/`);
+      setWs(websocket);
+
+      websocket.onmessage = (event) => {
+        const { chatId, message }: { chatId: number; message: Message } = JSON.parse(event.data);
+
+        setChatMessages((prevMessages) => ({
+          ...prevMessages,
+          [chatId]: [...(prevMessages[chatId] || []), message],
+        }));
+      };
+
+      return () => {
+        websocket.close();
+      };
+    }
+  }, [userId]);
+
   return (
     <div
       data-collapsed={isCollapsed}
@@ -62,10 +106,10 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {chats.map((chat, index) =>
+        {chats.map((chat) =>
           isCollapsed ? (
-            <TooltipProvider key={index}>
-              <Tooltip key={index} delayDuration={0}>
+            <TooltipProvider key={chat.id}>
+              <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
                   <Link
                     href="#"
@@ -73,7 +117,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                       buttonVariants({ variant: chat.variant, size: "icon" }),
                       "h-11 w-11 md:h-16 md:w-16",
                       chat.variant === "secondary" &&
-                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                     )}
                   >
                     <Avatar className="flex justify-center items-center">
@@ -82,28 +126,25 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                         alt={chat.avatar}
                         width={6}
                         height={6}
-                        className="w-10 h-10 "
+                        className="w-10 h-10"
                       />
                     </Avatar>{" "}
                     <span className="sr-only">{chat.name}</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent
-                  side="right"
-                  className="flex items-center gap-4"
-                >
+                <TooltipContent side="right" className="flex items-center gap-4">
                   {chat.name}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           ) : (
             <Link
-              key={index}
+              key={chat.id}
               href="#"
               className={cn(
                 buttonVariants({ variant: chat.variant, size: "lg" }),
                 chat.variant === "secondary" &&
-                "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
+                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
                 "justify-start gap-4"
               )}
             >
@@ -113,15 +154,17 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
                   alt={chat.avatar}
                   width={6}
                   height={6}
-                  className="w-10 h-10 "
+                  className="w-10 h-10"
                 />
               </Avatar>
               <div className="flex flex-col max-w-28">
                 <span>{chat.name}</span>
-                {chat.messages.length > 0 && (
-                  <span className="text-zinc-300 text-xs truncate ">
-                    {chat.messages[chat.messages.length - 1].name.split(" ")[0]}
-                    : {chat.messages[chat.messages.length - 1].isLoading ? "Typing..." : chat.messages[chat.messages.length - 1].message}
+                {chatMessages[chat.id]?.length > 0 && (
+                  <span className="text-zinc-300 text-xs truncate">
+                    {chatMessages[chat.id][chatMessages[chat.id].length - 1].text.split(" ")[0]}:
+                    {chatMessages[chat.id][chatMessages[chat.id].length - 1].isLoaded
+                      ? chatMessages[chat.id][chatMessages[chat.id].length - 1].text
+                      : "Typing..."}
                   </span>
                 )}
               </div>
