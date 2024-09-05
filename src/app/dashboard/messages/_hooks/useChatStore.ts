@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import coreApi from "@/lib/coreApi";
 
+
+interface UserProfileType {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  image: string;
+}
+
 export interface Message {
   id: number;
   avatar: string;
@@ -11,23 +20,14 @@ export interface Message {
   role?: string;
 }
 
-export interface UserData {
-  id: number;
-  avatar: string;
-  message: string;
-  name: string;
-  timestamp: string;
-  role: string;
-}
-
 interface State {
   input: string;
   messages: Message[];
-  selectedUser: UserData | null;
+  selectedUser: UserProfileType | null;
   hasInitialResponse: boolean;
   isLoading: boolean;
   error: string | null;
-  users: UserData[];
+  users: UserProfileType[];
 }
 
 interface Actions {
@@ -40,7 +40,7 @@ interface Actions {
   setHasInitialResponse: (hasInitialResponse: boolean) => void;
   selectUser: (userId: number) => void;
   fetchUsers: () => Promise<void>;
-  setUsers: (users: UserData[]) => void;
+  setUsers: (users: UserProfileType[]) => void;
 }
 
 const useChatStore = create<State & Actions>((set, get) => ({
