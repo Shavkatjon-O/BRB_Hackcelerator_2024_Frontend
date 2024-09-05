@@ -1,6 +1,6 @@
-// chat-layout.tsx
 "use client";
 
+import { userData } from "@/app/data";
 import React, { useEffect, useState } from "react";
 import {
   ResizableHandle,
@@ -10,35 +10,11 @@ import {
 import { cn } from "@/lib/utils";
 import { Sidebar } from "../sidebar";
 import { Chat } from "./chat";
-import coreApi from "@/lib/coreApi";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
-}
-
-interface UserProfileType {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  image: string;
-}
-
-interface Message {
-  id: number;
-  created_at: string;
-  text: string;
-  isLoaded: boolean;
-}
-
-interface Chat {
-  id: number;
-  title: string;
-  image: string;
-  is_group: boolean;
-  users: UserProfileType[];
 }
 
 export function ChatLayout({
@@ -47,8 +23,7 @@ export function ChatLayout({
   navCollapsedSize,
 }: ChatLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [selectedChat, setSelectedChat] = React.useState<Chat | null>(null);
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [selectedUser, setSelectedUser] = React.useState(userData[0]);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -56,32 +31,17 @@ export function ChatLayout({
       setIsMobile(window.innerWidth <= 768);
     };
 
+    // Initial check
     checkScreenWidth();
+
+    // Event listener for screen width changes
     window.addEventListener("resize", checkScreenWidth);
+
+    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
-
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const response = await coreApi.get("/chats/chats/");
-        setChats(response.data);
-        if (response.data.length > 0) {
-          setSelectedChat(response.data[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching chats:", error);
-      }
-    };
-
-    fetchChats();
-  }, []);
-
-  const handleChatSelection = (chat: Chat) => {
-    setSelectedChat(chat);
-  };
 
   return (
     <ResizablePanelGroup
@@ -117,24 +77,22 @@ export function ChatLayout({
       >
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
-          chats={chats.map((chat) => ({
-            name: chat.title,
-            messages: [],
-            avatar: chat.image,
-            variant: selectedChat?.id === chat.id ? "secondary" : "ghost",
+          chats={userData.map((user) => ({
+            name: user.name,
+            messages: user.messages ?? [],
+            avatar: user.avatar,
+            variant: selectedUser.name === user.name ? "secondary" : "ghost",
           }))}
           isMobile={isMobile}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        {selectedChat && (
-          <Chat
-            messages={[]}
-            selectedUser={selectedChat}
-            isMobile={isMobile}
-          />
-        )}
+        <Chat
+          messages={selectedUser.messages}
+          selectedUser={selectedUser}
+          isMobile={isMobile}
+        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

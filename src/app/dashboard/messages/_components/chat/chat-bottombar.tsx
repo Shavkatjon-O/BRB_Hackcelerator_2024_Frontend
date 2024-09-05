@@ -12,9 +12,9 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Message, loggedInUserData } from "@/app/data";
-import { EmojiPicker } from "@/components/emoji-picker";
+import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ChatInput } from "@/components/ui/chat/chat-input";
+import { ChatInput } from "../ui/chat/chat-input";
 import useChatStore from "@/hooks/useChatStore";
 
 interface ChatBottombarProps {
