@@ -14,7 +14,6 @@ export interface Message {
   message?: string;
   isLoading?: boolean;
   timestamp?: string;
-  role?: string;
 }
 
 interface State {
