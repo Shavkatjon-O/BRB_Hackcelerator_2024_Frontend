@@ -1,140 +1,71 @@
 "use client";
 
-import coreApi from "@/lib/coreApi";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
+import coreApi from "@/lib/coreApi";
 
-interface MessageType {
-  id: number;
-  text: string;
-  chat: number;
-  user: number;
-  created_at: string;
+import { useParams } from "next/navigation";
+
+const createDirectChat = async (userId: string) => {
+  const response = await coreApi.post(`/chats/direct/create/`, { users: [userId] });
+  return response.data;
 }
 
-interface ChatType {
-  id: number;
-  user: number;
-  // Other chat-related fields
+const sendMessage = async (chatId: number, message: string) => {
+  await coreApi.post(`/chats/messages/create/`, { chat: chatId, text: message });
 }
-
-const getChat = async (user_id: string) => {
-  try {
-    const response = await coreApi.get(`/chats/${user_id}/`);
-    return response.data;
-  } catch (err) {
-    console.error("Error fetching chat:", err);
-    return null;
-  }
-};
 
 const Page = () => {
   const { id } = useParams();
-  const user_id = Array.isArray(id) ? id[0] : id;  // Handle both string and array cases
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [newMessage, setNewMessage] = useState("");  // State for the new message input
-  const [loading, setLoading] = useState(true);
+  const [chatId, setChatId] = useState<number | null>(null);
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);  // Optional: Track form submission
-
-  const [chat, setChat] = useState<ChatType | null>(null);
 
   useEffect(() => {
-    if (user_id) {
-      // Fetch the chat details based on user_id
-      getChat(user_id).then((data) => {
-        if (data) {
-          setChat(data);
-          console.log("Chat found:", data);
-          // Fetch messages for the retrieved chat ID
-          fetchMessages(data.id);
-        } else {
-          setError("Chat not found");
-          setLoading(false);
-        }
-      });
-    } else {
-      setError("Invalid user ID");
-      setLoading(false);
+    const createChat = async () => {
+      try {
+        const chat = await createDirectChat(id as string);
+        setChatId(chat.id);
+      } catch (error) {
+        setError("Error creating chat.");
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      createChat();
     }
-  }, [user_id]);
+  }, [id]);
 
-  const fetchMessages = (chat_id: number) => {
-    coreApi.get(`/chats/messages/`)
-      .then((response) => {
-        console.log("Messages fetched:", response.data);
-        if (Array.isArray(response.data)) {
-          setMessages(response.data);
-        } else {
-          console.error("API response is not an array:", response.data);
-          setMessages([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching messages:", err);
-        setError(err.message);
-      })
-      .finally(() => setLoading(false));
+  const handleSendMessage = async () => {
+    if (chatId && message.trim()) {
+      try {
+        await sendMessage(chatId, message);
+        setMessage("");  // Clear the message input
+      } catch (error) {
+        setError("Error sending message.");
+        console.error("Error:", error);
+      }
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Prevent submission if the message is empty or already submitting
-    if (!newMessage.trim() || submitting || !chat) return;
-
-    setSubmitting(true);  // Optional: Start submission state
-    console.log(chat.id, newMessage);
-    console.log(chat)
-    coreApi.post(`/chats/messages/create/`, { text: newMessage, chat_id: chat.id })
-      .then((response) => {
-        console.log("Message created:", response.data);
-        setMessages((prevMessages) => [...prevMessages, response.data]);  // Update messages list with new message
-        setNewMessage("");  // Clear input after successful submission
-      })
-      .catch((err) => {
-        console.error("Error creating message:", err);
-        setError(err.message);
-      })
-      .finally(() => setSubmitting(false));  // Optional: End submission state
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading messages: {error}</div>;
-  }
-
-  if (!messages.length) {
-    return <div>No messages found</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex flex-col space-y-4 p-4">
-      {messages.map((message) => (
-        <div key={message.id} className="w-full flex items-center space-x-4 border p-4">
-          <span>{message.text}</span>
-        </div>
-      ))}
-      {/* Form for sending a new message */}
-      <form onSubmit={handleSubmit} className="flex space-x-4">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-grow p-2 border rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded"
-          disabled={submitting}  // Disable the button when submitting
-        >
-          {submitting ? "Sending..." : "Send"}
-        </button>
-      </form>
+    <div className="p-4">
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type your message"
+        className="border p-2"
+      />
+      <Button onClick={handleSendMessage}>Send</Button>
     </div>
   );
 };
