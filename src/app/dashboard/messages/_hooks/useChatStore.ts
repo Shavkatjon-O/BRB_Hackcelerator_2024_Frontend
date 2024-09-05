@@ -54,7 +54,7 @@ const useChatStore = create<State & Actions>((set, get) => ({
   fetchMessages: async (userId) => {
     set({ isLoaded: false, error: null });
     try {
-      const response = await coreApi.get(`/messages/${userId}`);
+      const response = await coreApi.get(`/chats/${userId}/messages/`);
       set({
         messages: response.data,
         isLoaded: true,
@@ -76,7 +76,7 @@ const useChatStore = create<State & Actions>((set, get) => ({
   fetchUsers: async () => {
     set({ isLoaded: false, error: null });
     try {
-      const response = await coreApi.get('/users');
+      const response = await coreApi.get('/users/');
       set({ users: response.data, isLoaded: true });
     } catch (error) {
       set({
