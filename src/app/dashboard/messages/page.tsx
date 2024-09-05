@@ -14,12 +14,25 @@
 
 "use client";
 
-import { getUsers, UserType } from "./_services/chatServices";
+import { 
+  getUsers, 
+  getMessages, 
+  UserType 
+} from "./_services/chatServices";
 import { useEffect, useState } from "react";
 import { DefaultUserAvatar } from "./_components/DefaultUserAvatar";
 
+
 const Page = () => {
   const [users, setUsers] = useState<UserType[]>([]);
+  const [messages, setMessages] = useState([]);
+
+  const handleUserClick = (userId: number) => {
+    getMessages(userId).then((response) => {
+      setMessages(response.data);
+      console.log(response.data);
+    });
+  }
 
   useEffect(() => {
     getUsers().then((response) => {
@@ -31,12 +44,20 @@ const Page = () => {
     <div>
       <h1>Users</h1>
       <ul>
-        {users.map((user) => (
+        {/* {users.map((user) => (
           <li key={user.id}>
             <DefaultUserAvatar />
             {user.first_name} {user.last_name}
           </li>
-        ))}
+        ))} */}
+
+        {users.map((user) => (
+          <li key={user.id} onClick={() => handleUserClick(user.id)}>
+            <DefaultUserAvatar />
+            {user.first_name} {user.last_name}
+          </li>
+        ))} 
+
       </ul>
     </div>
   );

@@ -11,3 +11,7 @@ export interface UserType {
 export const getUsers = async () => {
   return coreApi.get("/chats/users/");
 }
+
+export const getMessages = async (userId: number) => {
+  return coreApi.get(`/chats/messages/${userId}/`);
+}
