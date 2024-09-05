@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { ChatLayout } from "@/components/chat/chat-layout";
+import { ChatLayout } from "./_components/chat/chat-layout";
 
 export default function Home() {
   const layout = cookies().get("react-resizable-panels:layout");
