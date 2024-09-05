@@ -86,7 +86,7 @@ const Page = () => {
       <div className="flex flex-col space-y-4">
         {directChats.map((chat) => (
           <Button key={chat.id} asChild>
-            <Link href={`/dashboard/messages/direct-chats/${chat.id}`}>
+            <Link href={`/dashboard/messages/chats-direct/${chat.id}`}>
               <span>{chat.users.map((user) => user.email).join(", ")}</span>
             </Link>
           </Button>
@@ -98,7 +98,7 @@ const Page = () => {
       <div className="flex flex-col space-y-4">
         {groupChats.map((chat) => (
           <Button key={chat.id} asChild>
-            <Link href={`/dashboard/messages/group-chats/${chat.id}`}>
+            <Link href={`/dashboard/messages/chats-group/${chat.id}`}>
               <span>{chat.title}</span>
             </Link>
           </Button>
