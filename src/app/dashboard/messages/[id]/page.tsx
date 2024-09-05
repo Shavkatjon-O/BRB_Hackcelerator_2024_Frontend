@@ -19,7 +19,7 @@ const Page = () => {
   const [error, setError] = useState(null);      // Optional: Track error state
 
   useEffect(() => {
-    coreApi.get(`/chats/messages/${id}/`)
+    coreApi.get(`/chats/messages/`)
       .then((response) => {
         console.log("Messages fetched:", response.data);
         if (Array.isArray(response.data)) {
