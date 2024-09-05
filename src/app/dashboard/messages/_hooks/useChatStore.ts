@@ -13,7 +13,6 @@ interface Message {
   id: number;
   created_at: string;
   text: string;
-  isLoading?: boolean;
 }
 
 interface State {
@@ -21,7 +20,7 @@ interface State {
   messages: Message[];
   selectedUser: UserProfileType | null;
   hasInitialResponse: boolean;
-  isLoading: boolean;
+  isLoaded: boolean;
   error: string | null;
   users: UserProfileType[];
 }
@@ -44,7 +43,7 @@ const useChatStore = create<State & Actions>((set, get) => ({
   messages: [],
   selectedUser: null,
   hasInitialResponse: false,
-  isLoading: false,
+  isLoaded: false,
   error: null,
   users: [],
 
@@ -53,17 +52,17 @@ const useChatStore = create<State & Actions>((set, get) => ({
   handleInputChange: (e) => set({ input: e.target.value }),
 
   fetchMessages: async (userId) => {
-    set({ isLoading: true, error: null });
+    set({ isLoaded: false, error: null });
     try {
       const response = await coreApi.get(`/messages/${userId}`);
       set({
         messages: response.data,
-        isLoading: false,
+        isLoaded: true,
         hasInitialResponse: true,
       });
     } catch (error) {
       set({
-        isLoading: false,
+        isLoaded: true,
         error: error instanceof Error ? error.message : "An error occurred",
       });
     }
@@ -75,13 +74,13 @@ const useChatStore = create<State & Actions>((set, get) => ({
     set({ hasInitialResponse }),
 
   fetchUsers: async () => {
-    set({ isLoading: true, error: null });
+    set({ isLoaded: false, error: null });
     try {
       const response = await coreApi.get('/users');
-      set({ users: response.data, isLoading: false });
+      set({ users: response.data, isLoaded: true });
     } catch (error) {
       set({
-        isLoading: false,
+        isLoaded: true,
         error: error instanceof Error ? error.message : "An error occurred",
       });
     }
