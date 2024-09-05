@@ -76,7 +76,7 @@ const useChatStore = create<State & Actions>((set, get) => ({
   fetchUsers: async () => {
     set({ isLoaded: false, error: null });
     try {
-      const response = await coreApi.get('/users/');
+      const response = await coreApi.get('/chats/users/');
       set({ users: response.data, isLoaded: true });
     } catch (error) {
       set({
