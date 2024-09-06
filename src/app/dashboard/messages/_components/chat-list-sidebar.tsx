@@ -21,7 +21,10 @@ const ChatListSidebar = ({ chats }: ChatListSidebarProps) => {
           <DefaultAvatar />
         )}
       </div>
-      <div>{chatUser.email}</div>
+      <div className="flex flex-col">
+        <span>{chatUser.email}</span>
+        <span className="text-sm text-green-500">Online</span>
+      </div>
     </div>
   );
 
