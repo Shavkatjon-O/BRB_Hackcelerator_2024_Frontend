@@ -69,7 +69,9 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
               >
                 {selectedUser?.user1.id == user.id ? (
                   <ChatBubble variant={variant}>
-                    <ChatBubbleAvatar src={selectedUser.user1.image} />
+                    <ChatBubbleAvatar src={
+                      selectedUser?.user1.image ? selectedUser?.user1.image : "https://github.com/shadcn.png"
+                    } />
                     <ChatBubbleMessage variant={variant}>
                       {message.text}
                       {message.created_at && (
@@ -79,7 +81,9 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
                   </ChatBubble>
                 ) : (
                   <ChatBubble variant={variant}>
-                    <ChatBubbleAvatar src={selectedUser?.user2.image} />
+                    <ChatBubbleAvatar src={
+                      selectedUser?.user2.image ? selectedUser?.user2.image : "https://github.com/shadcn.png"
+                    } />
                     <ChatBubbleMessage variant={variant}>
                       {message.text}
                       {message.created_at && (
