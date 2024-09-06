@@ -9,17 +9,79 @@ import {
 } from "../../_services/messagesServices";
 import useUser from "@/hooks/useUser";
 
-
 const Page = () => {
   const { id } = useParams();
+  Number(id);
   const { user, isLoaded, error } = useUser();
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (id && user) {
+      const fetchChatData = async () => {
+        const chatData = await getDirectChat(Number(id));
+        setChat(chatData.data);
+
+        const messageList = await getDirectChatMessageList(Number(id));
+        setMessages(messageList.data);
+      };
+
+      fetchChatData();
+    }
+  }, [id, user]);
+
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
+      setIsLoading(true);
+      try {
+        await createDirectChatMessage(id, newMessage);
+        const updatedMessages = await getDirectChatMessageList(Number(id));
+        setMessages(updatedMessages.data);
+        setNewMessage("");
+      } catch (error) {
+        console.error("Failed to send message", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  if (!isLoaded) return <div>Loading...</div>;
+  if (error) return <div>Error loading user data</div>;
 
   return (
-    <div>
-      <h1>Chat</h1>
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-4">Chat with {chat?.user1?.id === user?.id ? chat?.user2?.username : chat?.user1?.username}</h1>
+      <div className="border rounded-lg p-4 mb-4 h-80 overflow-y-scroll">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`mb-2 p-2 rounded-lg ${
+              message.user.id === user.id ? "bg-blue-500 text-white self-end" : "bg-gray-200"
+            }`}
+          >
+            {message.text}
+          </div>
+        ))}
+      </div>
+      <div className="flex">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          className="flex-1 border rounded-lg p-2"
+          placeholder="Type your message..."
+        />
+        <button
+          onClick={handleSendMessage}
+          disabled={isLoading}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+        >
+          {isLoading ? "Sending..." : "Send"}
+        </button>
+      </div>
     </div>
   );
 };
