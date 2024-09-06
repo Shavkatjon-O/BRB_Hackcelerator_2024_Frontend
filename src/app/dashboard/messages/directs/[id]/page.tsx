@@ -8,6 +8,8 @@ import { DirectChatType, MessageType } from "../../_types/messagesTypes";
 
 import { useRouter } from "next/navigation";
 
+import Link from "next/link";
+
 const DirectChatPage = ({ params }: { params: { id: number } }) => {
   const [chat, setChat] = useState<DirectChatType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -53,6 +55,13 @@ const DirectChatPage = ({ params }: { params: { id: number } }) => {
 
   return (
     <div className="p-4 space-y-4">
+      <div>
+        <Button asChild>
+          <Link href="/dashboard/messages">
+            Back
+          </Link>
+        </Button>
+      </div>
       {chat ? (
         <>
           <h2 className="text-xl font-bold">Chat with {chat.user1.email} and {chat.user2.email}</h2>
