@@ -14,14 +14,14 @@ export const getDirectChatList = async () => {
   return coreApi.get("/chats/directs/");
 }
 
-export const getDirectChat = async (id: number) => {
+export const getDirectChat = async (id: string) => {
   return coreApi.get(`/chats/directs/${id}/`);
 }
 
-export const createDirectChatMessage = async (id: number, text: string) => {
+export const createDirectChatMessage = async (id: string, text: string) => {
   return coreApi.post(`/chats/directs/${id}/messages/create/`, { text: text, chat_id: id });
 }
 
-export const getDirectChatMessageList = async (id: number) => {
+export const getDirectChatMessageList = async (id: string) => {
   return coreApi.get(`/chats/directs/${id}/messages/`);
 }

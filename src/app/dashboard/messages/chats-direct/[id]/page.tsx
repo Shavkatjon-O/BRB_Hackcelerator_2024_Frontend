@@ -8,24 +8,36 @@ import {
   createDirectChatMessage 
 } from "../../_services/messagesServices";
 import useUser from "@/hooks/useUser";
+import { 
+  DirectChatType, 
+  UserType 
+} from "../../_types/messagesTypes";
+
+interface MessageType {
+  id: number;
+  chat: DirectChatType;
+  user: UserType;
+  text: string;
+  created_at: string;
+}
 
 const Page = () => {
   const { id } = useParams();
-  Number(id);
+  const chatID = Array.isArray(id) ? id[0] : id;
   const { user, isLoaded, error } = useUser();
-  const [chat, setChat] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [chat, setChat] = useState<DirectChatType | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (id && user) {
       const fetchChatData = async () => {
-        const chatData = await getDirectChat(Number(id));
-        setChat(chatData.data);
-
-        const messageList = await getDirectChatMessageList(Number(id));
-        setMessages(messageList.data);
+        const directChat = await getDirectChat(chatID);
+        setChat(directChat.data);
+        const directChatMessageList = await getDirectChatMessageList(chatID);
+        setMessages(directChatMessageList.data);
       };
 
       fetchChatData();
@@ -36,8 +48,8 @@ const Page = () => {
     if (newMessage.trim()) {
       setIsLoading(true);
       try {
-        await createDirectChatMessage(id, newMessage);
-        const updatedMessages = await getDirectChatMessageList(Number(id));
+        await createDirectChatMessage(chatID, newMessage);
+        const updatedMessages = await getDirectChatMessageList(chatID);
         setMessages(updatedMessages.data);
         setNewMessage("");
       } catch (error) {
@@ -50,16 +62,18 @@ const Page = () => {
 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div>Error loading user data</div>;
+  if (!user) return <div>User not found</div>;
+  if (!chat) return <div>Chat not found</div>;
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Chat with {chat?.user1?.id === user?.id ? chat?.user2?.username : chat?.user1?.username}</h1>
+      <h1 className="text-xl font-bold mb-4">Chat with {chat.user1.id === Number(user.id) ? chat?.user2?.email : chat?.user1?.email}</h1>
       <div className="border rounded-lg p-4 mb-4 h-80 overflow-y-scroll">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`mb-2 p-2 rounded-lg ${
-              message.user.id === user.id ? "bg-blue-500 text-white self-end" : "bg-gray-200"
+              message.user.id === Number(user.id) ? "bg-blue-500 text-white self-end" : "bg-gray-700"
             }`}
           >
             {message.text}
