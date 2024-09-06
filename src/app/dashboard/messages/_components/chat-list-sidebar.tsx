@@ -29,7 +29,7 @@ const ChatListSidebar = ({ chats }: ChatListSidebarProps) => {
   );
 
   return (
-    <div className="w-80 h-full p-4 border-r overflow-y-scroll">
+    <div className="min-w-80 h-full p-4 border-r overflow-y-scroll">
       <div className="space-y-4">
         {chats.map((chat) => {
           const chatUser = chat.user1.id === Number(user?.id) ? chat.user2 : chat.user1;
