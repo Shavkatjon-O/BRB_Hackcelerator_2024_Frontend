@@ -10,8 +10,8 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import { Message } from "@/app/data";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Message } from "@/constants/data";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -101,7 +101,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
               key={index}
               href="#"
               className={cn(
-                buttonVariants({ variant: chat.variant, size: "xl" }),
+                buttonVariants({ variant: chat.variant, size: "lg" }),
                 chat.variant === "secondary" &&
                 "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
                 "justify-start gap-4"
