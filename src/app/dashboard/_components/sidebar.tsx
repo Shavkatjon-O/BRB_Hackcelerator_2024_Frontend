@@ -59,9 +59,9 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-sm bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
+    <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
       <div className="h-full flex flex-col justify-between shadow-sm">
-        <div className="p-4 border-b flex justify-between items-center">
+        <div className="p-4 h-16 border-b flex justify-between items-center">
           <Link href="/dashboard" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${isOpen ? "block" : "hidden"}`}>
             <Image
               width={32}
@@ -102,7 +102,7 @@ const Sidebar = () => {
           </nav>
         </ScrollArea>
 
-        <div className="p-4 border-t shadow-sm">
+        <div className="p-4 h-16 border-t shadow-sm">
           {isLoaded && user && (
             <Link href="/dashboard/profile" className={`flex items-center ${ isOpen ? "" : "justify-center" }`}>
               <Avatar className="w-10 h-10">

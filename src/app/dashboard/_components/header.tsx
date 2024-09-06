@@ -10,7 +10,7 @@ const Header = () => {
   const { user, isLoaded, error } = useUser();
 
   return (
-    <header className="bg-white dark:bg-slate-950 border-b h-16 flex items-center shadow-sm">
+    <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
       <div className="h-full container mx-auto px-4 flex items-center justify-end">
         {
           !isLoaded ? (
