@@ -12,6 +12,8 @@ import Image from "next/image";
 import { getDirectChatList } from "../_services/messagesServices";
 import Link from "next/link";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const ChatSidebar = () => {
   const { user, isLoaded } = useUser();
   const [directChats, setDirectChats] = useState<DirectChatType[]>([]);
@@ -72,7 +74,7 @@ const ChatSidebar = () => {
           {/* Add content for all chats if needed */}
         </TabsContent>
         <TabsContent value="chats-direct">
-          <div className="w-full h-full overflow-y-scroll">
+          <ScrollArea className="w-full h-full">
             <div className="space-y-4">
               {loading ? (
                 Array.from({ length: 5 }).map((_, index) => (
@@ -98,7 +100,7 @@ const ChatSidebar = () => {
                 })
               )}
             </div>
-          </div>
+          </ScrollArea>
         </TabsContent>
         <TabsContent value="chats-group">
           {/* Add content for group chats if needed */}
