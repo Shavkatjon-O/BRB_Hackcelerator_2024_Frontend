@@ -7,7 +7,7 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,7 +15,6 @@ import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChatInput } from "../ui/chat/chat-input";
 import useChatStore from "../../_hooks/useChatStore";
-
 import useUser from "@/hooks/useUser";
 import { MessageType, DirectChatType } from "../../_types/chatsTypes";
 
@@ -33,7 +32,7 @@ export default function ChatBottombar({
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const setMessages = useChatStore((state) => state.setMessages);
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user, isLoaded } = useUser();
 
@@ -47,9 +46,7 @@ export default function ChatBottombar({
   };
 
   const sendMessage = (newMessage: MessageType) => {
-    useChatStore.setState((state) => ({
-      messages: [...state.messages, newMessage],
-    }));
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
   const handleThumbsUp = () => {
@@ -77,7 +74,6 @@ export default function ChatBottombar({
       }
     }
   };
-
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -109,7 +105,8 @@ export default function ChatBottombar({
           </PopoverTrigger>
           <PopoverContent
             side="top"
-            className="w-full p-2">
+            className="w-full p-2"
+          >
             {message.trim() || isMobile ? (
               <div className="flex gap-2">
                 <Link
@@ -193,13 +190,15 @@ export default function ChatBottombar({
             placeholder="Type a message..."
             className="rounded-full"
           />
-          <div className="absolute right-4 bottom-2  ">
-            <EmojiPicker onChange={(value) => {
-              setMessage(message + value)
-              if (inputRef.current) {
-                inputRef.current.focus();
-              }
-            }} />
+          <div className="absolute right-4 bottom-2">
+            <EmojiPicker
+              onChange={(value) => {
+                setMessage(message + value);
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                }
+              }}
+            />
           </div>
         </motion.div>
 
