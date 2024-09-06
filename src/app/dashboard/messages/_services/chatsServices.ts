@@ -1,6 +1,6 @@
 import coreApi from "@/lib/coreApi";
 
-import { DirectChatType } from "../_types/messagesTypes";
+import { DirectChatType } from "../_types/chatsTypes";
 
 export const getUsers = async () => {
   return coreApi.get("/chats/users/");

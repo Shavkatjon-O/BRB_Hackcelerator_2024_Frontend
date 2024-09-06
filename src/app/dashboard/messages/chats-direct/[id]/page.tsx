@@ -6,9 +6,9 @@ import {
   getDirectChat, 
   getDirectChatMessageList, 
   createDirectChatMessage 
-} from "../../_services/messagesServices";
+} from "../../_services/chatsServices";
 import useUser from "@/hooks/useUser";
-import { DirectChatType, UserType } from "../../_types/messagesTypes";
+import { DirectChatType, UserType } from "../../_types/chatsTypes";
 
 interface MessageType {
   id: number;

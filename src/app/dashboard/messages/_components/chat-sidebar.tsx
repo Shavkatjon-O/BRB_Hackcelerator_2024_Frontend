@@ -4,12 +4,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Users, Search, House } from "lucide-react";
 import { useState, useEffect } from "react";
-import { DirectChatType } from "../_types/messagesTypes";
+import { DirectChatType } from "../_types/chatsTypes";
 import { Button } from "@/components/ui/button";
 import DefaultAvatar from "./default-avatar";
 import useUser from "@/hooks/useUser";
 import Image from "next/image";
-import { getDirectChatList } from "../_services/messagesServices";
+import { getDirectChatList } from "../_services/chatsServices";
 import Link from "next/link";
 
 import { ScrollArea } from "@/components/ui/scroll-area";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DirectChatType } from "../_types/messagesTypes";
+import { DirectChatType } from "../_types/chatsTypes";
 import { Button } from "@/components/ui/button";
 import DefaultAvatar from "./default-avatar";
 import useUser from "@/hooks/useUser";
