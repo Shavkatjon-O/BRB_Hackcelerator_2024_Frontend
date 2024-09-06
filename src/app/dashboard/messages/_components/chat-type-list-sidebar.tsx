@@ -37,7 +37,7 @@ const ChatTypeListSidebar: React.FC = () => {
           tooltipText="All Chats" 
         />
         <SidebarItem 
-          href="/dashboard/messages/chats-search" 
+          href="/dashboard/messages/chats-explore" 
           icon={Search} 
           tooltipText="Search People" 
         />
