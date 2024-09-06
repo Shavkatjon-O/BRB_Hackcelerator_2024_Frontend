@@ -1,25 +1,15 @@
 import React from 'react'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import ChatSidebar from './_components/chat-sidebar';
+import ChatTypeListSidebar from './_components/chat-type-list-sidebar'
 
-const Layout = ({ children }: { children: React.ReactNode} ) => {
+interface LayoutProps {
+  children: React.ReactNode
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="size-full">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel minSize={8} maxSize={32}>
-          <ChatSidebar />
-        </ResizablePanel>
-
-        <ResizableHandle withHandle/>
-
-        <ResizablePanel>
-          {children}
-        </ResizablePanel>
-      </ResizablePanelGroup>
+    <div className="size-full flex">
+      <ChatTypeListSidebar />
+      <div>{children}</div>
     </div>
   );
 };
