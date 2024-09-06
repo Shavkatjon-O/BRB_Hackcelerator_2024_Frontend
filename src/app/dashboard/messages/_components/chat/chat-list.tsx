@@ -6,10 +6,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChatBubbleAvatar, ChatBubbleMessage, ChatBubbleTimestamp, ChatBubble } from "../ui/chat/chat-bubble";
 import { ChatMessageList } from "../ui/chat/chat-message-list";
 
+import { DirectChatType, MessageType, UserType } from "../../_types/chatsTypes";
+
 interface ChatListProps {
-  messages: Message[];
-  selectedUser: UserData;
-  sendMessage: (newMessage: Message) => void;
+  messages: MessageType[];
+  selectedUser: DirectChatType | null;
+  sendMessage: (newMessage: MessageType) => void;
   isMobile: boolean;
 }
 
