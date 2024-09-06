@@ -60,7 +60,7 @@ const ChatListSidebar = ({ chats, isCollapsed }: ChatListSidebarProps) => {
               variant="ghost"
               asChild
               className={cn(
-                "w-full py-4 flex items-center rounded-none border-b transition-all duration-300",
+                "w-full py-4 flex items-center rounded-none border-b",
                 isCollapsed ? "justify-center" : "justify-start"
               )}
             >
