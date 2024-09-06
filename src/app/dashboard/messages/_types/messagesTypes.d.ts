@@ -13,3 +13,9 @@ export interface MessageType {
   text: string;
   created_at: string;
 }
+
+export interface DirectChatType {
+  id: number;
+  user1: UserType;
+  user2: UserType;
+}
