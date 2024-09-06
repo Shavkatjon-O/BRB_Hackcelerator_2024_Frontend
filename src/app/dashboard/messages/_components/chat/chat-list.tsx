@@ -41,12 +41,6 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
           {messages?.map((message, index) => {
             let variant: "sent" | "received" | undefined;
 
-            // variant = (
-            //   selectedUser?.user1.id == user.id
-            //     ? "sent"
-            //     : "received"
-            // )
-
             variant = getMessageVariant(user.email, message.user.email);
 
             return (
