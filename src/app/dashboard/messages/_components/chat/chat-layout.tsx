@@ -1,6 +1,5 @@
 "use client";
 
-import { userData } from "@/constants/data";
 import React, { useEffect, useState } from "react";
 import {
   ResizableHandle,
@@ -10,10 +9,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Sidebar } from "../sidebar";
 import { Chat } from "./chat";
-
-import { DirectChatType, UserType, MessageType } from "../../_types/chatsTypes";
-import { getDirectChatList } from "../../_services/chatsServices";
-import { getDirectChatMessageList } from "../../_services/chatsServices";
+import { DirectChatType, MessageType } from "../../_types/chatsTypes";
+import { getDirectChatList, getDirectChatMessageList } from "../../_services/chatsServices";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -26,53 +23,67 @@ export function ChatLayout({
   defaultCollapsed = false,
   navCollapsedSize,
 }: ChatLayoutProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [selectedUser, setSelectedUser] = React.useState<DirectChatType | null>(null);
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [selectedUser, setSelectedUser] = useState<DirectChatType | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [directChats, setDirectChats] = useState<DirectChatType[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  // Fetch direct chat list
   useEffect(() => {
-    getDirectChatList().then((response) => {
-      setDirectChats(response.data);
-      setSelectedUser(response.data[0]);
-      setIsLoaded(true);
-    })
-
-    if (selectedUser) {
-      getDirectChatMessageList(String(selectedUser?.id)).then((response) => {
-        setMessages(response.data);
+    getDirectChatList()
+      .then((response) => {
+        setDirectChats(response.data);
+        if (response.data.length > 0) {
+          setSelectedUser(response.data[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to load direct chats", error);
+      })
+      .finally(() => {
+        setIsLoaded(true);
       });
-    }
+  }, []);
 
+  // Fetch messages for the selected user
+  useEffect(() => {
+    if (selectedUser) {
+      getDirectChatMessageList(String(selectedUser.id))
+        .then((response) => {
+          setMessages(response.data);
+        })
+        .catch((error) => {
+          console.error("Failed to load messages", error);
+        });
+    }
+  }, [selectedUser]);
+
+  // Check if the screen is mobile-sized
+  useEffect(() => {
     const checkScreenWidth = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     
-    // Initial check
     checkScreenWidth();
-    
-    // Event listener for screen width changes
     window.addEventListener("resize", checkScreenWidth);
-    
-    // Cleanup the event listener on component unmount
+
     return () => {
       window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
-  
-  if (!isLoaded) return null;
-  if (!messages) return null;
+
+  // Early returns for loading state
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!selectedUser) return <div>No chats available</div>;
 
   return (
     <ResizablePanelGroup
-    direction="horizontal"
-    onLayout={(sizes: number[]) => {
-      document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          sizes
-        )}`;
+      direction="horizontal"
+      onLayout={(sizes: number[]) => {
+        document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
       }}
       className="h-full items-stretch"
     >
@@ -84,15 +95,11 @@ export function ChatLayout({
         maxSize={isMobile ? 8 : 30}
         onCollapse={() => {
           setIsCollapsed(true);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-            true
-          )}`;
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
         }}
         onExpand={() => {
           setIsCollapsed(false);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-            false
-          )}`;
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
         }}
         className={cn(
           isCollapsed && "min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out"
@@ -100,24 +107,16 @@ export function ChatLayout({
       >
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
-          chats={
-            directChats.map((chat) => {
-              return {
-                ...chat,
-                variant: selectedUser && chat.id === selectedUser.id ? "secondary" : "ghost",
-              };
-            }) as DirectChatType[]
-          }
+          chats={directChats.map((chat) => ({
+            ...chat,
+            variant: selectedUser && chat.id === selectedUser.id ? "secondary" : "ghost",
+          }))}
           isMobile={isMobile}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <Chat
-          messages={messages}
-          selectedUser={selectedUser}
-          isMobile={isMobile}
-        />
+        <Chat messages={messages} selectedUser={selectedUser} isMobile={isMobile} />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
