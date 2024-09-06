@@ -71,9 +71,9 @@ const ChatPage = () => {
   const chatPartner = chat.user1.id === user.id ? chat.user2 : chat.user1;
 
   return (
-    <div className="p-4">
+    <div className="p-4 size-full flex flex-col justify-between">
       <h1 className="text-xl font-bold mb-4">Chat with {chatPartner?.email}</h1>
-      <div className="border rounded-lg p-4 mb-4 h-80 overflow-y-scroll">
+      <div className="border rounded-lg p-4 mb-4 h-full overflow-y-scroll">
         {messages.map((message) => (
           <div
             key={message.id}
