@@ -30,7 +30,7 @@ const MeetingPage = () => {
 
    const notAllowed =
       call.type === "invited" &&
-      (!user || !call.state.members.find((m) => m.user.id === user.id));
+      (!user || !call.state.members.find((m) => m.user.id === String(user.id)));
 
    if (notAllowed) return console.log("You are not allowed to join this call");
 
