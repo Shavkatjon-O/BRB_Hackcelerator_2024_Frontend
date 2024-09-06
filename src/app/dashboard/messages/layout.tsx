@@ -9,7 +9,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="size-full flex">
       <ChatTypeListSidebar />
-      <div>{children}</div>
+      <div className='size-full'>
+        {children}
+      </div>
     </div>
   );
 };
