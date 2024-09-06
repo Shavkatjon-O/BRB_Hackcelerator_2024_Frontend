@@ -23,23 +23,23 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, tooltipText
         </Link>
       </Button>
     </TooltipTrigger>
-    <TooltipContent>{tooltipText}</TooltipContent>
+    <TooltipContent side="right" className="mb-8 ml-2 dark:bg-slate-800">{tooltipText}</TooltipContent>
   </Tooltip>
 );
 
 const ChatTypeListSidebar: React.FC = () => {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={2}>
       <div className="h-full flex flex-col p-4 space-y-4 border-r">
         <SidebarItem 
           href="/dashboard/messages" 
           icon={House} 
-          tooltipText="Home" 
+          tooltipText="All Chats" 
         />
         <SidebarItem 
           href="/dashboard/messages/chats-search" 
           icon={Search} 
-          tooltipText="Search Chats" 
+          tooltipText="Search People" 
         />
         <SidebarItem 
           href="/dashboard/messages/chats-direct" 
