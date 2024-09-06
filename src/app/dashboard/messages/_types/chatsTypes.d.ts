@@ -13,7 +13,7 @@ export interface DirectChatType {
 }
 
 export interface MessageType {
-  id: number;
+  id?: number;
   chat: DirectChatType;
   user: UserType;
   text: string;

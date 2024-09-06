@@ -11,44 +11,52 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Message, loggedInUserData } from "@/constants/data";
 import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChatInput } from "../ui/chat/chat-input";
-import useChatStore from "@/hooks/useChatStore";
+import useChatStore from "../../_hooks/useChatStore";
+
+import useUser from "@/hooks/useUser";
+import { MessageType, DirectChatType } from "../../_types/chatsTypes";
 
 interface ChatBottombarProps {
   isMobile: boolean;
+  directChat: DirectChatType;
 }
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
 export default function ChatBottombar({
   isMobile,
+  directChat,
 }: ChatBottombarProps) {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const setMessages = useChatStore((state) => state.setMessages);
-  const hasInitialResponse = useChatStore((state) => state.hasInitialResponse);
-  const setHasInitialResponse = useChatStore((state) => state.setHasInitialResponse);
   const [isLoading, setisLoading] = useState(false)
+
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded || !user) return null;
+
+  const currentUserFromChat = directChat.user1.id === user.id ? directChat.user1 : directChat.user2;
+  const otherUserFromChat = directChat.user1.id === user.id ? directChat.user2 : directChat.user1;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
 
-  const sendMessage = (newMessage: Message) => {
+  const sendMessage = (newMessage: MessageType) => {
     useChatStore.setState((state) => ({
       messages: [...state.messages, newMessage],
     }));
   };
 
   const handleThumbsUp = () => {
-    const newMessage: Message = {
-      id: message.length + 1,
-      name: loggedInUserData.name,
-      avatar: loggedInUserData.avatar,
-      message: "👍",
+    const newMessage: MessageType = {
+      text: "👍",
+      user: currentUserFromChat,
+      chat: directChat,
     };
     sendMessage(newMessage);
     setMessage("");
@@ -56,11 +64,10 @@ export default function ChatBottombar({
 
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage: Message = {
-        id: message.length + 1,
-        name: loggedInUserData.name,
-        avatar: loggedInUserData.avatar,
-        message: message.trim(),
+      const newMessage: MessageType = {
+        text: message,
+        user: currentUserFromChat,
+        chat: directChat,
       };
       sendMessage(newMessage);
       setMessage("");
@@ -71,36 +78,6 @@ export default function ChatBottombar({
     }
   };
 
-  const formattedTime = new Date().toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
-  });
-
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-
-    if (!hasInitialResponse) {
-      setisLoading(true);
-      setTimeout(() => {
-        setMessages((messages) => [
-          ...messages.slice(0, messages.length - 1),
-          {
-            id: messages.length + 1,
-            avatar: "https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350",
-            name: "Jane Doe",
-            message: "Awesome! I am just chilling outside.",
-            timestamp: formattedTime,
-          }
-        ]);
-        setisLoading(false);
-        setHasInitialResponse(true);
-      }, 2500);
-    }
-  }, []);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
