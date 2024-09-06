@@ -30,6 +30,8 @@ import {
 import { usePathname } from "next/navigation";
 import useUser from "@/hooks/useUser";
 
+import { ScrollArea } from "@/components/ui/scroll-area"
+
 const bankTellerLinks = [
   { href: "/dashboard/cards", label: "Cards", icon: CreditCard },
   { href: "/dashboard/transactions", label: "Transactions", icon: ArrowLeftRight },
@@ -80,23 +82,25 @@ const Sidebar = () => {
           </Button>
         </div>
 
-        <nav className="flex flex-col max-h-full space-y-2 overflow-y-scroll p-4">
-          {links.map(({ href, label, icon: Icon }) => (
-            <Button
-              key={href}
-              asChild
-              variant={pathname === href ? "default" : "ghost"}
-              className={`w-full p-3 h-full flex ${isOpen ? "justify-start" : "justify-center"}`}
-            >
-              <Link href={href} className="flex items-center space-x-2 w-full">
-                <Icon size={24} className="flex-shrink-0" />
-                <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"} ml-2`}>
-                  {label}
-                </span>
-              </Link>
-            </Button>
-          ))}
-        </nav>
+        <ScrollArea>
+          <nav className="flex flex-col max-h-full space-y-2 p-4">
+              {links.map(({ href, label, icon: Icon }) => (
+                <Button
+                  key={href}
+                  asChild
+                  variant={pathname === href ? "default" : "ghost"}
+                  className={`w-full p-3 h-full flex ${isOpen ? "justify-start" : "justify-center"}`}
+                >
+                  <Link href={href} className="flex items-center space-x-2 w-full">
+                    <Icon size={24} className="flex-shrink-0" />
+                    <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"} ml-2`}>
+                      {label}
+                    </span>
+                  </Link>
+                </Button>
+              ))}
+          </nav>
+        </ScrollArea>
 
         <div className="p-4 border-t shadow-sm">
           {isLoaded && user && (
