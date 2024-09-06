@@ -29,8 +29,6 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
     }
   }, [messages]);
 
-  console.log("messages", messages);
-
   if (!isLoaded || !user) return null;
 
   return (
