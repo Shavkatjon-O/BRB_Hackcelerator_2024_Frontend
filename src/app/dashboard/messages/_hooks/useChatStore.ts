@@ -1,117 +1,82 @@
+import { ChatBotMessages, Message, UserData, userData, Users } from "@/app/data";
 import { create } from "zustand";
-import coreApi from "@/lib/coreApi";
 
-interface UserProfileType {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  image: string;
-}
 
-interface Message {
-  id: number;
-  created_at: string;
-  text: string;
-  isLoaded: boolean;
+export interface Example {
+  name: string;
+  url: string;
 }
 
 interface State {
+  selectedExample: Example;
+  examples: Example[];
   input: string;
+  chatBotMessages: Message[];
   messages: Message[];
-  selectedUser: UserProfileType | null;
+  hasInitialAIResponse: boolean;
   hasInitialResponse: boolean;
-  isLoaded: boolean;
-  error: string | null;
-  users: UserProfileType[];
 }
 
 interface Actions {
+  selectedUser: UserData;
+  setSelectedExample: (example: Example) => void;
+  setExamples: (examples: Example[]) => void;
   setInput: (input: string) => void;
   handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
-  fetchMessages: (userId: number) => Promise<void>;
+  setchatBotMessages: (
+    fn: (chatBotMessages: Message[]) => Message[]
+  ) => void;
   setMessages: (fn: (messages: Message[]) => Message[]) => void;
+  setHasInitialAIResponse: (hasInitialAIResponse: boolean) => void;
   setHasInitialResponse: (hasInitialResponse: boolean) => void;
-  selectUser: (userId: number) => void;
-  fetchUsers: () => Promise<void>;
-  setUsers: (users: UserProfileType[]) => void;
 }
 
-const useChatStore = create<State & Actions>((set, get) => ({
-  input: "",
-  messages: [],
-  selectedUser: null,
-  hasInitialResponse: false,
-  isLoaded: false,
-  error: null,
-  users: [],
+const useChatStore = create<State & Actions>()(
+  (set) => ({
+    selectedUser: Users[4],
 
-  setInput: (input) => set({ input }),
+    selectedExample: { name: "Messenger example", url: "/" },
 
-  handleInputChange: (e) => set({ input: e.target.value }),
+    examples: [
+      { name: "Messenger example", url: "/" },
+      { name: "Chatbot example", url: "/chatbot" },
+      { name: "Chatbot2 example", url: "/chatbot2" },
+    ],
 
-  fetchMessages: async (userId) => {
-    set({ isLoaded: false, error: null });
-    try {
-      const response = await coreApi.get(`/chats/${userId}/messages/`);
-      set({
-        messages: response.data,
-        isLoaded: true,
-        hasInitialResponse: true,
-      });
-    } catch (error) {
-      set({
-        isLoaded: true,
-        error: error instanceof Error ? error.message : "An error occurred",
-      });
-    }
-  },
+    input: "",
 
-  setMessages: (fn) => set((state) => ({ messages: fn(state.messages) })),
+    setSelectedExample: (selectedExample) =>
+      set({ selectedExample }),
 
-  setHasInitialResponse: (hasInitialResponse) =>
-    set({ hasInitialResponse }),
+    setExamples: (examples) => set({ examples }),
 
-  fetchUsers: async () => {
-    set({ isLoaded: false, error: null });
-    try {
-      const response = await coreApi.get('/chats/users/');
-      set({ users: response.data, isLoaded: true });
-    } catch (error) {
-      set({
-        isLoaded: true,
-        error: error instanceof Error ? error.message : "An error occurred",
-      });
-    }
-  },
+    setInput: (input) => set({ input }),
+    handleInputChange: (
+      e:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+    ) => set({ input: e.target.value }),
 
-  setUsers: (users) => set({ users }),
+    chatBotMessages: ChatBotMessages,
+    setchatBotMessages: (fn) =>
+      set(({ chatBotMessages }) => ({ chatBotMessages: fn(chatBotMessages) })),
 
-  selectUser: async (userId) => {
-    const { users } = get();
-    const user = users.find((user) => user.id === userId) || null;
+    messages: userData[0].messages,
+    setMessages: (fn) =>
+      set(({ messages }) => ({ messages: fn(messages) })),
 
-    if (!user) {
-      try {
-        await get().fetchUsers();
-        const updatedUser = get().users.find((user) => user.id === userId) || null;
-        set({ selectedUser: updatedUser });
+    hasInitialAIResponse: false,
+    setHasInitialAIResponse: (hasInitialAIResponse) =>
+      set({ hasInitialAIResponse }),
 
-        if (updatedUser) {
-          await get().fetchMessages(updatedUser.id);
-        }
-      } catch (error) {
-        set({
-          error: error instanceof Error ? error.message : "An error occurred",
-        });
-      }
-    } else {
-      set({ selectedUser: user });
-      await get().fetchMessages(user.id);
-    }
-  },
-}));
+    hasInitialResponse: false,
+    setHasInitialResponse: (hasInitialResponse) =>
+      set({ hasInitialResponse }),
+  })
+);
 
 export default useChatStore;
