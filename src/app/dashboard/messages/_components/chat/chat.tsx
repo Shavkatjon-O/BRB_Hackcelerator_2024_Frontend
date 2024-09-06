@@ -4,9 +4,11 @@ import { ChatList } from "./chat-list";
 import React, { useEffect, useState } from "react";
 import useChatStore from "@/hooks/useChatStore";
 
+import { DirectChatType, MessageType, UserType } from "../../_types/chatsTypes";
+
 interface ChatProps {
-  messages?: Message[];
-  selectedUser: UserData;
+  messages?: MessageType[];
+  selectedUser: DirectChatType | null;
   isMobile: boolean;
 }
 
@@ -23,12 +25,12 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
     <div className="flex flex-col justify-between w-full h-full">
       <ChatTopbar selectedUser={selectedUser} />
 
-      <ChatList
+      {/* <ChatList
         messages={messagesState}
         selectedUser={selectedUser}
         sendMessage={sendMessage}
         isMobile={isMobile}
-      />
+      /> */}
     </div>
   );
 }

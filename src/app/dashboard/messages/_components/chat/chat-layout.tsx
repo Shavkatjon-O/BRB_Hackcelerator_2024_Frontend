@@ -13,6 +13,7 @@ import { Chat } from "./chat";
 
 import { DirectChatType, UserType, MessageType } from "../../_types/chatsTypes";
 import { getDirectChatList } from "../../_services/chatsServices";
+import { getDirectChatMessageList } from "../../_services/chatsServices";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -29,17 +30,23 @@ export function ChatLayout({
   const [selectedUser, setSelectedUser] = React.useState<DirectChatType | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [directChats, setDirectChats] = useState<DirectChatType[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  
   useEffect(() => {
     getDirectChatList().then((response) => {
       setDirectChats(response.data);
       setSelectedUser(response.data[0]);
       setIsLoaded(true);
-    });
-    
+    })
+
+    if (selectedUser) {
+      getDirectChatMessageList(String(selectedUser?.id)).then((response) => {
+        setMessages(response.data);
+      });
+    }
+
     const checkScreenWidth = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -57,6 +64,7 @@ export function ChatLayout({
   }, []);
   
   if (!isLoaded) return null;
+  if (!messages) return null;
 
   return (
     <ResizablePanelGroup
@@ -105,11 +113,11 @@ export function ChatLayout({
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        {/* <Chat
-          messages={selectedUser.messages}
+        <Chat
+          messages={messages}
           selectedUser={selectedUser}
           isMobile={isMobile}
-        /> */}
+        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
