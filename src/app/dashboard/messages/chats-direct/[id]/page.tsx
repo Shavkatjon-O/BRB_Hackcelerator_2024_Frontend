@@ -1,7 +1,7 @@
 const Page = () => {
   return (
     <div>
-      <h1>Chats Direct</h1>
+      <h1>Chat</h1>
     </div>
   );
 };
