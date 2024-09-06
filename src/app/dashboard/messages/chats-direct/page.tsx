@@ -1,7 +1,7 @@
 const Page = () => {
   return (
-    <div>
-      <h1>Chats Direct</h1>
+    <div className="flex justify-center items-center size-full">
+      <h1>Select Chat to start Messaging</h1>
     </div>
   );
 };
