@@ -8,7 +8,7 @@ import ChatSidebar from './_components/chat-sidebar';
 
 const Layout = ({ children }: { children: React.ReactNode} ) => {
   return (
-    <div className="flex size-full">
+    <div className="size-full">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel minSize={8} maxSize={32}>
           <ChatSidebar />
