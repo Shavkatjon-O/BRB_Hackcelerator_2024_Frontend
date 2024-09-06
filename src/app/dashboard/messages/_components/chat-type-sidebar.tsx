@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { User, Users } from "lucide-react";
+import { User, Users, Search } from "lucide-react";
 import Link from "next/link";
 
 const ChatTypeSidebar = () => {
@@ -13,6 +13,11 @@ const ChatTypeSidebar = () => {
       <Button size="icon" variant="outline" asChild>
         <Link href="/dashboard/messages/chats-group">
           <Users className="w-[1.2rem] h-[1.2rem]" />
+        </Link>
+      </Button>
+      <Button size="icon" variant="outline" asChild>
+        <Link href="/dashboard/messages/chats-search">
+          <Search className="w-[1.2rem] h-[1.2rem]" />
         </Link>
       </Button>
     </div>
