@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Users, Search, House } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -8,21 +9,25 @@ import { Button } from "@/components/ui/button";
 import DefaultAvatar from "./default-avatar";
 import useUser from "@/hooks/useUser";
 import Image from "next/image";
-import { getDirectChatList } from "../_services/messagesServices"; 
+import { getDirectChatList } from "../_services/messagesServices";
 import Link from "next/link";
 
 const ChatSidebar = () => {
   const { user, isLoaded } = useUser();
   const [directChats, setDirectChats] = useState<DirectChatType[]>([]);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     const fetchChats = async () => {
       if (isLoaded && user) {
+        setLoading(true); // Set loading to true before fetching
         try {
-          const { data } = await getDirectChatList(); 
+          const { data } = await getDirectChatList();
           setDirectChats(data);
         } catch (error) {
           console.error("Failed to fetch direct chats", error);
+        } finally {
+          setLoading(false); // Set loading to false after fetching
         }
       }
     };
@@ -48,7 +53,7 @@ const ChatSidebar = () => {
 
   return (
     <div className="h-full w-full p-4">
-      <Tabs defaultValue="chats-all" className="w-full space-y-4">
+      <Tabs defaultValue="chats-direct" className="w-full space-y-4">
         <TabsList className="w-full min-h-14 h-full flex flex-wrap">
           <TabsTrigger value="chats-all" className="flex-1 min-w-[4rem] gap-1 p-4">
             <House className="w-[1.2rem] h-[1.2rem]" />
@@ -69,17 +74,29 @@ const ChatSidebar = () => {
         <TabsContent value="chats-direct">
           <div className="w-full h-full overflow-y-scroll">
             <div className="space-y-4">
-              {directChats.map((chat) => {
-                const chatUser = chat.user1.id === Number(user?.id) ? chat.user2 : chat.user1;
+              {loading ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <div key={index} className="flex items-center gap-2 p-4">
+                    <Skeleton className="w-10 h-10 rounded-full" />
+                    <div className="flex flex-col flex-grow">
+                      <Skeleton className="h-4 mb-1" />
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                directChats.map((chat) => {
+                  const chatUser = chat.user1.id === Number(user?.id) ? chat.user2 : chat.user1;
 
-                return (
-                  <Button key={chat.id} variant="outline" asChild className="w-full py-8 flex justify-start">
-                    <Link href={`/dashboard/messages/chats-direct/${chat.id}`}>
-                      {isLoaded && user ? renderChatUser(chatUser) : <div>Loading...</div>}
-                    </Link>
-                  </Button>
-                );
-              })}
+                  return (
+                    <Button key={chat.id} variant="outline" asChild className="w-full py-8 flex justify-start">
+                      <Link href={`/dashboard/messages/chats-direct/${chat.id}`}>
+                        {isLoaded && user ? renderChatUser(chatUser) : <div>Loading...</div>}
+                      </Link>
+                    </Button>
+                  );
+                })
+              )}
             </div>
           </div>
         </TabsContent>
