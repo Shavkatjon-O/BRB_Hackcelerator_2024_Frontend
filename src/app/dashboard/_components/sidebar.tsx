@@ -41,7 +41,6 @@ const bankTellerLinks = [
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  ...bankTellerLinks,
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquareText },
   { href: "/dashboard/meetings", label: "Video & Calls", icon: CalendarCheck },
   { href: "/dashboard/events", label: "Events & Calendar", icon: Calendar },
@@ -50,6 +49,7 @@ const links = [
   { href: "/dashboard/assistant", label: "AI Assistant", icon: Bot },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  ...bankTellerLinks,
   { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
