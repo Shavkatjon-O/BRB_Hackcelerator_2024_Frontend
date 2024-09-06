@@ -91,7 +91,7 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
           })}
         </AnimatePresence>
       </ChatMessageList>
-      <ChatBottombar isMobile={isMobile} chat={selectedUser} />
+      <ChatBottombar isMobile={isMobile} />
     </div>
   );
 }
