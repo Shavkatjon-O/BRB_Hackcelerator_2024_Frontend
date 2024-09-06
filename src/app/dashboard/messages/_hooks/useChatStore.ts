@@ -1,4 +1,4 @@
-import { ChatBotMessages, Message, UserData, userData, Users } from "@/constants/data";
+import { ChatBotMessages, Message, UserData, userData, Users } from "@/app/data";
 import { create } from "zustand";
 
 
