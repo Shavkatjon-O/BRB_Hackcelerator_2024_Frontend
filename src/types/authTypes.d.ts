@@ -1,7 +1,7 @@
 // Definition of the user types
 
 export interface UserProfileType {
-  id: string;
+  id: number;
   email: string;
   first_name: string;
   last_name: string;

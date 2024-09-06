@@ -8,10 +8,7 @@ import {
   createDirectChatMessage 
 } from "../../_services/messagesServices";
 import useUser from "@/hooks/useUser";
-import { 
-  DirectChatType, 
-  UserType 
-} from "../../_types/messagesTypes";
+import { DirectChatType, UserType } from "../../_types/messagesTypes";
 
 interface MessageType {
   id: number;
@@ -21,42 +18,48 @@ interface MessageType {
   created_at: string;
 }
 
-const Page = () => {
+const ChatPage = () => {
   const { id } = useParams();
   const chatID = Array.isArray(id) ? id[0] : id;
   const { user, isLoaded, error } = useUser();
 
   const [chat, setChat] = useState<DirectChatType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [newMessage, setNewMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (id && user) {
-      const fetchChatData = async () => {
-        const directChat = await getDirectChat(chatID);
-        setChat(directChat.data);
-        const directChatMessageList = await getDirectChatMessageList(chatID);
-        setMessages(directChatMessageList.data);
-      };
+    const fetchChatData = async () => {
+      if (chatID && user) {
+        try {
+          const { data: directChat } = await getDirectChat(chatID);
+          setChat(directChat);
 
-      fetchChatData();
-    }
-  }, [id, user]);
+          const { data: directChatMessageList } = await getDirectChatMessageList(chatID);
+          setMessages(directChatMessageList);
+        } catch (err) {
+          console.error("Error fetching chat data", err);
+        }
+      }
+    };
+
+    fetchChatData();
+  }, [chatID, user]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      setIsLoading(true);
-      try {
-        await createDirectChatMessage(chatID, newMessage);
-        const updatedMessages = await getDirectChatMessageList(chatID);
-        setMessages(updatedMessages.data);
-        setNewMessage("");
-      } catch (error) {
-        console.error("Failed to send message", error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (!newMessage.trim()) return;
+
+    setIsLoading(true);
+    try {
+      await createDirectChatMessage(chatID, newMessage);
+
+      const { data: updatedMessages } = await getDirectChatMessageList(chatID);
+      setMessages(updatedMessages);
+      setNewMessage("");
+    } catch (err) {
+      console.error("Failed to send message", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,15 +68,19 @@ const Page = () => {
   if (!user) return <div>User not found</div>;
   if (!chat) return <div>Chat not found</div>;
 
+  const chatPartner = chat.user1.id === user.id ? chat.user2 : chat.user1;
+
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Chat with {chat.user1.id === Number(user.id) ? chat?.user2?.email : chat?.user1?.email}</h1>
+      <h1 className="text-xl font-bold mb-4">Chat with {chatPartner?.email}</h1>
       <div className="border rounded-lg p-4 mb-4 h-80 overflow-y-scroll">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`mb-2 p-2 rounded-lg ${
-              message.user.id === Number(user.id) ? "bg-blue-500 text-white self-end" : "bg-gray-700"
+            className={`mb-2 p-2 rounded-lg max-w-xs ${
+              message.user.id === user.id
+                ? "bg-blue-500 text-white ml-auto"
+                : "bg-gray-700 text-white mr-auto"
             }`}
           >
             {message.text}
@@ -87,6 +94,7 @@ const Page = () => {
           onChange={(e) => setNewMessage(e.target.value)}
           className="flex-1 border rounded-lg p-2"
           placeholder="Type your message..."
+          disabled={isLoading}
         />
         <button
           onClick={handleSendMessage}
@@ -100,4 +108,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default ChatPage;
