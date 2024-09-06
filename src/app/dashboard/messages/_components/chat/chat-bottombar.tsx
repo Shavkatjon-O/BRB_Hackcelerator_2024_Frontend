@@ -11,20 +11,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Message, loggedInUserData } from "@/constants/data";
 import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChatInput } from "../ui/chat/chat-input";
-import useChatStore from "@/hooks/useChatStore";
+import useChatStore from "../../_hooks/useChatStore";
+
+import { DirectChatType, MessageType, UserType } from "../../_types/chatsTypes";
+import useUser from "@/hooks/useUser";
 
 interface ChatBottombarProps {
   isMobile: boolean;
+  chat: DirectChatType | null;
 }
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
 export default function ChatBottombar({
   isMobile,
+  chat,
 }: ChatBottombarProps) {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -33,67 +37,72 @@ export default function ChatBottombar({
   const setHasInitialResponse = useChatStore((state) => state.setHasInitialResponse);
   const [isLoading, setisLoading] = useState(false)
 
+  const { user, isLoaded } = useUser();
+  if (!isLoaded || !user) return null;
+  const otherUser = chat?.user1.id=== user.id ? chat?.user2 : chat?.user1;
+  if (!chat || !otherUser) return null;
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
-
-  const sendMessage = (newMessage: Message) => {
+  
+  const sendMessage = (newMessage: MessageType) => {
     useChatStore.setState((state) => ({
       messages: [...state.messages, newMessage],
     }));
   };
-
+  
   const handleThumbsUp = () => {
-    const newMessage: Message = {
+    const newMessage: MessageType = {
       id: message.length + 1,
-      name: loggedInUserData.name,
-      avatar: loggedInUserData.avatar,
-      message: "👍",
+      text: "👍",
+      user: user,
+      chat: chat,
     };
     sendMessage(newMessage);
     setMessage("");
   };
-
+  
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage: Message = {
+      const newMessage: MessageType = {
         id: message.length + 1,
-        name: loggedInUserData.name,
-        avatar: loggedInUserData.avatar,
-        message: message.trim(),
+        text: message,
+        user: user,
+        chat: chat,
       };
       sendMessage(newMessage);
       setMessage("");
-
+      
       if (inputRef.current) {
         inputRef.current.focus();
       }
     }
   };
-
+  
   const formattedTime = new Date().toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true
   });
-
-
+  
+  
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-
+    
     if (!hasInitialResponse) {
       setisLoading(true);
       setTimeout(() => {
         setMessages((messages) => [
           ...messages.slice(0, messages.length - 1),
           {
-            id: messages.length + 1,
-            avatar: "https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350",
-            name: "Jane Doe",
-            message: "Awesome! I am just chilling outside.",
-            timestamp: formattedTime,
+            id: messages.length,
+            text: `Hello ${user.email}, how can I help you today?`,
+            user: otherUser,
+            chat: chat,
+            time: formattedTime
           }
         ]);
         setisLoading(false);
@@ -102,17 +111,20 @@ export default function ChatBottombar({
     }
   }, []);
 
+  
+  
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSend();
     }
-
+    
     if (event.key === "Enter" && event.shiftKey) {
       event.preventDefault();
       setMessage((prev) => prev + "\n");
     }
   };
+  
 
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">

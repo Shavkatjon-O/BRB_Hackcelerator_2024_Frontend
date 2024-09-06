@@ -17,5 +17,5 @@ export interface MessageType {
   chat: DirectChatType;
   user: UserType;
   text: string;
-  created_at: string;
+  created_at?: string;
 }
