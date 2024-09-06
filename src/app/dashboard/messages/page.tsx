@@ -2,20 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-
 import { getUsers, getDirectChatList } from "./_services/messagesServices";
-
 import { UserType, DirectChatType } from "./_types/messagesTypes";
-
+import useUser from "@/hooks/useUser";
 import Link from "next/link";
 
 const Page = () => {
+  const { user, error: userError, isLoaded } = useUser(); // Destructure user, error, and isLoaded from useUser
   const [users, setUsers] = useState<UserType[]>([]);
   const [directChats, setDirectChats] = useState<DirectChatType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isLoaded || !user) return; // Wait until user and isLoaded are available
+
     // Fetch users and direct chats concurrently
     Promise.all([
       getUsers(),
@@ -28,13 +29,15 @@ const Page = () => {
     }).finally(() => {
       setLoading(false);
     });
-  }, []);
+  }, [user, isLoaded]);
 
+  if (!isLoaded) return <div>Loading user data...</div>;
+  if (userError) return <div>User Error: {userError}</div>;
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4 flex flex-col">
       <h2 className="text-xl font-bold">Users</h2>
       {users.map((user) => (
         <Button key={user.id} asChild>
@@ -46,7 +49,7 @@ const Page = () => {
 
       <h2 className="text-xl font-bold">Direct Chats</h2>
       {directChats.map((chat) => {
-        const otherUser = chat.user1.id !== 1 ? chat.user1 : chat.user2; // Replace 1 with the current user's ID
+        const otherUser = chat.user1.id !== Number(user?.id) ? chat.user1 : chat.user2;
         return (
           <Button key={chat.id} asChild>
             <Link href={`/dashboard/messages/directs/${chat.id}`}>

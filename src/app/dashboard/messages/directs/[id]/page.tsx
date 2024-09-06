@@ -59,7 +59,7 @@ const DirectChatPage = ({ params }: { params: { id: number } }) => {
 
           <div className="space-y-2">
             {messages.map((message) => (
-              <div key={message.id} className={`p-2 text-black ${message.chat === chat.user1.id ? 'bg-blue-100' : 'bg-gray-100'}`}>
+              <div key={message.id} className={`p-2 text-black ${message.user === chat.user1.id ? 'bg-blue-100' : 'bg-gray-100'}`}>
                 <span>{message.text}</span>
               </div>
             ))}
