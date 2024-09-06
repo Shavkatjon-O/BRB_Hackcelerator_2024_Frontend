@@ -10,7 +10,7 @@ import { DirectChatType, MessageType, UserType } from "../../_types/chatsTypes";
 import useUser from "@/hooks/useUser";
 
 interface ChatListProps {
-  messages: MessageType[];
+  messages: MessageType[] | undefined;
   selectedUser: DirectChatType | null;
   sendMessage: (newMessage: MessageType) => void;
   isMobile: boolean;
@@ -30,6 +30,7 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
   }, [messages]);
 
   if (!isLoaded || !user) return null;
+  if (!selectedUser) return null;
 
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col">
@@ -37,19 +38,16 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }: Chat
         ref={messagesContainerRef}
       >
         <AnimatePresence>
-          {messages.map((message, index) => {
+          {messages?.map((message, index) => {
             let variant: "sent" | "received" | undefined;
-            // if (selectedUser?.user1.id == user.id) {
-            //   variant = getMessageVariant(message.user.email, selectedUser.user1.email);
-            // } else if (selectedUser?.user2.id == user.id) {
-            //   variant = getMessageVariant(message.user.email, selectedUser.user2.email);
-            // }
 
-            variant = (
-              selectedUser?.user1.id == user.id
-                ? "sent"
-                : "received"
-            )
+            // variant = (
+            //   selectedUser?.user1.id == user.id
+            //     ? "sent"
+            //     : "received"
+            // )
+
+            variant = getMessageVariant(user.email, message.user.email);
 
             return (
               <motion.div

@@ -15,6 +15,8 @@ interface ChatProps {
 export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
   const messagesState = useChatStore((state) => state.messages);
 
+  console.log(messagesState);
+
   const sendMessage = (newMessage: MessageType) => {
     useChatStore.setState((state) => ({
       messages: [...state.messages, newMessage],
@@ -26,7 +28,7 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
       <ChatTopbar selectedUser={selectedUser} />
 
       <ChatList
-        messages={messagesState}
+        messages={messages}
         selectedUser={selectedUser}
         sendMessage={sendMessage}
         isMobile={isMobile}
