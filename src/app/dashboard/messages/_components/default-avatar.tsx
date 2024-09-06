@@ -6,7 +6,7 @@ import {
 
 export function DefaultAvatar() {
   return (
-    <Avatar>
+    <Avatar className="rounded-xl size-14">
       <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>

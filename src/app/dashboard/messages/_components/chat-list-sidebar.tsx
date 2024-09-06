@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import DefaultAvatar from "./default-avatar";
 import useUser from "@/hooks/useUser";
 import Image from "next/image";
+import { UserType } from "../_types/chatsTypes";
 
 interface ChatListSidebarProps {
   chats: DirectChatType[];
@@ -13,7 +14,7 @@ interface ChatListSidebarProps {
 const ChatListSidebar = ({ chats }: ChatListSidebarProps) => {
   const { user, isLoaded } = useUser();
 
-  const renderChatUser = (chatUser: { id: number; image?: string; email: string }) => (
+  const renderChatUser = (chatUser: UserType) => (
     <div className="flex items-center gap-2 overflow-x-hidden">
       <div>
         {chatUser.image ? (
@@ -40,9 +41,9 @@ const ChatListSidebar = ({ chats }: ChatListSidebarProps) => {
               key={chat.id}
               variant="ghost"
               asChild
-              className="w-full py-10 flex justify-start rounded-none border-b"
+              className="w-full py-4 flex justify-start rounded-none border-b"
             >
-              <Link href={`/dashboard/messages/chats-direct/${chat.id}`}>
+              <Link href={`/dashboard/messages/chats-direct/${chat.id}`} className="h-full">
                 {isLoaded && user ? renderChatUser(chatUser) : <div>Loading...</div>}
               </Link>
             </Button>
