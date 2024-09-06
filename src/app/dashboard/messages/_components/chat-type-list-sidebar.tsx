@@ -1,31 +1,58 @@
 import { Button } from "@/components/ui/button";
 import { User, Users, Search, House } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import Link from "next/link";
 
-const ChatTypeListSidebar = () => {
+interface SidebarItemProps {
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  tooltipText: string;
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, tooltipText }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline" className="p-4 h-max" asChild>
+        <Link href={href}>
+          <Icon className="w-[1.2rem] h-[1.2rem]" />
+        </Link>
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>{tooltipText}</TooltipContent>
+  </Tooltip>
+);
+
+const ChatTypeListSidebar: React.FC = () => {
   return (
-    <div className="h-full flex flex-col p-4 space-y-4 border-r">
-      <Button size="icon" variant="outline" asChild>
-        <Link href="/dashboard/messages">
-          <House className="w-[1.2rem] h-[1.2rem]" />
-        </Link>
-      </Button>
-      <Button size="icon" variant="outline" asChild>
-        <Link href="/dashboard/messages/chats-search">
-          <Search className="w-[1.2rem] h-[1.2rem]" />
-        </Link>
-      </Button>
-      <Button size="icon" variant="outline" asChild>
-        <Link href="/dashboard/messages/chats-direct">
-          <User className="w-[1.2rem] h-[1.2rem]" />
-        </Link>
-      </Button>
-      <Button size="icon" variant="outline" asChild>
-        <Link href="/dashboard/messages/chats-group">
-          <Users className="w-[1.2rem] h-[1.2rem]" />
-        </Link>
-      </Button>
-    </div>
+    <TooltipProvider>
+      <div className="h-full flex flex-col p-4 space-y-4 border-r">
+        <SidebarItem 
+          href="/dashboard/messages" 
+          icon={House} 
+          tooltipText="Home" 
+        />
+        <SidebarItem 
+          href="/dashboard/messages/chats-search" 
+          icon={Search} 
+          tooltipText="Search Chats" 
+        />
+        <SidebarItem 
+          href="/dashboard/messages/chats-direct" 
+          icon={User} 
+          tooltipText="Direct Chats" 
+        />
+        <SidebarItem 
+          href="/dashboard/messages/chats-group" 
+          icon={Users} 
+          tooltipText="Group Chats" 
+        />
+      </div>
+    </TooltipProvider>
   );
 };
 
