@@ -63,7 +63,7 @@ const Sidebar = () => {
     <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
       <div className="h-full flex flex-col justify-between shadow-sm">
         <div className="p-4 h-16 border-b flex justify-between items-center">
-          <Link href="/dashboard" className={`flex items-center text-lg font-bold transition-opacity duration-300 ${isOpen ? "block" : "hidden"}`}>
+          <Link href="/dashboard" className={`flex items-center text-lg font-bold ${isOpen ? "block" : "hidden"}`}>
             <Image
               width={32}
               height={32}
@@ -99,7 +99,7 @@ const Sidebar = () => {
                 >
                   <Link href={href} className="flex items-center space-x-2 w-full">
                     <Icon size={24} className="flex-shrink-0" />
-                    <span className={`transition-opacity duration-700 ${isOpen ? "block" : "hidden"} ml-2`}>
+                    <span className={`${isOpen ? "block" : "hidden"} ml-2`}>
                       {label}
                     </span>
                   </Link>
@@ -115,7 +115,7 @@ const Sidebar = () => {
                 <AvatarImage src={user.image} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <span className={`text-sm ml-2 transition-all duration-500 ${isOpen ? "block" : "hidden"}`}>{user.email}</span>
+              <span className={`text-sm ml-2 ${isOpen ? "block" : "hidden"}`}>{user.email}</span>
             </Link>
           )}
         </div>
