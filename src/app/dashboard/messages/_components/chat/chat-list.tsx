@@ -1,3 +1,5 @@
+"use client";
+
 import useChatList from "../../_hooks/useChatList";
 
 const ChatList = () => {
@@ -15,7 +17,7 @@ const ChatList = () => {
     <div>
       {chats.map((chat) => (
         <div key={chat.id}>
-          {chat.user1.email} - {chat.user2.email}
+          {chat.partner.email}
         </div>
       ))}
     </div>

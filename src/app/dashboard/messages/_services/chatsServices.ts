@@ -29,7 +29,14 @@ export const getDirectChatMessageList = async (id: string) => {
 
 /////////////////////////////////////////////////////////////////////////////
 
-const directChatListGet = async (): Promise<DirectChatType[]> => {
+import { UserType } from "../_types/chatsTypes";
+
+interface DirectChatTypee {
+  id: string;
+  partner: UserType;
+}
+
+const directChatListGet = async (): Promise<DirectChatTypee[]> => {
   return (await coreApi.get("/chats/directs/")).data;
 }
 

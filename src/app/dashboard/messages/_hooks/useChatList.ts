@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { directChatListGet } from "../_services/chatsServices";
-import { DirectChatType } from "../_types/chatsTypes";
+// import { DirectChatType } from "../_types/chatsTypes";
+import { UserType } from "../_types/chatsTypes";
+
+interface DirectChatType {
+  id: string;
+  partner: UserType;
+}
 
 const useChatList = () => {
   const [chats, setChats] = useState<DirectChatType[]>([]);
