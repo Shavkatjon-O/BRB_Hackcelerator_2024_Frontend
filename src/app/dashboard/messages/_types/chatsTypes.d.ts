@@ -12,11 +12,11 @@ interface DirectChatType {
 }
 
 interface MessageType {
-  id: number;
+  id?: number;
   chat: DirectChatType;
   user: UserType;
   text: string;
-  created_at: string;
+  created_at?: string;
 }
 
 export {

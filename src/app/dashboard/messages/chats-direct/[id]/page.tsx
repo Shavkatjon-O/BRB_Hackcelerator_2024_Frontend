@@ -5,7 +5,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import {
   getDirectChat,
   getDirectChatMessageList,
-  createDirectChatMessage,
 } from "../../_services/chatsServices";
 import useUser from "@/hooks/useUser";
 import { DirectChatType, MessageType } from "../../_types/chatsTypes";
@@ -17,6 +16,7 @@ import {
   ChatBubble,
 } from "../../_components/ui/chat-bubble";
 import { ChatMessageList } from "../../_components/ui/chat-message-list";
+import ChatBottombar from "../../_components/ChatBottom";
 
 const getMessageVariant = (messageEmail: string, currentUserEmail: string) =>
   messageEmail === currentUserEmail ? "sent" : "received";
@@ -28,7 +28,6 @@ const ChatPage = () => {
 
   const [chat, setChat] = useState<DirectChatType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -38,25 +37,22 @@ const ChatPage = () => {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, []);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
+  }, [messages]);
 
   const fetchChatData = useCallback(async () => {
     if (!chatID || !user) return;
 
+    setIsLoading(true);
     try {
       const { data: directChat } = await getDirectChat(chatID);
       setChat(directChat);
 
-      const { data: directChatMessageList } = await getDirectChatMessageList(
-        chatID
-      );
+      const { data: directChatMessageList } = await getDirectChatMessageList(chatID);
       setMessages(directChatMessageList);
     } catch (err) {
       console.error("Error fetching chat data", err);
+    } finally {
+      setIsLoading(false);
     }
   }, [chatID, user]);
 
@@ -64,20 +60,9 @@ const ChatPage = () => {
     fetchChatData();
   }, [fetchChatData]);
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
-
-    setIsLoading(true);
-    try {
-      await createDirectChatMessage(chatID, newMessage);
-      await fetchChatData();
-      setNewMessage("");
-    } catch (err) {
-      console.error("Failed to send message", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div>Error loading user data</div>;
@@ -85,68 +70,47 @@ const ChatPage = () => {
   if (!chat) return <div>Chat not found</div>;
 
   return (
-    <>
-      <div className="w-full overflow-y-auto h-full flex flex-col">
-        <ChatMessageList ref={messagesContainerRef}>
-          <AnimatePresence>
-            {messages.map((message, index) => {
-              const variant = getMessageVariant(
-                message.user.email,
-                user.email
-              );
-              return (
-                <motion.div
-                  key={message.id}
-                  layout
-                  initial={{ opacity: 0, scale: 1, y: 50 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 1, y: 1 }}
-                  transition={{
-                    opacity: { duration: 0.1 },
-                    layout: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: index * 0.05 + 0.2,
-                    },
-                  }}
-                  className="flex flex-col gap-2 p-4"
-                >
-                  <ChatBubble variant={variant}>
-                    <ChatBubbleAvatar
-                      src={chat.partner?.image}
-                      fallback={chat.partner?.email[0].toUpperCase()}
-                    />
-                    <ChatBubbleMessage variant={variant}>
-                      {message.text}
-                      {message.created_at && (
-                        <ChatBubbleTimestamp timestamp={message.created_at} />
-                      )}
-                    </ChatBubbleMessage>
-                  </ChatBubble>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </ChatMessageList>
-      </div>
-      <div className="flex fixed bottom-0">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          className="flex-1 border rounded-lg p-2"
-          placeholder="Type your message..."
-          disabled={isLoading}
-        />
-        <button
-          onClick={handleSendMessage}
-          disabled={isLoading}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-        >
-          {isLoading ? "Sending..." : "Send"}
-        </button>
-      </div>
-    </>
+    <div className="w-full overflow-y-auto h-full flex flex-col">
+      <ChatMessageList ref={messagesContainerRef}>
+        <AnimatePresence>
+          {messages.map((message, index) => {
+            const variant = getMessageVariant(message.user.email, user.email);
+            return (
+              <motion.div
+                key={message.id}
+                layout
+                initial={{ opacity: 0, scale: 1, y: 50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 1, y: 1 }}
+                transition={{
+                  opacity: { duration: 0.1 },
+                  layout: {
+                    type: "spring",
+                    bounce: 0.3,
+                    duration: index * 0.05 + 0.2,
+                  },
+                }}
+                className="flex flex-col gap-2 p-4"
+              >
+                <ChatBubble variant={variant}>
+                  <ChatBubbleAvatar
+                    src={chat.partner?.image}
+                    fallback={chat.partner?.email[0].toUpperCase()}
+                  />
+                  <ChatBubbleMessage variant={variant}>
+                    {message.text}
+                    {message.created_at && (
+                      <ChatBubbleTimestamp timestamp={message.created_at} />
+                    )}
+                  </ChatBubbleMessage>
+                </ChatBubble>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </ChatMessageList>
+      <ChatBottombar isMobile={false} chat={chat} />
+    </div>
   );
 };
 
