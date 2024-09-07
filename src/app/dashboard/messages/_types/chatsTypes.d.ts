@@ -1,4 +1,4 @@
-export interface UserType {
+interface UserType {
   id: number;
   email: string;
   first_name: string;
@@ -6,16 +6,21 @@ export interface UserType {
   image: string;
 }
 
-export interface DirectChatType {
+interface DirectChatType {
   id: number;
-  user1: UserType;
-  user2: UserType;
+  partner: UserType;
 }
 
-export interface MessageType {
-  id?: number;
+interface MessageType {
+  id: number;
   chat: DirectChatType;
   user: UserType;
   text: string;
-  created_at?: string;
+  created_at: string;
+}
+
+export {
+  UserType,
+  DirectChatType,
+  MessageType,
 }
