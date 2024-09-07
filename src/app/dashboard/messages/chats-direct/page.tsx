@@ -1,21 +1,16 @@
-import { cookies } from "next/headers";
-import { ChatLayout } from "../_components/ChatLayout";
+"use client";
+import useChatList from "../_hooks/useChatList";
+import ChatList from "../_components/ChatList";
 
 const Page = () => {
-  const layout = cookies().get("react-resizable-panels:layout");
-  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+
+  const { chats, isChatsLoaded, error } = useChatList();
+
 
   return (
-    <ChatLayout 
-      defaultLayout={defaultLayout} 
-      navCollapsedSize={8}
-      type="direct"  
-    >
-      <div className="flex justify-center items-center size-full">
-        <h1>Select Chat</h1>
-      </div>
-    </ChatLayout>
+    <ChatList chats={chats} isCollapsed={false} />
   );
-};
+
+}
 
 export default Page;

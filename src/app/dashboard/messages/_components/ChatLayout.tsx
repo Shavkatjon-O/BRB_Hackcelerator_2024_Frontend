@@ -71,12 +71,12 @@ export function ChatLayout({
         )}
       >
         {/* ChatList */}
+        {children}
       </ResizablePanel>
 
       <ResizableHandle withHandle />
 
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        {children}
       </ResizablePanel>
     </ResizablePanelGroup>
   );
