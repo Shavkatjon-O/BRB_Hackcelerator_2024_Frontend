@@ -25,3 +25,14 @@ export const createDirectChatMessage = async (id: string, text: string) => {
 export const getDirectChatMessageList = async (id: string) => {
   return coreApi.get(`/chats/directs/${id}/messages/`);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+const directChatListGet = async (): Promise<DirectChatType[]> => {
+  return (await coreApi.get("/chats/directs/")).data;
+}
+
+export { 
+  directChatListGet,
+};
