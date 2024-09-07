@@ -30,16 +30,15 @@ const ChatList = ({ chats, isCollapsed }: ChatListSidebarProps) => {
       );
     }
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4 overflow-x-hidden">
         <div>
           <Avatar>
             <AvatarImage src={chatUser.image} />
             <AvatarFallback>{chatUser.email[0].toUpperCase()}</AvatarFallback>
           </Avatar>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <span>{chatUser.email}</span>
-          <span className="text-sm text-green-500">Online</span>
         </div>
       </div>
     );
