@@ -17,7 +17,7 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, tooltipText }) => (
   <Tooltip>
     <TooltipTrigger asChild>
-      <Button variant="outline" className="p-4 h-max" asChild>
+      <Button variant="ghost" className="p-4 h-max" asChild>
         <Link href={href}>
           <Icon className="w-[1.2rem] h-[1.2rem]" />
         </Link>
