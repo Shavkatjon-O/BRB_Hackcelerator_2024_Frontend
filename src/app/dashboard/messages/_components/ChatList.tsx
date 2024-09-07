@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 import useUser from "@/hooks/useUser";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,9 @@ const ChatList = ({ chats, isCollapsed }: ChatListSidebarProps) => {
         <div className="flex items-center">
           <div>
             <Avatar>
-              <AvatarImage src={chatUser.image} />
+              <AvatarImage>
+                <Image src={chatUser.image} width={32} height={32} alt={chatUser.email} />
+              </AvatarImage>
               <AvatarFallback>{chatUser.email[0].toUpperCase()}</AvatarFallback>
             </Avatar>
           </div>
@@ -33,7 +36,9 @@ const ChatList = ({ chats, isCollapsed }: ChatListSidebarProps) => {
       <div className="flex items-center gap-4 overflow-x-hidden">
         <div>
           <Avatar>
-            <AvatarImage src={chatUser.image} />
+            <AvatarImage>
+              <Image src={chatUser.image} width={32} height={32} alt={chatUser.email} />
+            </AvatarImage>
             <AvatarFallback>{chatUser.email[0].toUpperCase()}</AvatarFallback>
           </Avatar>
         </div>
