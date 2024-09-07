@@ -21,6 +21,7 @@ import {
   Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { useState } from "react";
 import { 
   Avatar, 
@@ -29,8 +30,8 @@ import {
 } from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
 import useUser from "@/hooks/useUser";
+import { cn } from "@/lib/utils";
 
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const bankTellerLinks = [
   { href: "/dashboard/cards", label: "Cards", icon: CreditCard },
@@ -89,7 +90,12 @@ const Sidebar = () => {
                   key={href}
                   asChild
                   variant={pathname === href ? "default" : "ghost"}
-                  className={`w-full p-3 h-full flex ${isOpen ? "justify-start" : "justify-center"}`}
+                  className={`w-full p-3 h-full flex transition-colors duration-200 ${
+                    cn(
+                      isOpen ? "justify-start" : "justify-center",
+                      pathname !== href ? "text-slate-500 dark:text-slate-300" : ""
+                    )
+                  }`}
                 >
                   <Link href={href} className="flex items-center space-x-2 w-full">
                     <Icon size={24} className="flex-shrink-0" />
