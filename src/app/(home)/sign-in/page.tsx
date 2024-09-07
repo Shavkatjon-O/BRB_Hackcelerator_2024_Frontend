@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,6 +31,14 @@ const SignInPage = () => {
       password: '',
     },
   });
+
+  useEffect(() => {
+    const email = (document.querySelector("input[name='email']") as HTMLInputElement)?.value;
+    const password = (document.querySelector("input[name='password']") as HTMLInputElement)?.value;
+
+    if (email) form.setValue("email", email);
+    if (password) form.setValue("password", password);
+  }, []);
 
   const onSubmit = async (values: { email: string; password: string }) => {
     setLoading(true);
@@ -119,7 +127,7 @@ const SignInPage = () => {
             <Button type="submit" className="w-full py-3 h-max text-md" disabled={loading}>
               {loading ? (
                 <>
-                  <Loader className='w-5 h-5 mr-1' /> Signing in...
+                  <Loader className='w-5 h-5 mr-1 animate-spin' /> Signing in...
                 </>
               ) : (
                 'Sign in'
