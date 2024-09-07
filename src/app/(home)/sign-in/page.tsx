@@ -52,7 +52,7 @@ const SignInPage = () => {
         Cookies.set('refreshToken', refresh);
 
         toast("Success", {
-          description: "Sign-in successful! Redirecting...",
+          description: "Sign-in successful!",
           action: {
             label: <X className='w-4 h-4' />,
             onClick: () => console.log("Close"),
