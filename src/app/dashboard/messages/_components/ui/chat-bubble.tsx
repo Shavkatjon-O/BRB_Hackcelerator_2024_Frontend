@@ -105,11 +105,19 @@ interface ChatBubbleTimestampProps extends React.HTMLAttributes<HTMLDivElement> 
   timestamp: string
 }
 
-const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({ timestamp, className, ...props }) => (
-  <div className={cn("text-xs mt-2 text-right", className)} {...props}>
-    {timestamp}
-  </div>
-)
+const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({ timestamp, className, ...props }) => {
+  const date = new Date(timestamp);
+
+  const formattedDateTime = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true,
+  }).format(date);
+
+  return (
+    <div className={cn("text-xs mt-2 text-right", className)} {...props}>
+      {formattedDateTime}
+    </div>
+  );
+};
 
 export {
   ChatBubble,
