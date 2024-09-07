@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatTypeListSidebar from './_components/chat-type-list-sidebar'
+import ChatSidebar from './_components/ChatSidebar';
 
 interface LayoutProps {
   children: React.ReactNode
@@ -8,7 +8,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="size-full flex">
-      <ChatTypeListSidebar />
+      <ChatSidebar />
       <div className='size-full'>
         {children}
       </div>
