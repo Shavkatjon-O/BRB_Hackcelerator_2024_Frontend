@@ -6,6 +6,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import ChatList from "./ChatList";
+import useChatList from "../_hooks/useChatList";
 import { cn } from "@/lib/utils";
 
 interface ChatLayoutProps {
@@ -71,12 +73,12 @@ export function ChatLayout({
         )}
       >
         {/* ChatList */}
-        {children}
       </ResizablePanel>
 
       <ResizableHandle withHandle />
 
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+        {children}
       </ResizablePanel>
     </ResizablePanelGroup>
   );
