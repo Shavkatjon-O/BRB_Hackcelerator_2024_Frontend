@@ -2,52 +2,44 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { signInSchema } from './schemas';
-
 import CoreAPI from '@/lib/coreApi';
 import Cookies from 'js-cookie';
 
 const SignInPage = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-
   const router = useRouter();
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const form = useForm({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-    const validatedResult = signInSchema.safeParse({ email, password });
-
-    if (!validatedResult.success) {
-
-      validatedResult.error.issues.forEach((issue, index) => {
-        setTimeout(() => {
-          toast("Error", {
-            description: issue.message || "An error occurred during sign-in.",
-            action: {
-              label: <X className='w-4 h-4' />,
-              onClick: () => console.log("Close"),
-            },
-          });
-        }, index * 100);
-      });
-      return;
-    }
-    
+  const onSubmit = async (values: { email: string; password: string }) => {
     setLoading(true);
 
     try {
-      const response = await CoreAPI.post("/users/token/", { email, password });
-      
+      const response = await CoreAPI.post("/users/token/", values);
+
       if (response.status === 200) {
         const { access, refresh } = response.data;
-        
         Cookies.set('accessToken', access);
         Cookies.set('refreshToken', refresh);
 
@@ -86,47 +78,64 @@ const SignInPage = () => {
     <div className='flex justify-center p-4'>
       <div className="max-w-md w-full p-8 rounded-lg border bg-white dark:bg-slate-900 shadow-lg">
         <h1 className="text-2xl font-bold mb-6">Sign in</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4 text-md">
-            <Label htmlFor="email" className="block mb-3">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              className="w-full py-3 h-max"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+        
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-md">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input 
+                      className='py-3 h-max'
+                      placeholder="Enter your email" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="mb-6">
-            <Label htmlFor="password" className="block mb-3">Password</Label>
-            <Input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              className="w-full py-3 h-max"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input 
+                      className='py-3 h-max'
+                      placeholder="Enter your password" 
+                      type="password"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <Button type="submit" className="w-full py-3 h-max text-md" disabled={loading}>
-            {loading ? (
-              <>
-                <Loader className='w-5 h-5 mr-1' /> Signing in...
-              </>
-            ) : (
-              'Sign in'
-            )}
-          </Button>
-          <div className="text-center mt-4">
-            <p className="text-sm text-slate-500">
-              Do not have an account yet?{' '}
-              <a href="/sign-up" className="text-blue-600 hover:underline">
-                Sign up!
-              </a>
-            </p>
-          </div>
-        </form>
+            <Button type="submit" className="w-full py-3 h-max text-md" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader className='w-5 h-5 mr-1' /> Signing in...
+                </>
+              ) : (
+                'Sign in'
+              )}
+            </Button>
+          </form>
+        </Form>
+
+        <div className="text-center mt-4">
+          <p className="text-sm text-slate-500">
+            Do not have an account yet?{' '}
+            <a href="/sign-up" className="text-blue-600 hover:underline">
+              Sign up!
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
