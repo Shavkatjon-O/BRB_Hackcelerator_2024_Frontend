@@ -6,19 +6,19 @@ import { DirectChatType } from "../_types/chatsTypes";
 
 const useChatList = () => {
   const [chats, setChats] = useState<DirectChatType[]>([]);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isChatsLoaded, setIsChatsLoaded] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     directChatListGet().then((response) => {
       setChats(response);
-      setIsLoaded(true);
+      setIsChatsLoaded(true);
     }).catch((error) => {
       setError(error.message);
     });
   }, []);
 
-  return { chats, isLoaded, error };
+  return { chats, isChatsLoaded, error };
 }
 
 export default useChatList;
