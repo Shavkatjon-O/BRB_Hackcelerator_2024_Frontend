@@ -24,7 +24,7 @@ const ChatList = ({ chats, isCollapsed }: ChatListSidebarProps) => {
           <div>
             <Avatar>
               <AvatarImage src={chatUser.image} />
-              <AvatarFallback>{chatUser.email[0]}</AvatarFallback>
+              <AvatarFallback>{chatUser.email[0].toUpperCase()}</AvatarFallback>
             </Avatar>
           </div>
         </div>
@@ -35,7 +35,7 @@ const ChatList = ({ chats, isCollapsed }: ChatListSidebarProps) => {
         <div>
           <Avatar>
             <AvatarImage src={chatUser.image} />
-            <AvatarFallback>{chatUser.email[0]}</AvatarFallback>
+            <AvatarFallback>{chatUser.email[0].toUpperCase()}</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex flex-col">
