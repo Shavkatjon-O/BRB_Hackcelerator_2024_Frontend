@@ -68,7 +68,7 @@ const ChatPage = () => {
   if (!user) return <div>User not found</div>;
   if (!chat) return <div>Chat not found</div>;
 
-  const chatPartner = chat.user1.id === user.id ? chat.user2 : chat.user1;
+  const chatPartner = chat.partner;
 
   return (
     <div className="p-4 size-full flex flex-col justify-between">

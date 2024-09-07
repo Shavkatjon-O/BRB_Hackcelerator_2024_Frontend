@@ -12,17 +12,17 @@ import coreApi from "@/lib/coreApi";
 //   return coreApi.get("/chats/directs/");
 // }
 
-// export const getDirectChat = async (id: string) => {
-//   return coreApi.get(`/chats/directs/${id}/`);
-// }
+export const getDirectChat = async (id: string) => {
+  return coreApi.get(`/chats/directs/${id}/`);
+}
 
-// export const createDirectChatMessage = async (id: string, text: string) => {
-//   return coreApi.post(`/chats/directs/${id}/messages/create/`, { text: text, chat_id: id });
-// }
+export const createDirectChatMessage = async (id: string, text: string) => {
+  return coreApi.post(`/chats/directs/${id}/messages/create/`, { text: text, chat_id: id });
+}
 
-// export const getDirectChatMessageList = async (id: string) => {
-//   return coreApi.get(`/chats/directs/${id}/messages/`);
-// }
+export const getDirectChatMessageList = async (id: string) => {
+  return coreApi.get(`/chats/directs/${id}/messages/`);
+}
 
 /////////////////////////////////////////////////////////////////////////////
 
