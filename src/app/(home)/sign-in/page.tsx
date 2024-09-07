@@ -88,7 +88,7 @@ const SignInPage = () => {
         <h1 className="text-2xl font-bold mb-6">Sign in</h1>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-md">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 text-md">
             <FormField
               control={form.control}
               name="email"
