@@ -1,10 +1,10 @@
-import ChatList from "../_components/chat/chat-list";
+import ChatList from "../_components/chat/chat-list-direct";
 
 const Page = () => {
   return (
     <div>
       <h1>Group Chats</h1>
-      <ChatList />
+      <ChatList isCollapsed={true} />
     </div>
   );
 }
