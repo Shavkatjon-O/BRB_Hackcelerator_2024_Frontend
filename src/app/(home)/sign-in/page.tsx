@@ -84,16 +84,16 @@ const SignInPage = () => {
 
   return (
     <div className='flex justify-center p-4'>
-      <div className="max-w-md w-full bg-white p-8 rounded-lg border">
+      <div className="max-w-md w-full p-8 rounded-lg border bg-white dark:bg-slate-900 shadow-lg">
         <h1 className="text-2xl font-bold mb-6">Sign in</h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-4 text-md">
             <Label htmlFor="email" className="block mb-3">Email</Label>
             <Input
               type="email"
               id="email"
               placeholder="Enter your email"
-              className="w-full"
+              className="w-full py-3 h-max"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -104,12 +104,12 @@ const SignInPage = () => {
               type="password"
               id="password"
               placeholder="Enter your password"
-              className="w-full"
+              className="w-full py-3 h-max"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <Button type="submit" className="w-full bg-gray-800 text-white" disabled={loading}>
+          <Button type="submit" className="w-full py-3 h-max text-md" disabled={loading}>
             {loading ? (
               <>
                 <Loader className='w-5 h-5 mr-1' /> Signing in...
@@ -119,7 +119,7 @@ const SignInPage = () => {
             )}
           </Button>
           <div className="text-center mt-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-slate-500">
               Do not have an account yet?{' '}
               <a href="/sign-up" className="text-blue-600 hover:underline">
                 Sign up!

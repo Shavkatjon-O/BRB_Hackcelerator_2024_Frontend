@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
+import { ModeToggle } from '@/components/mode-toggle';
 
 const Header = () => {
   const { user, isLoaded, error } = useUser();
@@ -65,6 +66,7 @@ const Header = () => {
                 )
               )
             }
+            <ModeToggle />
           </div>
         </div>
       </header>

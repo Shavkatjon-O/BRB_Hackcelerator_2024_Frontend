@@ -85,7 +85,7 @@ const SignUpPage = () => {
 
   return (
     <div className='flex justify-center p-4'>
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-sm border">
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 p-8 rounded-lg shadow-sm border">
         <h1 className="text-2xl font-bold mb-6">Sign up</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -94,18 +94,18 @@ const SignUpPage = () => {
               type="email"
               id="email"
               placeholder="Enter your email"
-              className="w-full"
+              className="w-full py-3 h-max"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 text-md">
             <Label htmlFor="password" className="block mb-3">Password</Label>
             <Input
               type="password"
               id="password"
               placeholder="Enter your password"
-              className="w-full"
+              className="w-full py-3 h-max"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -116,12 +116,12 @@ const SignUpPage = () => {
               type="password"
               id="confirmPassword"
               placeholder="Confirm your password"
-              className="w-full"
+              className="w-full py-3 h-max"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <Button type="submit" className="w-full bg-gray-800 text-white" disabled={loading}>
+          <Button type="submit" className="w-full py-3 h-max text-md bg-gray-800 text-white" disabled={loading}>
             {loading ? (
               <>
                 <Loader className='w-5 h-5 mr-1' /> Signing up...
@@ -131,7 +131,7 @@ const SignUpPage = () => {
              )}
           </Button>
           <div className="text-center mt-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-500">
               Already have an account?{' '}
               <a href="/sign-in" className="text-blue-600 hover:underline">
                 Sign in!
