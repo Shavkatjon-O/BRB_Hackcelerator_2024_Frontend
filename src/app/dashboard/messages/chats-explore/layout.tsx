@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   
   return (
     <div className="flex size-full">
-      <ChatListSidebar chats={chats} />
+      {/* <ChatListSidebar chats={chats} /> */}
       {children}
     </div>
   );

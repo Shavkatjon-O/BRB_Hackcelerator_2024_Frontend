@@ -102,7 +102,7 @@ const Sidebar = () => {
           </nav>
         </ScrollArea>
 
-        <div className="p-4 h-16 border-t shadow-sm">
+        <div className={`p-4 h-16 flex items-center ${isOpen ? "justify-start" : "justify-center"} border-t shadow-sm overflow-x-hidden`}>
           {isLoaded && user && (
             <Link href="/dashboard/profile" className={`flex items-center ${ isOpen ? "" : "justify-center" }`}>
               <Avatar className="w-10 h-10">
