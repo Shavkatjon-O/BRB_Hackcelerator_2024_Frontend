@@ -6,9 +6,13 @@ const Page = () => {
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
 
   return (
-    <ChatLayout defaultLayout={defaultLayout} navCollapsedSize={8}>
+    <ChatLayout 
+      defaultLayout={defaultLayout} 
+      navCollapsedSize={8}
+      type="direct"  
+    >
       <div className="flex justify-center items-center size-full">
-        <h1>Select Chat to start Messaging</h1>
+        <h1>Select Chat</h1>
       </div>
     </ChatLayout>
   );
