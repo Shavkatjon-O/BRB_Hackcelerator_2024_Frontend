@@ -33,7 +33,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChatInput } from "../../_components/ui/chat-input";
 import ChatTopbar from "../../_components/ChatTop";
 
-const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
+const BottombarIcons = [
+  { icon: FileImage, label: "Image" },
+  { icon: Paperclip, label: "Attach" },
+];
 
 const getMessageVariant = (messageEmail: string, currentUserEmail: string) =>
   messageEmail === currentUserEmail ? "sent" : "received";
@@ -48,33 +51,19 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const ws = useRef<WebSocket | null>(null);  // WebSocket reference
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(event.target.value);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      handleSend();
-    }
-
-    if (event.key === "Enter" && event.shiftKey) {
-      event.preventDefault();
-      setMessage((prev) => prev + "\n");
-    }
-  };
+  const ws = useRef<WebSocket | null>(null); // WebSocket reference
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to bottom of messages
   const scrollToBottom = useCallback(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
+    messagesContainerRef.current?.scrollTo({
+      top: messagesContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, []);
 
+  // Fetch initial chat data and message list
   const fetchChatData = useCallback(async () => {
     if (!chatID || !user) return;
 
@@ -105,7 +94,7 @@ const ChatPage = () => {
     if (!chatID) return;
 
     const socket = new WebSocket(`ws://localhost:8000/ws/chat/${chatID}/`);
-    ws.current = socket;  // Store WebSocket reference
+    ws.current = socket; // Store WebSocket reference
 
     socket.onopen = () => {
       console.log("WebSocket connection opened");
@@ -115,10 +104,7 @@ const ChatPage = () => {
       const data = JSON.parse(event.data);
       console.log("message received", data);
 
-      // if (data.user.email === user.email) return;
-
       if (data.chat.id !== chatID) return;
-      console.log("afasdfasfasfasfadsf", data);
 
       // Update UI with new message
       setMessages((prevMessages) => [...prevMessages, data]);
@@ -132,7 +118,7 @@ const ChatPage = () => {
       console.error("WebSocket error observed:", event);
     };
 
-    // Cleanup on component unmount
+    // Cleanup WebSocket on unmount
     return () => {
       socket.close();
     };
@@ -145,28 +131,24 @@ const ChatPage = () => {
 
   // Send message via WebSocket
   const sendMessage = () => {
-    const newMessage = {
-      message: {
-        chat: chat,
-        user: user,
-        text: message,
-      }
-    };
-  
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(newMessage));  // Send message through WebSocket
+    if (ws.current && ws.current.readyState === WebSocket.OPEN && message.trim()) {
+      const newMessage = {
+        message: {
+          chat,
+          user,
+          text: message,
+        },
+      };
+
+      ws.current.send(JSON.stringify(newMessage)); // Send message through WebSocket
       console.log("message sent", newMessage);
-    } else {
-      console.error("WebSocket is not open.");
-    }
 
-    // Append message to UI
-    setMessages([...messages, newMessage.message]);
-    createDirectChatMessage(String(chat.id), newMessage.message.text);
-    setMessage("");
+      // Append message to UI
+      setMessages((prevMessages) => [...prevMessages, newMessage.message]);
+      createDirectChatMessage(String(chat.id), newMessage.message.text);
+      setMessage("");
 
-    if (inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current?.focus();
     }
   };
 
@@ -176,9 +158,15 @@ const ChatPage = () => {
     }
   };
 
-  const handleThumbsUp = () => {
-    setMessage("👍");
-    sendMessage();
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSend();
+    }
   };
 
   return (
@@ -188,8 +176,6 @@ const ChatPage = () => {
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
           {messages.map((message, index) => {
-            console.log("message", message);
-
             const variant = getMessageVariant(message.user.email, user.email);
             return (
               <motion.div
@@ -235,73 +221,25 @@ const ChatPage = () => {
             <PopoverTrigger asChild>
               <Link
                 href="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9",
-                  "shrink-0"
-                )}
+                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "h-9 w-9")}
               >
                 <PlusCircle size={22} className="text-muted-foreground" />
               </Link>
             </PopoverTrigger>
             <PopoverContent side="top" className="w-full p-2">
-              {message.trim() ? (
-                <div className="flex gap-2">
+              <div className="flex gap-2">
+                {BottombarIcons.map((icon, index) => (
                   <Link
+                    key={index}
                     href="#"
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "h-9 w-9",
-                      "shrink-0"
-                    )}
+                    className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "h-9 w-9")}
                   >
-                    <Mic size={22} className="text-muted-foreground" />
+                    <icon.icon size={22} className="text-muted-foreground" />
                   </Link>
-                  {BottombarIcons.map((icon, index) => (
-                    <Link
-                      key={index}
-                      href="#"
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "icon" }),
-                        "h-9 w-9",
-                        "shrink-0"
-                      )}
-                    >
-                      <icon.icon size={22} className="text-muted-foreground" />
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <Link
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "shrink-0"
-                  )}
-                >
-                  <Mic size={22} className="text-muted-foreground" />
-                </Link>
-              )}
+                ))}
+              </div>
             </PopoverContent>
           </Popover>
-          {!message.trim() && (
-            <div className="flex">
-              {BottombarIcons.map((icon, index) => (
-                <Link
-                  key={index}
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "shrink-0"
-                  )}
-                >
-                  <icon.icon size={22} className="text-muted-foreground" />
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
 
         <AnimatePresence initial={false}>
@@ -314,10 +252,7 @@ const ChatPage = () => {
             exit={{ opacity: 0, scale: 1 }}
             transition={{
               opacity: { duration: 0.05 },
-              layout: {
-                type: "spring",
-                bounce: 0.15,
-              },
+              layout: { type: "spring", bounce: 0.15 },
             }}
           >
             <ChatInput
@@ -332,35 +267,21 @@ const ChatPage = () => {
               <EmojiPicker
                 onChange={(value) => {
                   setMessage(message + value);
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
+                  inputRef.current?.focus();
                 }}
               />
             </div>
           </motion.div>
 
-          {message.trim() ? (
-            <Button
-              className="h-9 w-9 shrink-0"
-              onClick={handleSend}
-              disabled={isLoading}
-              variant="ghost"
-              size="icon"
-            >
-              <SendHorizontal size={22} className="text-muted-foreground" />
-            </Button>
-          ) : (
-            <Button
-              className="h-9 w-9 shrink-0"
-              onClick={handleThumbsUp}
-              disabled={isLoading}
-              variant="ghost"
-              size="icon"
-            >
-              <ThumbsUp size={22} className="text-muted-foreground" />
-            </Button>
-          )}
+          <Button
+            className="h-9 w-9 shrink-0"
+            onClick={handleSend}
+            disabled={isLoading}
+            variant="ghost"
+            size="icon"
+          >
+            <SendHorizontal size={22} className="text-muted-foreground" />
+          </Button>
         </AnimatePresence>
       </div>
     </div>
