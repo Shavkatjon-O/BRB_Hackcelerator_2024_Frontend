@@ -287,9 +287,9 @@ const ChatPage = () => {
               onKeyDown={handleKeyPress}
               onChange={handleInputChange}
               placeholder="Type a message..."
-              className="rounded-full"
+              className="rounded-lg"
             />
-            <div className="absolute right-4 bottom-2  ">
+            <div className="absolute right-4 top-3  ">
               <EmojiPicker
                 onChange={(value) => {
                   setMessage(message + value);
