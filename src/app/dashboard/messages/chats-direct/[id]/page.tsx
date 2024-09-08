@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   getDirectChat,
   getDirectChatMessageList,
+  createDirectChatMessage,
 } from "../../_services/chatsServices";
 import useUser from "@/hooks/useUser";
 import { DirectChatType, MessageType } from "../../_types/chatsTypes";
@@ -70,9 +71,6 @@ const ChatPage = () => {
     }
   };
 
-  const sendMessage = (newMessage: MessageType) => {
-    setMessages([...messages, newMessage]);
-  };
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -112,6 +110,14 @@ const ChatPage = () => {
   if (error) return <div>Error loading user data</div>;
   if (!user) return <div>User not found</div>;
   if (!chat) return <div>Chat not found</div>;
+
+  const sendMessage = (newMessage: MessageType) => {
+    setMessages([...messages, newMessage]);
+    createDirectChatMessage(
+      String(chat.id),
+      newMessage.text,
+    );
+  };
 
   const handleThumbsUp = () => {
     const newMessage: MessageType = {
