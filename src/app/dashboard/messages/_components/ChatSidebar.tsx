@@ -30,7 +30,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, tooltipText
 const ChatSidebar: React.FC = () => {
   return (
     <TooltipProvider delayDuration={2}>
-      <div className="h-full flex flex-col p-4 space-y-4 border-r shadow-md">
+      <div className="h-full flex flex-col p-4 space-y-4 border-r">
         <SidebarItem 
           href="/dashboard/messages" 
           icon={House} 
