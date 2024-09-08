@@ -115,6 +115,11 @@ const ChatPage = () => {
       const data = JSON.parse(event.data);
       console.log("message received", data);
 
+      // if (data.user.email === user.email) return;
+
+      if (data.chat.id !== chatID) return;
+      console.log("afasdfasfasfasfadsf", data);
+
       // Update UI with new message
       setMessages((prevMessages) => [...prevMessages, data]);
     };
@@ -183,6 +188,8 @@ const ChatPage = () => {
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
           {messages.map((message, index) => {
+            console.log("message", message);
+
             const variant = getMessageVariant(message.user.email, user.email);
             return (
               <motion.div
