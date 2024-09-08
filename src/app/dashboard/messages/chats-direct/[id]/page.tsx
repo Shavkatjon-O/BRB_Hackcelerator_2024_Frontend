@@ -35,7 +35,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChatInput } from "../../_components/ui/chat-input";
 import { loggedInUserData } from "@/constants/data";
 
-export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
+const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
 
 
