@@ -105,9 +105,15 @@ const ChatPage = () => {
 
     const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
 
+    ws.onopen = () => {
+      console.log("WebSocket connection opened");
+    };
+
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("message received", data.message);  
+      console.log("message received", data.message);
+
+      // Update UI with new message
       setMessages((prevMessages) => [...prevMessages, data.message]);
     };
 
@@ -125,17 +131,17 @@ const ChatPage = () => {
   }, [chatID]);
 
   if (!isLoaded) return <div>Loading...</div>;
-  if (error) return <div>Error loading user data</div>;
   if (!user) return <div>User not found</div>;
   if (!chat) return <div>Chat not found</div>;
+  if (error) return <div>Error loading user data</div>;
 
   const sendMessage = (newMessage: MessageType) => {
     const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
 
-    if (ws.readyState === WebSocket.OPEN) {
+    ws.onopen = () => {
       ws.send(JSON.stringify({ message }));
       console.log("message sent", message);
-    }
+    };
 
     setMessages([...messages, newMessage]);
     createDirectChatMessage(String(chat.id), newMessage.text);
@@ -174,10 +180,11 @@ const ChatPage = () => {
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
           {messages.map((message, index) => {
+
             const variant = getMessageVariant(message.user.email, user.email);
             return (
               <motion.div
-                key={message.id || index} // Fixed missing "key" prop warning
+                key={message.id || index}
                 layout
                 initial={{ opacity: 0, scale: 1, y: 50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
