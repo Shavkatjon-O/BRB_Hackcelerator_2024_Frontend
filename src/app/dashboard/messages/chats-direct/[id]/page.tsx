@@ -93,7 +93,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (!chatID) return;
 
-    const socket = new WebSocket(`ws://localhost:8000/ws/chat/${chatID}/`);
+    const socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/chat/${chatID}/`);
     ws.current = socket; // Store WebSocket reference
 
     socket.onopen = () => {
