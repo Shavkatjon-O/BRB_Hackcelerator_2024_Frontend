@@ -182,7 +182,7 @@ const ChatPage = () => {
                   <ChatBubbleMessage variant={variant}>
                     {message.text}
                     {message.created_at && (
-                      <ChatBubbleTimestamp timestamp={message.created_at} />
+                      <ChatBubbleTimestamp timestamp={message.created_at} className="text-xs text-slate-400" />
                     )}
                   </ChatBubbleMessage>
                 </ChatBubble>
