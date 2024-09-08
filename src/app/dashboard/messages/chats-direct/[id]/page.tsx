@@ -106,7 +106,7 @@ const ChatPage = () => {
 
       if (data.chat.id !== Number(chatID)) return;
 
-      // Update UI with new message
+      // Update UI with new message received via WebSocket
       setMessages((prevMessages) => [...prevMessages, data]);
     };
 
@@ -143,10 +143,9 @@ const ChatPage = () => {
       ws.current.send(JSON.stringify(newMessage)); // Send message through WebSocket
       console.log("message sent", newMessage);
 
-      // Append message to UI
-      setMessages((prevMessages) => [...prevMessages, newMessage.message]);
+      // Don't append message to UI here; wait for WebSocket to update the UI
       createDirectChatMessage(String(chat.id), newMessage.message.text);
-      setMessage("");
+      setMessage(""); // Clear input after sending
 
       inputRef.current?.focus();
     }
