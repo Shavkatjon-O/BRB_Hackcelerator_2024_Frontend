@@ -48,6 +48,7 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const ws = useRef<WebSocket | null>(null);  // WebSocket reference
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
@@ -99,34 +100,36 @@ const ChatPage = () => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  // WebSocket Connection
+  // WebSocket Connection: Open connection only once
   useEffect(() => {
     if (!chatID) return;
 
-    const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+    const socket = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+    ws.current = socket;  // Store WebSocket reference
 
-    ws.onopen = () => {
+    socket.onopen = () => {
       console.log("WebSocket connection opened");
     };
 
-    ws.onmessage = (event) => {
+    socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("message received", data.message);
+      console.log("message received", data);
 
       // Update UI with new message
-      setMessages((prevMessages) => [...prevMessages, data.message]);
+      setMessages((prevMessages) => [...prevMessages, data]);
     };
 
-    ws.onclose = (event) => {
+    socket.onclose = (event) => {
       console.error("WebSocket closed:", event);
     };
 
-    ws.onerror = (event) => {
+    socket.onerror = (event) => {
       console.error("WebSocket error observed:", event);
     };
 
+    // Cleanup on component unmount
     return () => {
-      ws.close();
+      socket.close();
     };
   }, [chatID]);
 
@@ -135,26 +138,18 @@ const ChatPage = () => {
   if (!chat) return <div>Chat not found</div>;
   if (error) return <div>Error loading user data</div>;
 
+  // Send message via WebSocket
   const sendMessage = (newMessage: MessageType) => {
-    const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify(newMessage));  // Send message through WebSocket
+      console.log("message sent", newMessage);
+    } else {
+      console.error("WebSocket is not open.");
+    }
 
-    ws.onopen = () => {
-      ws.send(JSON.stringify({ message }));
-      console.log("message sent", message);
-    };
-
+    // Append message to UI
     setMessages([...messages, newMessage]);
     createDirectChatMessage(String(chat.id), newMessage.text);
-  };
-
-  const handleThumbsUp = () => {
-    const newMessage: MessageType = {
-      chat: chat,
-      user: user,
-      text: "👍",
-    };
-    sendMessage(newMessage);
-    setMessage("");
   };
 
   const handleSend = () => {
@@ -173,6 +168,16 @@ const ChatPage = () => {
     }
   };
 
+  const handleThumbsUp = () => {
+    const newMessage: MessageType = {
+      chat: chat,
+      user: user,
+      text: "👍",
+    };
+    sendMessage(newMessage);
+    setMessage("");
+  };
+
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col justify-between">
       <ChatTopbar selectedUser={chat} />
@@ -180,7 +185,6 @@ const ChatPage = () => {
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
           {messages.map((message, index) => {
-
             const variant = getMessageVariant(message.user.email, user.email);
             return (
               <motion.div
