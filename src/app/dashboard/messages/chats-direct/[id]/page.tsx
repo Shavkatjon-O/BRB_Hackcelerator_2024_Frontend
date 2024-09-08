@@ -100,6 +100,21 @@ const ChatPage = () => {
     }
   }, [chatID, user]);
 
+  const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+
+  useEffect(() => {
+    // console.log("ws", ws);  
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("message received", data.message);
+      setMessages((prevMessages) => [...prevMessages, data.message]);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [chatID]);
+
   useEffect(() => {
     fetchChatData();
   }, [fetchChatData]);
@@ -114,6 +129,13 @@ const ChatPage = () => {
   if (!chat) return <div>Chat not found</div>;
 
   const sendMessage = (newMessage: MessageType) => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ message }));
+      console.log("message sent", message);
+
+    }
+
+    console.log("newMessage", newMessage);
     setMessages([...messages, newMessage]);
     createDirectChatMessage(
       String(chat.id),
@@ -146,8 +168,6 @@ const ChatPage = () => {
       }
     }
   };
-
-  console.log("chat", chat);
 
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col justify-between">
