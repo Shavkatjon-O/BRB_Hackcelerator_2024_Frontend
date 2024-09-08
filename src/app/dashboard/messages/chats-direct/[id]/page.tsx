@@ -17,9 +17,6 @@ import {
   ChatBubble,
 } from "../../_components/ui/chat-bubble";
 import { ChatMessageList } from "../../_components/ui/chat-message-list";
-
-// import ChatBottombar from "../../_components/ChatBottom";
-
 import {
   FileImage,
   Mic,
@@ -34,13 +31,9 @@ import { cn } from "@/lib/utils";
 import { EmojiPicker } from "../../_components/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChatInput } from "../../_components/ui/chat-input";
-import { loggedInUserData } from "@/constants/data";
-
 import ChatTopbar from "../../_components/ChatTop";
 
 const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
-
-
 
 const getMessageVariant = (messageEmail: string, currentUserEmail: string) =>
   messageEmail === currentUserEmail ? "sent" : "received";
@@ -53,14 +46,13 @@ const ChatPage = () => {
   const [chat, setChat] = useState<DirectChatType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
-  
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -72,7 +64,6 @@ const ChatPage = () => {
       setMessage((prev) => prev + "\n");
     }
   };
-
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -100,21 +91,6 @@ const ChatPage = () => {
     }
   }, [chatID, user]);
 
-  const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
-
-  useEffect(() => {
-    // console.log("ws", ws);  
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("message received", data.message);
-      setMessages((prevMessages) => [...prevMessages, data.message]);
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [chatID]);
-
   useEffect(() => {
     fetchChatData();
   }, [fetchChatData]);
@@ -123,24 +99,46 @@ const ChatPage = () => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  // WebSocket Connection
+  useEffect(() => {
+    if (!chatID) return;
+
+    const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("message received", data.message);  
+      setMessages((prevMessages) => [...prevMessages, data.message]);
+    };
+
+    ws.onclose = (event) => {
+      console.error("WebSocket closed:", event);
+    };
+
+    ws.onerror = (event) => {
+      console.error("WebSocket error observed:", event);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [chatID]);
+
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div>Error loading user data</div>;
   if (!user) return <div>User not found</div>;
   if (!chat) return <div>Chat not found</div>;
 
   const sendMessage = (newMessage: MessageType) => {
+    const ws = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ message }));
       console.log("message sent", message);
-
     }
 
-    console.log("newMessage", newMessage);
     setMessages([...messages, newMessage]);
-    createDirectChatMessage(
-      String(chat.id),
-      newMessage.text,
-    );
+    createDirectChatMessage(String(chat.id), newMessage.text);
   };
 
   const handleThumbsUp = () => {
@@ -172,14 +170,14 @@ const ChatPage = () => {
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col justify-between">
       <ChatTopbar selectedUser={chat} />
-      
+
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
           {messages.map((message, index) => {
             const variant = getMessageVariant(message.user.email, user.email);
             return (
               <motion.div
-                key={message.id}
+                key={message.id || index} // Fixed missing "key" prop warning
                 layout
                 initial={{ opacity: 0, scale: 1, y: 50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -202,7 +200,10 @@ const ChatPage = () => {
                   <ChatBubbleMessage variant={variant}>
                     {message.text}
                     {message.created_at && (
-                      <ChatBubbleTimestamp timestamp={message.created_at} className="text-xs text-slate-400" />
+                      <ChatBubbleTimestamp
+                        timestamp={message.created_at}
+                        className="text-xs text-slate-400"
+                      />
                     )}
                   </ChatBubbleMessage>
                 </ChatBubble>
@@ -211,10 +212,6 @@ const ChatPage = () => {
           })}
         </AnimatePresence>
       </ChatMessageList>
-      {/* <ChatBottombar isMobile={false} chat={chat} /> */}
-
-
-      {/* Input */}
 
       <div className="px-2 py-4 flex justify-between w-full items-center gap-2">
         <div className="flex">
@@ -225,7 +222,7 @@ const ChatPage = () => {
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "h-9 w-9",
-                  "shrink-0",
+                  "shrink-0"
                 )}
               >
                 <PlusCircle size={22} className="text-muted-foreground" />
@@ -239,7 +236,7 @@ const ChatPage = () => {
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "h-9 w-9",
-                      "shrink-0",
+                      "shrink-0"
                     )}
                   >
                     <Mic size={22} className="text-muted-foreground" />
@@ -251,7 +248,7 @@ const ChatPage = () => {
                       className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
                         "h-9 w-9",
-                        "shrink-0",
+                        "shrink-0"
                       )}
                     >
                       <icon.icon size={22} className="text-muted-foreground" />
@@ -264,7 +261,7 @@ const ChatPage = () => {
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
                     "h-9 w-9",
-                    "shrink-0",
+                    "shrink-0"
                   )}
                 >
                   <Mic size={22} className="text-muted-foreground" />
@@ -281,7 +278,7 @@ const ChatPage = () => {
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
                     "h-9 w-9",
-                    "shrink-0",
+                    "shrink-0"
                   )}
                 >
                   <icon.icon size={22} className="text-muted-foreground" />
@@ -315,7 +312,7 @@ const ChatPage = () => {
               placeholder="Type a message..."
               className="rounded-lg"
             />
-            <div className="absolute right-4 top-3  ">
+            <div className="absolute right-4 top-3">
               <EmojiPicker
                 onChange={(value) => {
                   setMessage(message + value);
@@ -350,7 +347,6 @@ const ChatPage = () => {
           )}
         </AnimatePresence>
       </div>
-
     </div>
   );
 };
