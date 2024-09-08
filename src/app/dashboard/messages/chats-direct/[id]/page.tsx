@@ -139,7 +139,15 @@ const ChatPage = () => {
   if (error) return <div>Error loading user data</div>;
 
   // Send message via WebSocket
-  const sendMessage = (newMessage: MessageType) => {
+  const sendMessage = () => {
+    const newMessage = {
+      message: {
+        chat: chat,
+        user: user,
+        text: message,
+      }
+    };
+  
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(newMessage));  // Send message through WebSocket
       console.log("message sent", newMessage);
@@ -148,34 +156,24 @@ const ChatPage = () => {
     }
 
     // Append message to UI
-    setMessages([...messages, newMessage]);
-    createDirectChatMessage(String(chat.id), newMessage.text);
+    setMessages([...messages, newMessage.message]);
+    createDirectChatMessage(String(chat.id), newMessage.message.text);
+    setMessage("");
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage: MessageType = {
-        chat: chat,
-        user: user,
-        text: message,
-      };
-      sendMessage(newMessage);
-      setMessage("");
-
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      sendMessage();
     }
   };
 
   const handleThumbsUp = () => {
-    const newMessage: MessageType = {
-      chat: chat,
-      user: user,
-      text: "👍",
-    };
-    sendMessage(newMessage);
-    setMessage("");
+    setMessage("👍");
+    sendMessage();
   };
 
   return (
@@ -205,8 +203,8 @@ const ChatPage = () => {
               >
                 <ChatBubble variant={variant}>
                   <ChatBubbleAvatar
-                    src={chat.partner?.image}
-                    fallback={chat.partner?.email[0].toUpperCase()}
+                    src={message.user.image || chat.partner?.image}
+                    fallback={message.user.email[0].toUpperCase()}
                   />
                   <ChatBubbleMessage variant={variant}>
                     {message.text}
