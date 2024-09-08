@@ -104,7 +104,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (!chatID) return;
 
-    const socket = new WebSocket(`ws://localhost:8001/ws/chat/${chatID}/`);
+    const socket = new WebSocket(`ws://localhost:8000/ws/chat/${chatID}/`);
     ws.current = socket;  // Store WebSocket reference
 
     socket.onopen = () => {
