@@ -104,7 +104,7 @@ const ChatPage = () => {
       const data = JSON.parse(event.data);
       console.log("message received", data);
 
-      if (data.chat.id !== chatID) return;
+      if (data.chat.id !== Number(chatID)) return;
 
       // Update UI with new message
       setMessages((prevMessages) => [...prevMessages, data]);
