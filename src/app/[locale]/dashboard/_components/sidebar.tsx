@@ -47,7 +47,7 @@ const baseLinks = [
   { href: "/dashboard/events", label: "Events & Calendar", icon: Calendar },
   { href: "/dashboard/tasks", label: "Tasks", icon: SquareCheckBig },
   { href: "/dashboard/requests", label: "Requests & Approvals", icon: FileCheck },
-  { href: "/dashboard/assistant", label: "AI Assistant", icon: Bot },
+  { href: "/dashboard/assistants", label: "AI Assistant", icon: Bot },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/profile", label: "Profile", icon: User },
