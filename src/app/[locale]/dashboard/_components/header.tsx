@@ -3,11 +3,46 @@
 import useUser from "@/hooks/useUser";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { User, Loader } from "lucide-react";
-import {Link} from '@/i18n/routing';;
+import { 
+  User,
+  Languages,
+  Loader,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Link } from '@/i18n/routing';
+
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/routing";
+import { useTransition } from "react";
+
+// Ensure the correct type for the languages
+const languages: { value: "en" | "uz" | "ru", label: string }[] = [
+  { value: "en", label: "English" },
+  { value: "uz", label: "O'zbek" },
+  { value: "ru", label: "Русский" },
+];
 
 const Header = () => {
   const { user, isLoaded, error } = useUser();
+
+  const t = useTranslations("Index");
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleLocaleChange = (locale: "en" | "uz" | "ru") => {
+    startTransition(() => {
+      router.replace(pathname, { locale });
+    });
+  };
 
   return (
     <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
@@ -33,7 +68,24 @@ const Header = () => {
                   ) : null
                 }
               </div>
-              <div>
+              <div className="flex gap-2 items-center">
+                <Select onValueChange={handleLocaleChange} value={locale as "en" | "uz" | "ru"}>
+                  <SelectTrigger>
+                    <SelectValue>
+                      <Languages className="w-5 h-5" /> {locale}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {
+                      languages.map(({ value, label }) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))
+                    }
+                  </SelectContent>
+                </Select>
+
                 <Button asChild variant="link">
                   <Link href="/dashboard/profile" className="space-x-2">
                     <span>{user?.email}</span>
