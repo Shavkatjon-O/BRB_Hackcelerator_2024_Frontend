@@ -3,25 +3,12 @@
 import {Link} from '@/i18n/routing';;
 import Image from "next/image";
 import {
-  LayoutDashboard,
-  Bot,
-  Calendar,
-  CalendarCheck,
-  MessageSquareText,
-  Bell,
-  User,
-  FileCheck,
-  Settings,
-  SquareCheckBig,
   ChevronFirst,
   ChevronLast,
   CreditCard,
   ArrowLeftRight,
   BadgeDollarSign,
   Upload,
-  LogOut,
-  HelpCircle,
-  House,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -45,49 +32,6 @@ const bankTellerLinks = [
   { href: "/dashboard/upload", label: "Upload", icon: Upload },
 ];
 
-
-// const defaultLinks = {
-//   "General": [
-//     { href: "/dashboard", label: "Home", icon: House },
-//     { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
-//     { href: "/dashboard/messages", label: "Messages", icon: MessageSquareText },
-//     { href: "/dashboard/requests", label: "Requests & Approvals", icon: FileCheck },
-//     { href: "/dashboard/announcements", label: "Announcements", icon: FileCheck },
-//     { href: "/dashboard/events", label: "Events & Calendar", icon: Calendar },
-//     { href: "/dashboard/documents", label: "Documents", icon: FileCheck },
-//     { href: "/dashboard/meetings", label: "Video & Call Meetings", icon: CalendarCheck },
-//     { href: "/dashboard/tasks", label: "Tasks Management", icon: SquareCheckBig },
-//     { href: "/dashbaord/reports", label: "Reports", icon: FileCheck },
-//     { href: "/dashboard/assistants", label: "AI Assistant", icon: Bot },
-//   ],
-//   "Other": [
-//     { href: "/dashboard/profile", label: "Profile", icon: User },
-//     { href: "/dashboard/settings", label: "Settings", icon: Settings },
-//     { href: "/dashboard/help", label: "Help", icon: HelpCircle },
-//     { href: "/sign-out", label: "Sign Out", icon: LogOut },
-//   ],
-// }
-
-const baseLinks = [
-  // General
-  { href: "/dashboard", label: "Home", icon: House },
-  { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
-  { href: "/dashboard/messages", label: "Messages", icon: MessageSquareText },
-  { href: "/dashboard/requests", label: "Requests & Approvals", icon: FileCheck },
-  { href: "/dashboard/announcements", label: "Announcements", icon: FileCheck },
-  { href: "/dashboard/events", label: "Events & Calendar", icon: Calendar },
-  { href: "/dashboard/documents", label: "Documents", icon: FileCheck },
-  { href: "/dashboard/meetings", label: "Video & Call Meetings", icon: CalendarCheck },
-  { href: "/dashboard/tasks", label: "Tasks Management", icon: SquareCheckBig },
-  { href: "/dashbaord/reports", label: "Reports", icon: FileCheck },
-  { href: "/dashboard/assistants", label: "AI Assistant", icon: Bot },
-  // Other
-  { href: "/dashboard/profile", label: "Profile", icon: User },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
-  { href: "/dashboard/help", label: "Help", icon: HelpCircle },
-  { href: "/sign-out", label: "Sign Out", icon: LogOut },
-];
-
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, isLoaded } = useUser();
@@ -97,9 +41,19 @@ const Sidebar = () => {
 
   const getLinksForUserType = () => {
     if (user?.user_type === "BANK_TELLER") {
-      return [...bankTellerLinks, ...baseLinks];
+      return {
+        "Menu": [
+          ...bankTellerLinks,
+        ],
+        "General": [
+          ...defaultLinks["General"]
+        ],
+        "Other": [
+          ...defaultLinks["Other"]
+        ],
+      };
     }
-    return baseLinks; 
+    return defaultLinks; 
   };
 
   const links = getLinksForUserType();
@@ -151,7 +105,7 @@ const Sidebar = () => {
               </Button>
             ))} */}
 
-            {Object.entries(defaultLinks).map(([title, links]) => (
+            {Object.entries(links).map(([title, links]) => (
               <div key={title} className="space-y-2">
                 {
                   isOpen ? (
