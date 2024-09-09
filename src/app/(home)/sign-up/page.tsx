@@ -42,7 +42,7 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = async (values: { userType: string; email: string; password: string }) => {
+  const onSubmit = async (values: { userType: string | undefined; email: string; password: string }) => {
     setLoading(true);
 
     try {
