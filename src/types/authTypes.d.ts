@@ -14,4 +14,5 @@ export interface UserProfileType {
   education: string;
   skills: string;
   image: string;
+  user_type: string;
 }
