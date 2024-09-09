@@ -21,7 +21,6 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTransition, useState, useEffect } from "react";
 
-// Ensure the correct type for the languages
 const languages: { value: "en" | "uz" | "ru", label: string }[] = [
   { value: "en", label: "English" },
   { value: "uz", label: "O'zbek" },
