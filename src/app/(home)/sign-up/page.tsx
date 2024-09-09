@@ -35,15 +35,17 @@ const SignUpPage = () => {
   const form = useForm({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      userType: undefined,
+      user_type: undefined,
       email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  const onSubmit = async (values: { userType: string | undefined; email: string; password: string }) => {
+  const onSubmit = async (values: { user_type: string | undefined; email: string; password: string }) => {
     setLoading(true);
+
+    console.log(values);
 
     try {
       const response = await CoreAPI.post("/users/sign-up/", values);
@@ -92,7 +94,7 @@ const SignUpPage = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-md">
             <FormField
               control={form.control}
-              name="userType"
+              name="user_type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>User Type</FormLabel>

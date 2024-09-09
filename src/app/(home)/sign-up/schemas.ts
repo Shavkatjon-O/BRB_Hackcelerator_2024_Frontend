@@ -3,7 +3,7 @@ import { z } from "zod";
 const userTypeChoices = ["EMPLOYEE", "LOAN_MANAGER", "BANK_TELLER"] as const;
 
 export const signUpSchema = z.object({
-  userType: z.enum(userTypeChoices, {
+  user_type: z.enum(userTypeChoices, {
     invalid_type_error: "Please select a valid user type.",
     required_error: "User type is required.",
   }),
