@@ -30,23 +30,18 @@ const languages: { value: "en" | "uz" | "ru", label: string }[] = [
 
 const Header = () => {
   const { user, isLoaded, error } = useUser();
+
   const t = useTranslations("Index");
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
 
   const [isPending, startTransition] = useTransition();
-  const [selectedLocale, setSelectedLocale] = useState<"en" | "uz" | "ru">(locale as "en" | "uz" | "ru");
-
-  // Ensure that locale changes are smoothly applied
-  useEffect(() => {
-    setSelectedLocale(locale as "en" | "uz" | "ru");
-  }, [locale]);
 
   const handleLocaleChange = (newLocale: "en" | "uz" | "ru") => {
-    setSelectedLocale(newLocale); // Update state instantly to reflect UI changes
     startTransition(() => {
       router.replace(pathname, { locale: newLocale });
+      router.refresh();
     });
   };
 
@@ -75,10 +70,10 @@ const Header = () => {
                 }
               </div>
               <div className="flex gap-2 items-center">
-                <Select onValueChange={handleLocaleChange} value={selectedLocale}>
+                <Select onValueChange={handleLocaleChange} value={locale}>
                   <SelectTrigger>
                     <SelectValue>
-                      <Languages className="w-5 h-5" /> {selectedLocale}
+                      <Languages className="w-5 h-5" /> {locale}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
