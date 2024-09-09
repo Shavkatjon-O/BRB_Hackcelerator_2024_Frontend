@@ -40,7 +40,7 @@ const bankTellerLinks = [
   { href: "/dashboard/upload", label: "Upload", icon: Upload },
 ];
 
-const links = [
+const baseLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquareText },
   { href: "/dashboard/meetings", label: "Video & Calls", icon: CalendarCheck },
@@ -50,7 +50,6 @@ const links = [
   { href: "/dashboard/assistant", label: "AI Assistant", icon: Bot },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
-  ...bankTellerLinks,
   { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
@@ -58,6 +57,17 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, isLoaded } = useUser();
   const pathname = usePathname();
+
+  if (!isLoaded) return null;
+
+  const getLinksForUserType = () => {
+    if (user?.user_type === "BANK_TELLER") {
+      return [...bankTellerLinks, ...baseLinks];
+    }
+    return baseLinks; 
+  };
+
+  const links = getLinksForUserType();
 
   return (
     <aside className={`h-screen border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${isOpen ? "w-64" : "w-20"}`}>
@@ -85,26 +95,26 @@ const Sidebar = () => {
 
         <ScrollArea>
           <nav className="flex flex-col max-h-full space-y-2 p-4">
-              {links.map(({ href, label, icon: Icon }) => (
-                <Button
-                  key={href}
-                  asChild
-                  variant={pathname === href ? "default" : "ghost"}
-                  className={`w-full p-3 h-full flex transition-colors duration-200 ${
-                    cn(
-                      isOpen ? "justify-start" : "justify-center",
-                      pathname !== href ? "text-slate-500 dark:text-slate-300" : ""
-                    )
-                  }`}
-                >
-                  <Link href={href} className="flex items-center space-x-2 w-full">
-                    <Icon size={24} className="flex-shrink-0" />
-                    <span className={`${isOpen ? "block" : "hidden"} ml-2`}>
-                      {label}
-                    </span>
-                  </Link>
-                </Button>
-              ))}
+            {links.map(({ href, label, icon: Icon }) => (
+              <Button
+                key={href}
+                asChild
+                variant={pathname === href ? "default" : "ghost"}
+                className={`w-full p-3 h-full flex transition-colors duration-200 ${
+                  cn(
+                    isOpen ? "justify-start" : "justify-center",
+                    pathname !== href ? "text-slate-500 dark:text-slate-300" : ""
+                  )
+                }`}
+              >
+                <Link href={href} className="flex items-center space-x-2 w-full">
+                  <Icon size={24} className="flex-shrink-0" />
+                  <span className={`${isOpen ? "block" : "hidden"} ml-2`}>
+                    {label}
+                  </span>
+                </Link>
+              </Button>
+            ))}
           </nav>
         </ScrollArea>
 
