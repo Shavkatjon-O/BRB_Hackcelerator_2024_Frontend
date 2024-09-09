@@ -35,7 +35,7 @@ const SignUpPage = () => {
   const form = useForm({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      userType: '',
+      userType: undefined,
       email: '',
       password: '',
       confirmPassword: '',
