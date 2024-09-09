@@ -16,6 +16,13 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { signUpSchema } from './schemas';
 
 import CoreAPI from '@/lib/coreApi';
@@ -28,13 +35,14 @@ const SignUpPage = () => {
   const form = useForm({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      userType: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  const onSubmit = async (values: { email: string; password: string }) => {
+  const onSubmit = async (values: { userType: string; email: string; password: string }) => {
     setLoading(true);
 
     try {
@@ -77,11 +85,33 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className='flex justify-center p-4'>
-      <div className="max-w-md w-full bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg border">
+    <div className='flex justify-center p-2'>
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 p-6 px-8 rounded-lg shadow-lg border">
         <h1 className="text-2xl font-bold mb-6">Sign up</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 text-md">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-md">
+            <FormField
+              control={form.control}
+              name="userType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>User Type</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger className="py-3 h-max">
+                        <SelectValue placeholder="Select a user type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="EMPLOYEE">Employee</SelectItem>
+                        <SelectItem value="LOAN_MANAGER">Loan Manager</SelectItem>
+                        <SelectItem value="BANK_TELLER">Bank Teller</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -89,11 +119,11 @@ const SignUpPage = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       className="py-3 h-max"
                       placeholder="Enter your email"
                       aria-label="Email"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,12 +137,12 @@ const SignUpPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       className="py-3 h-max"
                       placeholder="Enter your password"
                       type="password"
                       aria-label="Password"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -126,12 +156,12 @@ const SignUpPage = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       className="py-3 h-max"
                       placeholder="Confirm your password"
                       type="password"
                       aria-label="Confirm Password"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
