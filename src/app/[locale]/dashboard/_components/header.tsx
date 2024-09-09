@@ -4,7 +4,7 @@ import useUser from "@/hooks/useUser";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { User, Loader } from "lucide-react";
-import Link from "next/link";
+import {Link} from '@/i18n/routing';;
 
 const Header = () => {
   const { user, isLoaded, error } = useUser();

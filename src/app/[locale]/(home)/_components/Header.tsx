@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';;
 import { Button } from '@/components/ui/button';
 import useUser from '@/hooks/useUser';
 import { ModeToggle } from '@/components/mode-toggle';

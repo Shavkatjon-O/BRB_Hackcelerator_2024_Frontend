@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Info, Phone, Video } from "lucide-react";
-import Link from "next/link";
+import {Link} from '@/i18n/routing';;
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ExpandableChatHeader } from "./ui/expandable-chat";

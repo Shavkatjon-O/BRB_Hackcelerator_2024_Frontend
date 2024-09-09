@@ -6,7 +6,7 @@ import {
   SendHorizontal,
   ThumbsUp,
 } from "lucide-react";
-import Link from "next/link";
+import {Link} from '@/i18n/routing';;
 import React, { useEffect, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
