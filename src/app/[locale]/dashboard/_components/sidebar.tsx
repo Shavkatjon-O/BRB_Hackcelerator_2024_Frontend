@@ -19,6 +19,8 @@ import {
   ArrowLeftRight,
   BadgeDollarSign,
   Upload,
+  LogOut,
+  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -51,6 +53,10 @@ const baseLinks = [
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/dashboard/documents", label: "Documents", icon: FileCheck },
+  { href: "/dashbaord/reports", label: "Reports", icon: FileCheck },
+  { href: "/dashboard/help", label: "Help", icon: HelpCircle },
+  { href: "/sign-out", label: "Sign Out", icon: LogOut },
 ];
 
 const Sidebar = () => {
