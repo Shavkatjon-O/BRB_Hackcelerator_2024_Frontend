@@ -177,11 +177,28 @@ const Page = () => {
   if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
 
   return (
-    <Panel title="Requests & Approvals"
-      action={<RequestFormDialog onSubmit={handleFormSubmit} />}
-    >
-      <RequestsTable requests={requests} />
-    </Panel>
+    <>
+      <Panel title="Quick Actions" className="flex gap-4">
+        <Button variant="outline" className="w-full h-44 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+          <FilePlus className="mr-2" /> Create Request
+        </Button>
+        <Button variant="outline" className="w-full h-44 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+          <FilePlus className="mr-2" /> Create Request
+        </Button>
+        <Button variant="outline" className="w-full h-44 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+          <FilePlus className="mr-2" /> Create Request
+        </Button>
+        <Button variant="outline" className="w-full h-44 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+          <FilePlus className="mr-2" /> Create Request
+        </Button>
+      </Panel>
+
+      <Panel title="Requests & Approvals"
+        action={<RequestFormDialog onSubmit={handleFormSubmit} />}
+      >
+        <RequestsTable requests={requests} />
+      </Panel>
+    </>
   );
 };
 
