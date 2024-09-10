@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export const data = [
+const data = [
   {
     id: 1,
     title: "New feature: Announcements",
