@@ -27,14 +27,11 @@ const languages: { value: "en" | "uz" | "ru", label: string }[] = [
   { value: "ru", label: "Русский" },
 ];
 
-const Header = (
-  { currentUser }: { currentUser: UserProfileType }
-) => {
-
+const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
   const t = useTranslations("Index");
-  const router = useRouter();
+  const router = useRouter();  
   const pathname = usePathname();
-  const locale = useLocale();
+  const locale = useLocale();     
 
   const [isPending, startTransition] = useTransition();
 
