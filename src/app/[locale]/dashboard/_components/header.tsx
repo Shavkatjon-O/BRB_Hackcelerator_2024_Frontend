@@ -73,7 +73,14 @@ const Header = () => {
               <span className="text-sm">[{t("title")}]</span>
             </div>
 
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 items-center">
+              <Button asChild variant="link">
+                <Link href="/dashboard/profile" className="flex items-center space-x-2">
+                  <span>{user?.email}</span>
+                  <User className="w-5 h-5 text-gray-500 dark:text-gray-300" />
+                </Link>
+              </Button>
+
               <Select onValueChange={handleLocaleChange} value={locale}>
                 <SelectTrigger className="flex items-center space-x-2">
                   <Languages className="w-5 h-5" />
@@ -87,15 +94,10 @@ const Header = () => {
                   ))}
                 </SelectContent>
               </Select>
-
-              <Button asChild variant="link">
-                <Link href="/dashboard/profile" className="flex items-center space-x-2">
-                  <span>{user?.email}</span>
-                  <User className="w-5 h-5 text-gray-500 dark:text-gray-300" />
-                </Link>
-              </Button>
-
-              <ModeToggle />
+              
+              <div>
+                <ModeToggle />
+              </div>
             </div>
           </>
         )}
