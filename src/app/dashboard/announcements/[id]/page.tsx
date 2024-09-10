@@ -1,4 +1,7 @@
-import Panel from "../_components/Panel";
+"use client";
+
+import Panel from "../../_components/Panel"
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -42,28 +45,29 @@ export const data = [
 ];
 
 const Page = () => {
-  return (
-    <Panel title="Announcements">
-      <div className="gap-4 grid grid-cols-2">
-        {data.map((item, index) => (
-          <div key={index} className="w-full dark:bg-slate-800 shadow-md rounded-md p-4 flex flex-col gap-4">
-            <h1 className="font-semibold">{item.title}</h1>
-            
-            <p className="">{item.description}</p>
+  const { id } = useParams();
+  const anons_id = Array.isArray(id) ? id[0] : id;
+  const anons: any = data.find((item) => item.id === Number(anons_id));
 
-            <div className="flex items-center justify-between">
-              <p className="text-sm">{item.date}</p>
-              <Button variant="link" asChild>
-                <Link href={`/dashboard/announcements/${item.id}`}>
-                  Read more
-                </Link>
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+  return (
+    <Panel title="Announcements" action={
+      <Button variant="outline" asChild>
+        <Link href="/dashboard/announcements">
+          Back
+        </Link>
+      </Button>
+    }>
+      <div className="dark:bg-slate-800 shadow-md rounded-md p-4 flex flex-col gap-4">
+        <h1 className="font-semibold">{anons.title}</h1>
+
+        <p className="">{anons.description}</p>
+
+        <div className="flex items-center justify-between">
+          <p className="text-sm">{anons.date}</p>
+        </div>
+      </div>  
     </Panel>
   );
 };
 
-export default Page;
+export default Page;  
