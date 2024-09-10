@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, FilePlus, CheckCircle2, XCircle } from "lucide-react";
 import coreApi from "@/lib/coreApi";
 
+import Panel from "../_components/Panel";
+
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-800",
   APPROVED: "bg-green-100 text-green-800",
@@ -175,11 +177,11 @@ const Page = () => {
   if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
 
   return (
-    <div className="p-6 space-y-6 bg-slate-100 dark:bg-slate-900 h-full">
-      <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Requests & Approvals</h1>
-      <RequestFormDialog onSubmit={handleFormSubmit} />
+    <Panel title="Requests & Approvals"
+      action={<RequestFormDialog onSubmit={handleFormSubmit} />}
+    >
       <RequestsTable requests={requests} />
-    </div>
+    </Panel>
   );
 };
 
