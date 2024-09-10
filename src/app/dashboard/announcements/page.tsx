@@ -36,7 +36,7 @@ const Page = () => {
       try {
         setLoading(true);
         const response = await getAnonsList();
-        setAnonsData(response);
+        setAnonsData(response.results);
       } catch (error) {
         console.error("Error fetching announcements:", error);
       } finally {

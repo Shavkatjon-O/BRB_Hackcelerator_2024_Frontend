@@ -1,7 +1,7 @@
 import coreApi from "@/lib/coreApi";
 import { AnonsListType, AnonsType } from "../_types/anonsTypes";
 
-const getAnonsList = async (): Promise<AnonsListType[]> => {
+const getAnonsList = async () => {
   const response =  await coreApi.get('/anons/');
   return response.data;
 }
