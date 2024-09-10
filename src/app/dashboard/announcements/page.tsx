@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Panel from "../_components/Panel";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -8,51 +8,8 @@ import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-const data = [
-  {
-    id: 1,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2024-09-11",
-    status: "Unread",
-  },
-  {
-    id: 2,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2023-08-28",
-    status: "Read",
-  },
-  {
-    id: 3,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2023-08-12",
-    status: "Read",
-  },
-  {
-    id: 4,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2023-07-20",
-    status: "Unread",
-  },
-  {
-    id: 5,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2023-06-10",
-    status: "Unread",
-  },
-  {
-    id: 6,
-    title: "New feature: Announcements",
-    description: "We have added a new feature that allows you to create announcements.",
-    date: "2023-05-25",
-    status: "Read",
-  },
-];
+import { getAnonsList } from "./_services/anonsServices";
+import { AnonsListType } from "./_types/anonsTypes";
 
 const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) => void }) => {
   const handleTabChange = (value: string) => {
@@ -72,11 +29,29 @@ const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) =>
 
 const Page = () => {
   const [filter, setFilter] = useState("all");
+  const [anonsData, setAnonsData] = useState<AnonsListType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await getAnonsList();
+        setAnonsData(response);
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const getFilteredData = (filter: string) => {
     const now = new Date();
-    return data.filter((item) => {
-      const itemDate = new Date(item.date);
+    return anonsData.filter((item) => {
+      const itemDate = new Date(item.created_at);
 
       if (filter === "last7days") {
         return isAfter(itemDate, subDays(now, 7));
@@ -120,6 +95,10 @@ const Page = () => {
       </div>
     );
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Panel title="Announcements" action={<TabsComponent onFilterChange={setFilter} />}>
