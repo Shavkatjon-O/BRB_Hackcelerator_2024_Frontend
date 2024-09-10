@@ -47,61 +47,58 @@ const Header = () => {
   return (
     <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
       <div className="h-full container mx-auto px-4 flex items-center justify-between">
-        {
-          !isLoaded ? (
-            <div className="flex items-center space-x-2 text-sm">
-              <Loader className="w-4 h-4 animate-spin" />
-              <span>Loading...</span>
-            </div>
-          ) : error ? (
+        {!isLoaded ? (
+          <div className="flex items-center justify-center space-x-2 text-sm">
+            <Loader className="w-5 h-5 animate-spin text-gray-500 dark:text-gray-400" />
+            <span>Loading user info...</span>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center text-red-500">
             <span>Error: {error.message}</span>
-          ) : (
-            <>
-              <div className="flex gap-2">
-                <span>
-                  [
-                  {
-                    user?.user_type === "EMPLOYEE" ? (
-                      "Employee"
-                    ) : user?.user_type === "LOAN_MANAGER" ? (
-                      "Loan Manager"
-                    ) : user?.user_type === "BANK_TELLER" ? (
-                      "Bank Teller"
-                    ) : null
-                  }
-                  ]
-                </span>
-                <span>{t("title")}</span>
-              </div>
-              <div className="flex gap-2 items-center">
-                <Select onValueChange={handleLocaleChange} value={locale}>
-                  <SelectTrigger>
-                    <SelectValue>
-                      <Languages className="w-5 h-5" /> {locale}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {
-                      languages.map(({ value, label }) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))
-                    }
-                  </SelectContent>
-                </Select>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2 items-center">
+              <span className="text-sm">
+                [
+                {user?.user_type === "EMPLOYEE"
+                  ? "Employee"
+                  : user?.user_type === "LOAN_MANAGER"
+                  ? "Loan Manager"
+                  : user?.user_type === "BANK_TELLER"
+                  ? "Bank Teller"
+                  : "Guest"}
+                ]
+              </span>
+              <span className="text-sm">[{t("title")}]</span>
+            </div>
 
-                <Button asChild variant="link">
-                  <Link href="/dashboard/profile" className="space-x-2">
-                    <span>{user?.email}</span>
-                    <User className="w-5 h-5" />
-                  </Link>
-                </Button>
-                <ModeToggle />
-              </div>
-            </>
-          )
-        }
+            <div className="flex gap-4 items-center">
+              <Select onValueChange={handleLocaleChange} value={locale}>
+                <SelectTrigger className="flex items-center space-x-2">
+                  <Languages className="w-5 h-5" />
+                  <SelectValue placeholder={locale} />
+                </SelectTrigger>
+                <SelectContent>
+                  {languages.map(({ value, label }) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Button asChild variant="link">
+                <Link href="/dashboard/profile" className="flex items-center space-x-2">
+                  <span>{user?.email}</span>
+                  <User className="w-5 h-5 text-gray-500 dark:text-gray-300" />
+                </Link>
+              </Button>
+
+              <ModeToggle />
+            </div>
+          </>
+        )}
       </div>
     </header>
   );
