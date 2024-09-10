@@ -52,12 +52,12 @@ const Sidebar = () => {
   return (
     <TooltipProvider delayDuration={50}>
       <aside
-        className={`h-screen hidden sm:block border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-900 ${
+        className={`h-screen hidden sm:block border-r dark:border-r-slate-700 transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-800 ${
           isOpen ? 'w-64' : 'w-20'
         }`}
       >
         <div className="h-full flex flex-col justify-between shadow-sm">
-          <div className="p-4 h-16 border-b flex justify-between items-center">
+          <div className="p-4 h-16 border-b dark:border-b-slate-700 flex justify-between items-center">
             <Link href="/dashboard" className={`flex items-center font-bold ${isOpen ? 'block' : 'hidden'}`}>
               <Image
                 width={32}
@@ -138,7 +138,7 @@ const Sidebar = () => {
           <div
             className={`p-4 px-5 h-16 flex items-center ${
               isOpen ? 'justify-start' : 'justify-center'
-            } border-t shadow-sm overflow-hidden`}
+            } border-t dark:border-t-slate-700 shadow-sm overflow-hidden`}
           >
             {isLoaded && user && (
               <Link href="/dashboard/profile" className={`flex items-center ${isOpen ? '' : 'justify-center'}`}>

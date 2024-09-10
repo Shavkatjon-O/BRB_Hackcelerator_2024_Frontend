@@ -45,7 +45,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-slate-900 border-b h-16 z-50 flex items-center shadow-sm">
+    <header className="bg-white dark:bg-slate-800 border-b dark:border-b-slate-700 h-16 z-50 flex items-center shadow-sm">
       <div className="size-full px-4 flex items-center justify-between">
         {!isLoaded ? (
           <div className="flex items-center justify-center space-x-2 text-sm">
