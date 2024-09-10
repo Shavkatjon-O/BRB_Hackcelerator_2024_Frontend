@@ -11,7 +11,6 @@ import { getMessages } from 'next-intl/server';
 import "./globals.css";
 
 import { routing } from '@/i18n/routing';
-import { unstable_setRequestLocale } from 'next-intl/server';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,13 +25,12 @@ export function generateStaticParams() {
 
 export default async function RootLayout({
   children,
-  params: {locale},
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
-  params: {locale: string};
+  params: { locale: string };
 }>) {
   const messages = await getMessages();
-  unstable_setRequestLocale(locale);
 
   return (
     <html lang={locale} suppressHydrationWarning>
