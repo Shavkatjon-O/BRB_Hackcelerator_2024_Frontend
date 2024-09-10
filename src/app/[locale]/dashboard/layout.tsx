@@ -1,8 +1,16 @@
 import Sidebar from "./_components/sidebar";
 import Header from "./_components/header";
 import { SidebarProvider } from "@/providers/sidebar-provider";
+import { unstable_setRequestLocale } from "next-intl/server";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  params: { locale: string };
+}
+
+const DashboardLayout = ({ children, params }: DashboardLayoutProps) => {
+  unstable_setRequestLocale(params.locale);
+
   return (
     <>
       <SidebarProvider>
