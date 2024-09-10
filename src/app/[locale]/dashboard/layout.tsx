@@ -1,6 +1,8 @@
 "use client";
 
+// eslint-disable-next-line
 import Header from "./_components/Header";
+// eslint-disable-next-line
 import Sidebar from "./_components/Sidebar";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import useUser from "@/hooks/useUser";
