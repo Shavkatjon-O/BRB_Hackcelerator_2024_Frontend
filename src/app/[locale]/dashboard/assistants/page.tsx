@@ -20,6 +20,13 @@ interface Message {
   isLoading?: boolean;
 }
 
+interface User {
+  id: number;
+  avatar: string;
+  name: string;
+  role?: "user" | "ai"; // Optional role
+}
+
 const ChatAiIcons = [
   {
     icon: CopyIcon,
@@ -33,12 +40,12 @@ const ChatAiIcons = [
     icon: Volume2,
     label: "Volume",
   },
-]
+];
 
 export default function Page() {
   const messages = useChatStore((state) => state.chatBotMessages);
   const setMessages = useChatStore((state) => state.setchatBotMessages);
-  const selectedUser = useChatStore((state) => state.selectedUser);
+  const selectedUser: User = useChatStore((state) => state.selectedUser); // Ensure selectedUser is typed
   const input = useChatStore((state) => state.input);
   const setInput = useChatStore((state) => state.setInput);
   const handleInputChange = useChatStore((state) => state.handleInputChange);
@@ -50,100 +57,81 @@ export default function Page() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const getMessageVariant = (role: "user" | "ai") => role === "ai" ? "received" : "sent";
+  const getMessageVariant = (role: "user" | "ai" | undefined) => (role === "ai" ? "received" : "sent");
 
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }, [messages]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      handleSendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!input) return;
+  const handleSendMessage = async () => {
+    if (!input || isLoading) return;
 
-    // Add user message to the state
-    setMessages((messages) => [
-      ...messages,
-      {
-        id: messages.length + 1,
-        avatar: selectedUser.avatar,
-        name: selectedUser.name,
-        role: "user",
-        message: input,
-      } as Message
-    ]);
+    const newUserMessage: Message = {
+      id: messages.length + 1,
+      avatar: selectedUser.avatar,
+      name: selectedUser.name,
+      role: selectedUser.role || "user", // Ensure role is "user" if undefined
+      message: input,
+    };
 
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     setInput("");
-    formRef.current?.reset();
 
     try {
       setIsLoading(true);
-
-      // Send message to the API
       const response = await CoreAPI.post("/bot/chat/", { question: input });
-      const botMessage = response.data;
+      const botMessage: Message = {
+        id: messages.length + 2,
+        avatar: "/chatbot.svg",
+        name: "ChatBot",
+        role: "ai",
+        message: response.data,
+      };
 
-      // Add bot response to the state
-      setMessages((messages) => [
-        ...messages,
-        {
-          id: messages.length + 1,
-          avatar: "/chatbot.svg",
-          name: "ChatBot",
-          role: "ai",
-          message: botMessage,
-        } as Message
-      ]);
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
 
-    // Set initial AI response if no messages are present
     if (!hasInitialAIResponse && messages.length === 0) {
-      setIsLoading(true);
-      setMessages((prevMessages) => [
+      setMessages(() => [
         {
           id: 1,
           avatar: "/chatbot.svg",
           name: "ChatBot",
           role: "ai",
           message: "How can I help you today?",
-          isLoading: true,
-        } as Message
+        },
       ]);
 
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages.map((message) =>
-            message.isLoading ? { ...message, isLoading: false } : message
-          )
-        ]);
-        setIsLoading(false);
-        setHasInitialAIResponse(true);
-      }, 2000);
+      setHasInitialAIResponse(true);
     }
-  }, []);
+  }, [hasInitialAIResponse, messages.length, setHasInitialAIResponse, setMessages]);
 
   return (
     <div className="h-full flex justify-center p-4 bg-slate-50 dark:bg-slate-950">
       <div className="w-[800px] relative flex h-full flex-col rounded-md bg-muted/20 dark:bg-muted/40 p-4 lg:col-span-2">
         <ChatMessageList ref={messagesContainerRef}>
-          {/* Chat messages */}
           <AnimatePresence>
             {messages.map((message, index) => {
               const variant = getMessageVariant(message.role as "user" | "ai");
@@ -151,65 +139,63 @@ export default function Page() {
                 <motion.div
                   key={index}
                   layout
-                  initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
-                  animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                  exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
-                  transition={{
-                    opacity: { duration: 0.1 },
-                    layout: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: index * 0.05 + 0.2,
-                    },
-                  }}
-                  style={{ originX: 0.5, originY: 0.5 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 50 }}
+                  transition={{ duration: 0.3 }}
                   className="flex flex-col gap-2 p-4"
                 >
-                  <ChatBubble key={index} variant={variant}>
+                  <ChatBubble variant={variant}>
                     <Avatar>
-                      <AvatarImage src={message.avatar} alt="Avatar" className={message.role === "ai" ? "dark:invert" : ""} />
+                      <AvatarImage
+                        src={message.avatar}
+                        alt={`${message.name}'s avatar`}
+                        className={message.role === "ai" ? "dark:invert" : ""}
+                      />
                       <AvatarFallback>{message.name}</AvatarFallback>
                     </Avatar>
                     <ChatBubbleMessage isLoading={message.isLoading} variant={variant}>
                       {message.message}
                       {message.role === "ai" && (
                         <div className="flex items-center mt-1.5 gap-1">
-                          {!message.isLoading && (
-                            <>
-                              {ChatAiIcons.map((icon, index) => {
-                                const Icon = icon.icon;
-                                return (
-                                  <Button
-                                    key={index}
-                                    variant="outline"
-                                    size="icon"
-                                    className="size-5"
-                                  >
-                                    <Icon className="size-3" />
-                                  </Button>
-                                )
-                              })}
-                            </>
-                          )}
+                          {!message.isLoading &&
+                            ChatAiIcons.map((icon, index) => {
+                              const Icon = icon.icon;
+                              return (
+                                <Button
+                                  key={index}
+                                  variant="outline"
+                                  size="icon"
+                                  className="size-5"
+                                  aria-label={icon.label}
+                                >
+                                  <Icon className="size-3" />
+                                </Button>
+                              );
+                            })}
                         </div>
                       )}
                     </ChatBubbleMessage>
                   </ChatBubble>
                 </motion.div>
-              )
+              );
             })}
           </AnimatePresence>
         </ChatMessageList>
         <div className="flex-1" />
         <form
           ref={formRef}
-          onSubmit={handleSendMessage}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendMessage();
+          }}
           className="relative rounded-lg border p-1 bg-background focus-within:ring-1 focus-within:ring-ring"
         >
           <ChatInput
             ref={inputRef}
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
+            value={input}
             placeholder="Type your message here..."
             className="min-h-12 resize-none bg-background border-none rounded-none p-3 shadow-none focus-visible:ring-0"
           />

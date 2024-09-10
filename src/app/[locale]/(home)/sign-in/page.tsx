@@ -33,14 +33,15 @@ const SignInPage = () => {
   });
 
   useEffect(() => {
-    const email = (document.querySelector("input[name='email']") as HTMLInputElement)?.value;
-    const password = (document.querySelector("input[name='password']") as HTMLInputElement)?.value;
-
-    if (email) form.setValue("email", email);
-    if (password) form.setValue("password", password);
-  }, []);
+    const savedEmail = localStorage.getItem('email');
+    const savedPassword = localStorage.getItem('password');
+    
+    if (savedEmail) form.setValue("email", savedEmail);
+    if (savedPassword) form.setValue("password", savedPassword);
+  }, [form]);
 
   const onSubmit = async (values: { email: string; password: string }) => {
+    if (loading) return; 
     setLoading(true);
 
     try {
@@ -51,8 +52,7 @@ const SignInPage = () => {
         Cookies.set('accessToken', access);
         Cookies.set('refreshToken', refresh);
 
-        toast("Success", {
-          description: "Sign-in successful!",
+        toast.success("Sign-in successful!", {
           action: {
             label: <X className='w-4 h-4' />,
             onClick: () => console.log("Close"),
@@ -60,8 +60,7 @@ const SignInPage = () => {
         });
         router.push('/dashboard');
       } else {
-        toast("Error", {
-          description: response.data.detail || "An error occurred during sign-in.",
+        toast.error(response.data.detail || "An error occurred during sign-in.", {
           action: {
             label: <X className='w-4 h-4' />,
             onClick: () => console.log("Close"),
@@ -70,8 +69,7 @@ const SignInPage = () => {
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || "An error occurred while signing in. Please try again.";
-      toast("Error", {
-        description: errorMessage,
+      toast.error(errorMessage, {
         action: {
           label: <X className='w-4 h-4' />,
           onClick: () => console.log("Close"),

@@ -19,12 +19,12 @@ const withAuth = (Component: React.ComponentType) => {
       } else {
         setLoading(false);
       }
-    }, []);
+    }, [router]);
 
     if (loading) {
       return (
         <div className="flex justify-center items-center h-screen">
-          <Loader className="w-6 h-6 text-green-500" /> 
+          <Loader className="w-8 h-8 text-green-500 animate-spin" />
         </div>
       );
     }
@@ -32,7 +32,7 @@ const withAuth = (Component: React.ComponentType) => {
     return <Component {...props} />;
   };
 
-  WithAuthComponent.displayName = `WithAuth(${Component.displayName || Component.name || 'Component'})`;
+  WithAuthComponent.displayName = `WithAuth(${Component.displayName || Component.name || "Component"})`;
 
   return WithAuthComponent;
 };
