@@ -23,8 +23,8 @@ const withAuth = (Component: React.ComponentType) => {
 
     if (loading) {
       return (
-        <div className="flex justify-center items-center h-screen">
-          <Loader className="w-8 h-8 text-green-500 animate-spin" />
+        <div className="flex justify-center items-center h-full text-sm gap-2">
+          <Loader className="animate-spin w-5 h-5" /> Loading...
         </div>
       );
     }
