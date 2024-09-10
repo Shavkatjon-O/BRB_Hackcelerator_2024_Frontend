@@ -19,7 +19,8 @@ import { Link } from '@/i18n/routing';
 
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing";
-import { useTransition, useState, useEffect } from "react";
+import { useTransition } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const languages: { value: "en" | "uz" | "ru", label: string }[] = [
   { value: "en", label: "English" },
@@ -57,16 +58,21 @@ const Header = () => {
             <span>Error: {error.message}</span>
           ) : (
             <>
-              <div>
-                {
-                  user?.user_type === "EMPLOYEE" ? (
-                    "Employee"
-                  ) : user?.user_type === "LOAN_MANAGER" ? (
-                    "Loan Manager"
-                  ) : user?.user_type === "BANK_TELLER" ? (
-                    "Bank Teller"
-                  ) : null
-                }
+              <div className="flex gap-2">
+                <span>
+                  [
+                  {
+                    user?.user_type === "EMPLOYEE" ? (
+                      "Employee"
+                    ) : user?.user_type === "LOAN_MANAGER" ? (
+                      "Loan Manager"
+                    ) : user?.user_type === "BANK_TELLER" ? (
+                      "Bank Teller"
+                    ) : null
+                  }
+                  ]
+                </span>
+                <span>{t("title")}</span>
               </div>
               <div className="flex gap-2 items-center">
                 <Select onValueChange={handleLocaleChange} value={locale}>
