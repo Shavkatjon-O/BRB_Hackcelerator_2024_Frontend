@@ -46,7 +46,7 @@ const Header = () => {
             </Link>
           </nav>
           
-          <div className="md:w-1/3 w-1/2 flex justify-end space-x-2">
+          <div className="md:w-1/3 w-1/2 flex items-center justify-end space-x-2">
             {
               !isLoaded ? (
                 <span>Loading...</span>
