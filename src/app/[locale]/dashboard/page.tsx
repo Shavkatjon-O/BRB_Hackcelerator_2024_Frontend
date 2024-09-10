@@ -107,7 +107,7 @@ const DashboardPage = () => {
               <span>Sales Performance</span>
             </h2>
             <Line data={lineChartData} options={lineChartOptions} />
-            <Button variant="outline" className="mt-4">View Detailed Report</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">View Detailed Report</Button>
           </Card>
 
           {/* Revenue Metrics with Bar Chart */}
@@ -117,7 +117,7 @@ const DashboardPage = () => {
               <span>Revenue Performance</span>
             </h2>
             <Bar data={barChartData} options={barChartOptions} />
-            <Button variant="outline" className="mt-4">View Detailed Revenue</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">View Detailed Revenue</Button>
           </Card>
 
           {/* Weekly Activity with Cartesian Chart */}
@@ -127,7 +127,7 @@ const DashboardPage = () => {
               <span>Weekly Activity</span>
             </h2>
             <Line data={cartesianChartData} options={cartesianChartOptions} />
-            <Button variant="outline" className="mt-4">View Activity Insights</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">View Activity Insights</Button>
           </Card>
 
           {/* Other cards remain the same */}
@@ -150,7 +150,7 @@ const DashboardPage = () => {
                 <span className="text-slate-500 dark:text-slate-400">Sep 12, 2024</span>
               </li>
             </ul>
-            <Button variant="outline" className="mt-4">See All Events</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">See All Events</Button>
           </Card>
 
           {/* Notifications */}
@@ -173,7 +173,7 @@ const DashboardPage = () => {
                 <span className="text-slate-500 dark:text-slate-400">3 days ago</span>
               </li>
             </ul>
-            <Button variant="outline" className="mt-4">View All Notifications</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">View All Notifications</Button>
           </Card>
 
           {/* Profile Summary */}
@@ -196,7 +196,7 @@ const DashboardPage = () => {
                 <span className="text-slate-800 dark:text-slate-200">123456</span>
               </div>
             </div>
-            <Button variant="outline" className="mt-4">Edit Profile</Button>
+            <Button variant="outline" className="mt-12 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 w-full">Edit Profile</Button>
           </Card>
         </div>
       </div>
