@@ -50,7 +50,7 @@ const Page = () => {
 
   const handleReadMoreClick = async (id: number) => {
     try {
-      await updateAnonsReadStatus(id); // Call API to mark announcement as read
+      await updateAnonsReadStatus(id);
       setAnonsData((prevData) =>
         prevData.map((item) =>
           item.id === id ? { ...item, is_read: true } : item
@@ -72,10 +72,10 @@ const Page = () => {
       } else if (filter === "last30days") {
         return isAfter(itemDate, subDays(now, 30));
       } else if (filter === "unread") {
-        return !item.is_read; // Show only unread announcements
+        return !item.is_read;
       }
 
-      return true; // Default to showing all
+      return true;
     });
   };
 
@@ -87,12 +87,12 @@ const Page = () => {
             key={index}
             className="w-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-start">
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 {item.title}
               </h2>
               {!item.is_read && (
-                <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
+                <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-[0.65rem]">
                   Unread
                 </Badge>
               )}
