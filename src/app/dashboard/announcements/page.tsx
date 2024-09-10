@@ -53,7 +53,7 @@ const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) =>
 
   return (
     <Tabs defaultValue="all" onValueChange={handleTabChange}>
-      <TabsList className="flex gap-2 mb-4 bg-slate-200">
+      <TabsList className="flex gap-2 bg-slate-200">
         <TabsTrigger value="all">All Time</TabsTrigger>
         <TabsTrigger value="last7days">Last 7 Days</TabsTrigger>
         <TabsTrigger value="last30days">Last 30 Days</TabsTrigger>
