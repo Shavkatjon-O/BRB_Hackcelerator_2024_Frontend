@@ -22,11 +22,11 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    if (user && apiKey && accessToken) {
+    if (user && accessToken) {
       tokenProvider(accessToken)
         .then((token: string) => {
           const client = new StreamVideoClient({
-            apiKey: apiKey,
+            apiKey: apiKey!,
             user: {
               id: String(user.id),
               name: user.email,
@@ -40,7 +40,7 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
           setTokenError("Failed to retrieve token. Please try again.");
         });
     }
-  }, [user, apiKey]);
+  }, [user]);
 
   if (!isLoaded || !videoClient) {
     if (tokenError) {
