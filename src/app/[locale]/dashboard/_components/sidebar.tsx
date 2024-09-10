@@ -50,7 +50,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`h-screen border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${
+      className={`h-screen hidden sm:block border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${
         isOpen ? 'w-64' : 'w-20'
       }`}
     >
