@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export const data = [
   {
@@ -35,14 +36,14 @@ export const data = [
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-07-20",
-    status: "Read",
+    status: "Unread",
   },
   {
     id: 5,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-06-10",
-    status: "Read",
+    status: "Unread",
   },
   {
     id: 6,
@@ -60,7 +61,7 @@ const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) =>
 
   return (
     <Tabs defaultValue="all" onValueChange={handleTabChange}>
-      <TabsList className="flex gap-2 bg-slate-200">
+      <TabsList className="flex gap-2 bg-slate-200 dark:bg-slate-700">
         <TabsTrigger value="all">All Time</TabsTrigger>
         <TabsTrigger value="last7days">Last 7 Days</TabsTrigger>
         <TabsTrigger value="last30days">Last 30 Days</TabsTrigger>
@@ -94,7 +95,16 @@ const Page = () => {
             key={index}
             className="w-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4"
           >
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{item.title}</h2>
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{item.title}</h2>
+              {
+                item.status === "Unread" ? (
+                  <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
+                    {item.status}
+                  </Badge>
+                ) : null
+              }
+            </div>  
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{item.description}</p>
 
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">

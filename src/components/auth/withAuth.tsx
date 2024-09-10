@@ -22,11 +22,7 @@ const withAuth = (Component: React.ComponentType) => {
     }, [router]);
 
     if (loading) {
-      return (
-        <div className="flex justify-center items-center h-full text-sm gap-2">
-          <Loader className="animate-spin w-5 h-5" /> Loading...
-        </div>
-      );
+      return null;
     }
 
     return <Component {...props} />;
