@@ -21,6 +21,7 @@ const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) =>
         <TabsTrigger value="all">All Time</TabsTrigger>
         <TabsTrigger value="last7days">Last 7 Days</TabsTrigger>
         <TabsTrigger value="last30days">Last 30 Days</TabsTrigger>
+        <TabsTrigger value="unread">Unread</TabsTrigger>
       </TabsList>
     </Tabs>
   );
@@ -62,6 +63,7 @@ const Page = () => {
 
   const getFilteredData = (filter: string) => {
     const now = new Date();
+
     return anonsData.filter((item) => {
       const itemDate = new Date(item.created_at);
 
@@ -69,8 +71,11 @@ const Page = () => {
         return isAfter(itemDate, subDays(now, 7));
       } else if (filter === "last30days") {
         return isAfter(itemDate, subDays(now, 30));
+      } else if (filter === "unread") {
+        return !item.is_read; // Show only unread announcements
       }
-      return true;
+
+      return true; // Default to showing all
     });
   };
 
