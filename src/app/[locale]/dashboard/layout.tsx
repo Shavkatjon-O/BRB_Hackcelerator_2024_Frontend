@@ -1,29 +1,37 @@
-import Sidebar from "./_components/Sidebar";
-import Header from "./_components/Header";
-import { SidebarProvider } from "@/providers/sidebar-provider";
-import { unstable_setRequestLocale } from "next-intl/server";
+"use client";
 
-interface DashboardLayoutProps {
+import Header from "./_components/Header";
+import Sidebar from "./_components/Sidebar";
+import { SidebarProvider } from "@/providers/sidebar-provider";
+import useUser from "@/hooks/useUser";
+import Loader from "./_components/Loader";
+
+interface Props {
   children: React.ReactNode;
-  params: { locale: string };
 }
 
-const DashboardLayout = ({ children, params }: DashboardLayoutProps) => {
-  unstable_setRequestLocale(params.locale);
+const Layout = ({ children }: Props) => {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded || !user) {
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    )
+  }
 
   return (
-    <>
-      <SidebarProvider>
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex flex-col flex-1">
-            <Header />
-            <main className="flex-1 overflow-y-scroll dark:bg-slate-900 bg-slate-100">{children}</main>
-          </div>
+    <SidebarProvider>
+      <div className="flex h-screen">
+        <Sidebar currentUser={user} />
+        <div className="flex flex-col flex-1">
+          <Header currentUser={user} />
+          <main className="flex-1 overflow-y-scroll dark:bg-slate-900 bg-slate-100">{children}</main>
         </div>
-      </SidebarProvider>
-    </>
+      </div>
+    </SidebarProvider>
   );
 };
 
-export default DashboardLayout;
+export default Layout;

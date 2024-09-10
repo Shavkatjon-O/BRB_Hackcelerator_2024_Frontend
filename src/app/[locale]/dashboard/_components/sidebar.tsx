@@ -15,12 +15,13 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSidebar } from '@/providers/sidebar-provider';
-import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 import { defaultLinks } from '../_constants/sidebarLinks';
+
+import { UserProfileType } from '@/types/authTypes';
 
 const bankTellerLinks = [
   { href: '/dashboard/cards', label: 'Cards', icon: CreditCard },
@@ -29,15 +30,12 @@ const bankTellerLinks = [
   { href: '/dashboard/upload', label: 'Upload', icon: Upload },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user, isLoaded } = useUser();
   const { activePage, setActivePage } = useSidebar();
 
-  if (!isLoaded) return null;
-
   const getLinksForUserType = () => {
-    if (user?.user_type === 'BANK_TELLER') {
+    if (currentUser?.user_type === 'BANK_TELLER') {
       return {
         General: [...defaultLinks.General],
         Menu: [...bankTellerLinks],
@@ -140,13 +138,13 @@ const Sidebar = () => {
               isOpen ? 'justify-start' : 'justify-center'
             } border-t dark:border-t-slate-700 shadow-sm overflow-hidden`}
           >
-            {isLoaded && user && (
+            {currentUser && (
               <Link href="/dashboard/profile" className={`flex items-center ${isOpen ? '' : 'justify-center'}`}>
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src={user.image} />
+                  <AvatarImage src={currentUser.image} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className={`text-sm ml-2 ${isOpen ? 'block' : 'hidden'}`}>{user.email}</span>
+                <span className={`text-sm ml-2 ${isOpen ? 'block' : 'hidden'}`}>{currentUser.email}</span>
               </Link>
             )}
           </div>
