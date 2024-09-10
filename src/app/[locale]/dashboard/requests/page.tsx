@@ -7,8 +7,10 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, FilePlus, CheckCircle2, XCircle } from "lucide-react";
+import { FilePlus, CheckCircle2, XCircle } from "lucide-react";
 import coreApi from "@/lib/coreApi";
+
+import Loader from "../_components/Loader";
 
 import Panel from "../_components/Panel";
 
@@ -106,7 +108,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
             disabled={loading}
             className="w-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50"
           >
-            {loading ? <Loader2 className="animate-spin mr-2" /> : 'Submit'}
+            {loading ? <Loader />: 'Submit'}
           </Button>
         </div>
       </DialogContent>
@@ -174,7 +176,7 @@ const Page = () => {
     fetchRequests();
   }, []);
 
-  if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
+  if (loading) return <Loader />;
 
   return (
     <>
