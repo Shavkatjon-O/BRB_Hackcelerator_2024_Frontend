@@ -87,7 +87,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
                         <Button
                           asChild
                           variant={activePage === href ? 'default' : 'ghost'}
-                          className={`w-full py-2 px-3 flex items-center ${cn(
+                          className={`w-full py-2 px-3 flex items-center dark:hover:bg-slate-700 ${cn(
                             'justify-start',
                             activePage !== href ? 'text-slate-500 dark:text-slate-300' : ''
                           )}`}
@@ -107,7 +107,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
                             <Button
                               asChild
                               variant={activePage === href ? 'default' : 'ghost'}
-                              className={`w-full py-2 px-3 flex items-center ${cn(
+                              className={`w-full py-2 px-3 flex items-center dark:hover:bg-slate-700 ${cn(
                                 'justify-center',
                                 activePage !== href ? 'text-slate-500 dark:text-slate-300' : ''
                               )}`}
