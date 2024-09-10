@@ -46,7 +46,7 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
-      <div className="h-full container mx-auto px-4 flex items-center justify-between">
+      <div className="size-full px-4 flex items-center justify-between">
         {!isLoaded ? (
           <div className="flex items-center justify-center space-x-2 text-sm">
             <Loader className="w-5 h-5 animate-spin text-gray-500 dark:text-gray-400" />
