@@ -13,10 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from '@/i18n/routing';
+import Link from "next/link";
 
 import { useTranslations, useLocale } from "next-intl";
-import { useRouter, usePathname } from "@/i18n/routing";
+import { useRouter, usePathname } from "next/navigation";
 import { useTransition } from "react";
 
 import { UserProfileType } from "@/types/authTypes";
@@ -30,14 +30,12 @@ const languages: { value: "en" | "uz" | "ru", label: string }[] = [
 const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
   const t = useTranslations("Index");
   const router = useRouter();  
-  const pathname = usePathname();
   const locale = useLocale();     
 
   const [isPending, startTransition] = useTransition();
 
-  const handleLocaleChange = (newLocale: "en" | "uz" | "ru") => {
+  const handleLocaleChange = () => {
     startTransition(() => {
-      router.replace(pathname, { locale: newLocale });
       router.refresh();
     });
   };

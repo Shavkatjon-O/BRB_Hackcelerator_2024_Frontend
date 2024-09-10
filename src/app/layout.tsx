@@ -6,11 +6,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getLocale, getMessages } from 'next-intl/server';
 
 import "./globals.css";
-
-import { routing } from '@/i18n/routing';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,17 +17,8 @@ export const metadata: Metadata = {
   description: "BRB Titans - The best place for your banking needs.",
 };
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({locale}));
-}
-
-export default async function RootLayout({
-  children,
-  params: { locale },
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
-}>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
   const messages = await getMessages();
 
   return (

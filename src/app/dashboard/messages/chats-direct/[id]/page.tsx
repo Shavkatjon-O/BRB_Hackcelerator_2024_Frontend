@@ -25,7 +25,7 @@ import {
   SendHorizontal,
   ThumbsUp,
 } from "lucide-react";
-import {Link} from '@/i18n/routing';;
+import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EmojiPicker } from "../../_components/emoji-picker";

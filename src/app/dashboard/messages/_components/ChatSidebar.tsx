@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Link } from '@/i18n/routing';;
+import Link from "next/link";
 
 interface SidebarItemProps {
   href: string;
