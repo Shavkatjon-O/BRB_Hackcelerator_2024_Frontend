@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge"
 
 export const data = [
   {
@@ -13,36 +14,42 @@ export const data = [
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2024-09-11",
+    status: "Unread",
   },
   {
     id: 2,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-08-28",
+    status: "Read",
   },
   {
     id: 3,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-08-12",
+    status: "Read",
   },
   {
     id: 4,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-07-20",
+    status: "Read",
   },
   {
     id: 5,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-06-10",
+    status: "Read",
   },
   {
     id: 6,
     title: "New feature: Announcements",
     description: "We have added a new feature that allows you to create announcements.",
     date: "2023-05-25",
+    status: "Read",
   },
 ];
 
