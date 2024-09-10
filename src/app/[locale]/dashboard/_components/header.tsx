@@ -45,7 +45,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
+    <header className="bg-white dark:bg-slate-900 border-b h-16 z-50 flex items-center shadow-sm">
       <div className="size-full px-4 flex items-center justify-between">
         {!isLoaded ? (
           <div className="flex items-center justify-center space-x-2 text-sm">
@@ -82,7 +82,7 @@ const Header = () => {
               </Button>
 
               <Select onValueChange={handleLocaleChange} value={locale}>
-                <SelectTrigger className="flex items-center space-x-2">
+                <SelectTrigger className="flex items-center space-x-2 dark:bg-slate-900">
                   <Languages className="w-5 h-5" />
                   <SelectValue placeholder={locale} />
                 </SelectTrigger>

@@ -50,15 +50,15 @@ const Sidebar = () => {
   const links = getLinksForUserType();
 
   return (
-    <TooltipProvider delayDuration={100}>
+    <TooltipProvider delayDuration={50}>
       <aside
-        className={`h-screen hidden sm:block border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-950 ${
+        className={`h-screen hidden sm:block border-r transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-900 ${
           isOpen ? 'w-64' : 'w-20'
         }`}
       >
         <div className="h-full flex flex-col justify-between shadow-sm">
           <div className="p-4 h-16 border-b flex justify-between items-center">
-            <Link href="/dashboard" className={`flex items-center text-lg font-bold ${isOpen ? 'block' : 'hidden'}`}>
+            <Link href="/dashboard" className={`flex items-center font-bold ${isOpen ? 'block' : 'hidden'}`}>
               <Image
                 width={32}
                 height={32}
