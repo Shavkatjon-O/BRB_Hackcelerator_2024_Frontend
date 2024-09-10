@@ -7,7 +7,7 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, FilePlus, CheckCircle2, XCircle, Calendar } from "lucide-react";
+import { Loader2, FilePlus, CheckCircle2, XCircle } from "lucide-react";
 import coreApi from "@/lib/coreApi";
 
 const statusColors: Record<string, string> = {
@@ -17,13 +17,13 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-gray-100 text-gray-800",
 };
 
-// Redesigned RequestFormDialog Component
 const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
   const [requestType, setRequestType] = useState<string>("");
   const [requestDetails, setRequestDetails] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -37,6 +37,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
     try {
       const response = await coreApi.post("/approvals/create/", formData);
       onSubmit(response.data);
+      setOpen(false); // Automatically close dialog after submission
     } catch (error) {
       console.error("Failed to create request:", error);
     } finally {
@@ -45,23 +46,23 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="my-4 bg-slate-800 text-white hover:bg-slate-700 border-slate-700">
+        <Button variant="outline" className="my-4 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
           <FilePlus className="mr-2" /> Create Request
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg bg-slate-900 border-slate-700 text-white">
+      <DialogContent className="max-w-lg bg-slate-50 text-slate-900 border-slate-300 dark:bg-slate-900 dark:text-white dark:border-slate-700">
         <DialogHeader>
           <DialogTitle>Create a New Request</DialogTitle>
           <DialogDescription>Select the type of request and provide details.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <Select value={requestType} onValueChange={setRequestType}>
-            <SelectTrigger className="bg-slate-800 border-slate-700">
+            <SelectTrigger className="bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:text-white">
               <SelectValue placeholder="Select Request Type" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white">
+            <SelectContent className="bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:text-white">
               <SelectItem value="LEAVE">Leave Request</SelectItem>
               <SelectItem value="EXPENSE">Expense Request</SelectItem>
               <SelectItem value="TRAVEL">Travel Request</SelectItem>
@@ -80,7 +81,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
             placeholder="Request Details"
             value={requestDetails}
             onChange={(e) => setRequestDetails(e.target.value)}
-            className="bg-slate-800 border-slate-700 text-white rounded-md"
+            className="bg-slate-50 border-slate-300 text-slate-900 rounded-md dark:bg-slate-800 dark:border-slate-700 dark:text-white"
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -88,20 +89,20 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
               placeholder="Start Date"
               value={startDate || ""}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-slate-800 border-slate-700 text-white"
+              className="bg-slate-50 border-slate-300 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             />
             <Input
               type="date"
               placeholder="End Date"
               value={endDate || ""}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-slate-800 border-slate-700 text-white"
+              className="bg-slate-50 border-slate-300 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             />
           </div>
           <Button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
+            className="w-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50"
           >
             {loading ? <Loader2 className="animate-spin mr-2" /> : 'Submit'}
           </Button>
@@ -111,11 +112,10 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   );
 };
 
-// Redesigned RequestsTable Component
 const RequestsTable = ({ requests }: { requests: any[] }) => (
-  <Table className="min-w-full bg-slate-800 shadow-md rounded-md overflow-hidden text-white">
+  <Table className="min-w-full bg-white shadow-lg rounded-md overflow-hidden text-slate-900 dark:bg-slate-800 dark:text-white">
     <TableHeader>
-      <TableRow className="bg-slate-900">
+      <TableRow className="dark:bg-slate-800">
         <TableHead>Type</TableHead>
         <TableHead>Details</TableHead>
         <TableHead>Start Date</TableHead>
@@ -126,11 +126,11 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
     <TableBody>
       {requests.length === 0 ? (
         <TableRow>
-          <TableCell colSpan={5} className="text-center py-4 text-slate-500">No requests available.</TableCell>
+          <TableCell colSpan={5} className="text-center py-4 text-slate-500 dark:text-slate-400">No requests available.</TableCell>
         </TableRow>
       ) : (
         requests.map((request, index) => (
-          <TableRow key={index} className="hover:bg-slate-700">
+          <TableRow key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700">
             <TableCell>{request.request_type}</TableCell>
             <TableCell>{request.description}</TableCell>
             <TableCell>{request.start_date}</TableCell>
@@ -148,7 +148,6 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
   </Table>
 );
 
-// Redesigned Page Component
 const Page = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -166,7 +165,7 @@ const Page = () => {
   };
 
   const handleFormSubmit = (newRequest: any) => {
-    setRequests((prevRequests) => [...prevRequests, newRequest]);
+    setRequests((prevRequests) => [...prevRequests, { ...newRequest, status: 'PENDING' }]);
   };
 
   useEffect(() => {
@@ -176,8 +175,8 @@ const Page = () => {
   if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
 
   return (
-    <div className="p-6 space-y-6 bg-slate-900 h-full">
-      <h1 className="text-3xl font-bold text-white">Requests & Approvals</h1>
+    <div className="p-6 space-y-6 bg-slate-100 dark:bg-slate-900 h-full">
+      <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Requests & Approvals</h1>
       <RequestFormDialog onSubmit={handleFormSubmit} />
       <RequestsTable requests={requests} />
     </div>
