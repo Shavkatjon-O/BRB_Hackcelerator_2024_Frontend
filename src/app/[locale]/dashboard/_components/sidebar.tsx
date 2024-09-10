@@ -65,28 +65,28 @@ const Sidebar = () => {
               alt="BRB Titans Logo"
               priority
             />
-            <span className="ml-2 text-nowrap">BRB Titans</span>
+            <span className="ml-2 whitespace-nowrap">BRB Titans</span>
           </Link>
           <Button variant="ghost" className="w-12 h-12 p-2" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <ChevronFirst /> : <ChevronLast />}
           </Button>
         </div>
 
-        <ScrollArea>
-          <nav className="flex flex-col max-h-full space-y-2 p-4">
+        <ScrollArea className="flex-grow">
+          <nav className="flex flex-col space-y-2 p-4">
             {Object.entries(links).map(([title, links]) => (
               <div key={title} className="space-y-2">
                 {isOpen ? (
-                  <h3 className="text-sm text-slate-500 dark:text-slate-300">{title}</h3>
+                  <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
                 ) : (
-                  <Separator />
+                  <Separator className="my-2" />
                 )}
                 {links.map(({ href, label, icon: Icon }) => (
                   <Button
                     key={href}
                     asChild
                     variant={activePage === href ? 'default' : 'ghost'}
-                    className={`w-full py-2 px-3 h-full flex ${cn(
+                    className={`w-full py-2 px-3 flex items-center ${cn(
                       isOpen ? 'justify-start' : 'justify-center',
                       activePage !== href ? 'text-slate-500 dark:text-slate-300' : ''
                     )}`}
@@ -97,7 +97,7 @@ const Sidebar = () => {
                       onClick={() => setActivePage(href)}
                     >
                       <Icon size={24} className="h-5 w-5" />
-                      <span className={`${isOpen ? 'block' : 'hidden'} ml-2`}>{label}</span>
+                      {isOpen && <span className="ml-2">{label}</span>}
                     </Link>
                   </Button>
                 ))}
