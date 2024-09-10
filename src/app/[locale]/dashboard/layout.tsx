@@ -1,5 +1,5 @@
-import Sidebar from "./_components/sidebar";
-import Header from "./_components/header";
+import Sidebar from "./_components/Sidebar";
+import Header from "./_components/Header";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { unstable_setRequestLocale } from "next-intl/server";
 
