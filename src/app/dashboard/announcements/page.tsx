@@ -7,7 +7,6 @@ import Link from "next/link";
 import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { getAnonsList } from "./_services/anonsServices";
 import { AnonsListType } from "./_types/anonsTypes";
 
@@ -83,7 +82,7 @@ const Page = () => {
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{item.description}</p>
 
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
-              <p className="text-xs">{format(new Date(item.date), "yyyy-MM-dd")}</p>
+              <p className="text-xs">{format(new Date(item.created_at), "yyyy-MM-dd")}</p>
               <Button variant="link" asChild>
                 <Link href={`/dashboard/announcements/${item.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                   Read more
