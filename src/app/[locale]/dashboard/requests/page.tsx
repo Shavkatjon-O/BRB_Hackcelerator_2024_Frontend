@@ -50,7 +50,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="my-4 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
           <FilePlus className="mr-2" /> Create Request
         </Button>
       </DialogTrigger>

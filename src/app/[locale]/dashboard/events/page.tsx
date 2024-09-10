@@ -18,6 +18,8 @@ import CalendarYearlyView from "./_components/calendar-yearly-view";
 import CalendarListView from "./_components/calendar-list-view";
 import EventFormDialog from "./_components/add-event-dialog";
 
+import Panel from "../_components/Panel";
+
 const CalendarPage: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const [view, setView] = useState("monthly");
@@ -80,34 +82,62 @@ const CalendarPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4 space-y-4 h-full">
-      <EventFormDialog
+    // <div className="p-4 space-y-4 h-full">
+    //   <EventFormDialog
+    //     isDialogOpen={isDialogOpen}
+    //     setIsDialogOpen={setIsDialogOpen}
+    //   />
+
+    //   <div className="flex justify-between items-center mb-4">
+    //     <Button onClick={handlePrevClick} variant="outline"><ChevronLeft /></Button>
+    //     <h2 className="text-xl font-bold">
+    //       {format(currentDate, view === "daily" ? "MMMM d, yyyy" : view === "weekly" ? "MMMM yyyy" : view === "monthly" ? "MMMM yyyy" : view === "yearly" ? "yyyy" : "MMMM yyyy")}
+    //     </h2>
+    //     <Button onClick={handleNextClick} variant="outline"><ChevronRight /></Button>
+    //   </div>
+
+    //   <div className="flex space-x-2 mb-4">
+    //     <Button variant={view === "daily" ? "default" : "outline"} onClick={() => setView("daily")}>Day</Button>
+    //     <Button variant={view === "weekly" ? "default" : "outline"} onClick={() => setView("weekly")}>Week</Button>
+    //     <Button variant={view === "monthly" ? "default" : "outline"} onClick={() => setView("monthly")}>Month</Button>
+    //     <Button variant={view === "yearly" ? "default" : "outline"} onClick={() => setView("yearly")}>Year</Button>
+    //     <Button variant={view === "list" ? "default" : "outline"} onClick={() => setView("list")}>List</Button>
+    //   </div>
+
+    //   {view === "daily" && <CalendarDailyView events={events} currentDate={currentDate} />}
+    //   {view === "weekly" && <CalendarWeeklyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+    //   {view === "monthly" && <CalendarMonthlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+    //   {view === "yearly" && <CalendarYearlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+    //   {view === "list" && <CalendarListView events={events} onDateClick={handleDateClick} />}
+    // </div>
+    <Panel title="Calendar"
+      action={<EventFormDialog
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
-      />
+        />}
+    >
+        <div className="flex justify-between items-center mb-4">
+          <Button onClick={handlePrevClick} variant="outline"><ChevronLeft /></Button>
+          <h2 className="text-xl font-bold">
+            {format(currentDate, view === "daily" ? "MMMM d, yyyy" : view === "weekly" ? "MMMM yyyy" : view === "monthly" ? "MMMM yyyy" : view === "yearly" ? "yyyy" : "MMMM yyyy")}
+          </h2>
+          <Button onClick={handleNextClick} variant="outline"><ChevronRight /></Button>
+        </div>
 
-      <div className="flex justify-between items-center mb-4">
-        <Button onClick={handlePrevClick} variant="outline"><ChevronLeft /></Button>
-        <h2 className="text-xl font-bold">
-          {format(currentDate, view === "daily" ? "MMMM d, yyyy" : view === "weekly" ? "MMMM yyyy" : view === "monthly" ? "MMMM yyyy" : view === "yearly" ? "yyyy" : "MMMM yyyy")}
-        </h2>
-        <Button onClick={handleNextClick} variant="outline"><ChevronRight /></Button>
-      </div>
+        <div className="flex space-x-2 mb-4">
+          <Button variant={view === "daily" ? "default" : "outline"} onClick={() => setView("daily")}>Day</Button>
+          <Button variant={view === "weekly" ? "default" : "outline"} onClick={() => setView("weekly")}>Week</Button>
+          <Button variant={view === "monthly" ? "default" : "outline"} onClick={() => setView("monthly")}>Month</Button>
+          <Button variant={view === "yearly" ? "default" : "outline"} onClick={() => setView("yearly")}>Year</Button>
+          <Button variant={view === "list" ? "default" : "outline"} onClick={() => setView("list")}>List</Button>
+        </div>
 
-      <div className="flex space-x-2 mb-4">
-        <Button variant={view === "daily" ? "default" : "outline"} onClick={() => setView("daily")}>Day</Button>
-        <Button variant={view === "weekly" ? "default" : "outline"} onClick={() => setView("weekly")}>Week</Button>
-        <Button variant={view === "monthly" ? "default" : "outline"} onClick={() => setView("monthly")}>Month</Button>
-        <Button variant={view === "yearly" ? "default" : "outline"} onClick={() => setView("yearly")}>Year</Button>
-        <Button variant={view === "list" ? "default" : "outline"} onClick={() => setView("list")}>List</Button>
-      </div>
-
-      {view === "daily" && <CalendarDailyView events={events} currentDate={currentDate} />}
-      {view === "weekly" && <CalendarWeeklyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
-      {view === "monthly" && <CalendarMonthlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
-      {view === "yearly" && <CalendarYearlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
-      {view === "list" && <CalendarListView events={events} onDateClick={handleDateClick} />}
-    </div>
+        {view === "daily" && <CalendarDailyView events={events} currentDate={currentDate} />}
+        {view === "weekly" && <CalendarWeeklyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+        {view === "monthly" && <CalendarMonthlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+        {view === "yearly" && <CalendarYearlyView events={events} currentDate={currentDate} onDateClick={handleDateClick} />}
+        {view === "list" && <CalendarListView events={events} onDateClick={handleDateClick} />}
+    </Panel>
   );
 };
 
