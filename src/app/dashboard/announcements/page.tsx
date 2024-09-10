@@ -7,7 +7,7 @@ import Link from "next/link";
 import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { getAnonsList } from "./_services/anonsServices";
+import { getAnonsList, updateAnonsReadStatus } from "./_services/anonsServices";
 import { AnonsListType } from "./_types/anonsTypes";
 
 const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) => void }) => {
@@ -47,6 +47,19 @@ const Page = () => {
     fetchData();
   }, []);
 
+  const handleReadMoreClick = async (id: number) => {
+    try {
+      await updateAnonsReadStatus(id); // Call API to mark announcement as read
+      setAnonsData((prevData) =>
+        prevData.map((item) =>
+          item.id === id ? { ...item, is_read: true } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating read status:", error);
+    }
+  };
+
   const getFilteredData = (filter: string) => {
     const now = new Date();
     return anonsData.filter((item) => {
@@ -70,21 +83,30 @@ const Page = () => {
             className="w-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4"
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{item.title}</h2>
-              {
-                item.is_read === false ? (
-                  <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
-                    Unread
-                  </Badge>
-                ) : null
-              }
-            </div>  
-            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{item.description}</p>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                {item.title}
+              </h2>
+              {!item.is_read && (
+                <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
+                  Unread
+                </Badge>
+              )}
+            </div>
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              {item.description}
+            </p>
 
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
               <p className="text-xs">{format(new Date(item.created_at), "yyyy-MM-dd")}</p>
-              <Button variant="link" asChild>
-                <Link href={`/dashboard/announcements/${item.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+              <Button
+                variant="link"
+                asChild
+                onClick={() => handleReadMoreClick(item.id)}
+              >
+                <Link
+                  href={`/dashboard/announcements/${item.id}`}
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                >
                   Read more
                 </Link>
               </Button>

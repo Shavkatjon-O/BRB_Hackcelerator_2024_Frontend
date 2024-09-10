@@ -18,4 +18,5 @@ const updateAnonsReadStatus = async (id: number): Promise<void> => {
 export {
   getAnonsList,
   getAnonsDetail,
+  updateAnonsReadStatus,
 }
