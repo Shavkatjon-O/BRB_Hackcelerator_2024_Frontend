@@ -7,8 +7,12 @@ const getAnonsList = async (): Promise<AnonsListType[]> => {
 }
 
 const getAnonsDetail = async (id: number): Promise<AnonsType> => {
-  const response =  await coreApi.get(`/anons/${id}`);
+  const response =  await coreApi.get(`/anons/${id}/`);
   return response.data;
+}
+
+const updateAnonsReadStatus = async (id: number): Promise<void> => {
+  await coreApi.put(`/anons/${id}/read/`);
 }
 
 export {
