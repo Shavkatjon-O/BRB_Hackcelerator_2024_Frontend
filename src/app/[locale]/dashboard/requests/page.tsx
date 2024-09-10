@@ -1,30 +1,28 @@
 "use client";
 
-// Import necessary modules and components
-import { useState, useEffect } from 'react';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useState, useEffect } from "react";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Loader2 } from 'lucide-react';
+import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, FilePlus, CheckCircle2, XCircle, Calendar } from "lucide-react";
 import coreApi from "@/lib/coreApi";
 
-// Define status colors
 const statusColors: Record<string, string> = {
-  PENDING: 'bg-yellow-100 text-yellow-800',
-  APPROVED: 'bg-green-100 text-green-800',
-  REJECTED: 'bg-red-100 text-red-800',
-  CANCELLED: 'bg-gray-100 text-gray-800',
+  PENDING: "bg-yellow-100 text-yellow-800",
+  APPROVED: "bg-green-100 text-green-800",
+  REJECTED: "bg-red-100 text-red-800",
+  CANCELLED: "bg-gray-100 text-gray-800",
 };
 
-// RequestFormDialog component
+// Redesigned RequestFormDialog Component
 const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
-  const [requestType, setRequestType] = useState<string>('');
-  const [requestDetails, setRequestDetails] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [requestType, setRequestType] = useState<string>("");
+  const [requestDetails, setRequestDetails] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
@@ -49,21 +47,21 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="my-4">
-          <span>Create Request</span>
+        <Button variant="outline" className="my-4 bg-slate-800 text-white hover:bg-slate-700 border-slate-700">
+          <FilePlus className="mr-2" /> Create Request
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg bg-slate-900 border-slate-700 text-white">
         <DialogHeader>
           <DialogTitle>Create a New Request</DialogTitle>
           <DialogDescription>Select the type of request and provide details.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <Select value={requestType} onValueChange={setRequestType}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Select Request Type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-slate-800 border-slate-700 text-white">
               <SelectItem value="LEAVE">Leave Request</SelectItem>
               <SelectItem value="EXPENSE">Expense Request</SelectItem>
               <SelectItem value="TRAVEL">Travel Request</SelectItem>
@@ -82,7 +80,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
             placeholder="Request Details"
             value={requestDetails}
             onChange={(e) => setRequestDetails(e.target.value)}
-            className="bg-gray-100 border rounded-md"
+            className="bg-slate-800 border-slate-700 text-white rounded-md"
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -90,14 +88,14 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
               placeholder="Start Date"
               value={startDate || ""}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-gray-100 border rounded-md"
+              className="bg-slate-800 border-slate-700 text-white"
             />
             <Input
               type="date"
               placeholder="End Date"
               value={endDate || ""}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-gray-100 border rounded-md"
+              className="bg-slate-800 border-slate-700 text-white"
             />
           </div>
           <Button
@@ -113,11 +111,11 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   );
 };
 
-// RequestsTable component
+// Redesigned RequestsTable Component
 const RequestsTable = ({ requests }: { requests: any[] }) => (
-  <Table className="min-w-full bg-white shadow-md rounded-md overflow-hidden">
+  <Table className="min-w-full bg-slate-800 shadow-md rounded-md overflow-hidden text-white">
     <TableHeader>
-      <TableRow>
+      <TableRow className="bg-slate-900">
         <TableHead>Type</TableHead>
         <TableHead>Details</TableHead>
         <TableHead>Start Date</TableHead>
@@ -128,17 +126,18 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
     <TableBody>
       {requests.length === 0 ? (
         <TableRow>
-          <TableCell colSpan={5} className="text-center py-4 text-gray-600">No requests available.</TableCell>
+          <TableCell colSpan={5} className="text-center py-4 text-slate-500">No requests available.</TableCell>
         </TableRow>
       ) : (
         requests.map((request, index) => (
-          <TableRow key={index} className="hover:bg-gray-50">
+          <TableRow key={index} className="hover:bg-slate-700">
             <TableCell>{request.request_type}</TableCell>
             <TableCell>{request.description}</TableCell>
             <TableCell>{request.start_date}</TableCell>
             <TableCell>{request.end_date}</TableCell>
             <TableCell>
               <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${statusColors[request.status]}`}>
+                {request.status === 'APPROVED' ? <CheckCircle2 className="inline-block mr-1" /> : request.status === 'REJECTED' ? <XCircle className="inline-block mr-1" /> : null}
                 {request.status}
               </span>
             </TableCell>
@@ -149,7 +148,7 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
   </Table>
 );
 
-// Page component
+// Redesigned Page Component
 const Page = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -177,8 +176,8 @@ const Page = () => {
   if (loading) return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin text-blue-500" /></div>;
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 h-full">
-      <h1 className="text-3xl font-bold text-gray-800">Requests & Approvals</h1>
+    <div className="p-6 space-y-6 bg-slate-900 h-full">
+      <h1 className="text-3xl font-bold text-white">Requests & Approvals</h1>
       <RequestFormDialog onSubmit={handleFormSubmit} />
       <RequestsTable requests={requests} />
     </div>
