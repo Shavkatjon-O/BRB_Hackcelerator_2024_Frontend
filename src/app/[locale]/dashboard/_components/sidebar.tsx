@@ -38,8 +38,8 @@ const Sidebar = () => {
   const getLinksForUserType = () => {
     if (user?.user_type === 'BANK_TELLER') {
       return {
-        Menu: [...bankTellerLinks],
         General: [...defaultLinks.General],
+        Menu: [...bankTellerLinks],
         Other: [...defaultLinks.Other],
       };
     }
