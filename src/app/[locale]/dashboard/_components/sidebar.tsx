@@ -52,7 +52,7 @@ const Sidebar = () => {
   return (
     <TooltipProvider delayDuration={50}>
       <aside
-        className={`h-screen hidden sm:block border-r dark:border-r-slate-700 transition-all duration-300 ease-in-out shadow-lg z-50 bg-white dark:bg-slate-800 ${
+        className={`h-screen hidden sm:block border-r dark:border-r-slate-700 transition-all duration-300 linear shadow-lg z-50 bg-white dark:bg-slate-800 ${
           isOpen ? 'w-64' : 'w-20'
         }`}
       >
