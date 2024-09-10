@@ -7,7 +7,7 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FilePlus, CheckCircle2, XCircle } from "lucide-react";
+import { FilePlus, CheckCircle2, XCircle, Clock } from "lucide-react";
 import coreApi from "@/lib/coreApi";
 
 import Loader from "../_components/Loader";
@@ -15,10 +15,9 @@ import Loader from "../_components/Loader";
 import Panel from "../_components/Panel";
 
 const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  APPROVED: "bg-green-100 text-green-800",
-  REJECTED: "bg-red-100 text-red-800",
-  CANCELLED: "bg-gray-100 text-gray-800",
+  PENDING: "bg-yellow-300 text-yellow-800",
+  APPROVED: "bg-green-300 text-green-800",
+  REJECTED: "bg-red-300 text-red-800",
 };
 
 const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) => {
@@ -140,8 +139,14 @@ const RequestsTable = ({ requests }: { requests: any[] }) => (
             <TableCell>{request.start_date}</TableCell>
             <TableCell>{request.end_date}</TableCell>
             <TableCell>
-              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${statusColors[request.status]}`}>
-                {request.status === 'APPROVED' ? <CheckCircle2 className="inline-block mr-1" /> : request.status === 'REJECTED' ? <XCircle className="inline-block mr-1" /> : null}
+              <span className={`flex items-center w-max px-2 py-1 text-xs font-semibold rounded-full ${statusColors[request.status]}`}>
+                {
+                  request.status === 'APPROVED' ? 
+                    <CheckCircle2 className="size-4 mr-1" /> 
+                    : request.status === 'REJECTED' ? 
+                      <XCircle className="size-4 mr-1" /> 
+                    : <Clock className="size-4 mr-1" />
+                }
                 {request.status}
               </span>
             </TableCell>
