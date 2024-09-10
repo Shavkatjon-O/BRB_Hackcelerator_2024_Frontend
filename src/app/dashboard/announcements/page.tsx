@@ -44,17 +44,19 @@ export const data = [
 const Page = () => {
   return (
     <Panel title="Announcements">
-      <div className="gap-4 grid grid-cols-2">
+      <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {data.map((item, index) => (
-          <div key={index} className="w-full dark:bg-slate-800 shadow-md rounded-md p-4 flex flex-col gap-4">
-            <h1 className="font-semibold">{item.title}</h1>
-            
-            <p className="">{item.description}</p>
+          <div
+            key={index}
+            className="w-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4"
+          >
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{item.title}</h2>
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{item.description}</p>
 
-            <div className="flex items-center justify-between">
-              <p className="text-sm">{item.date}</p>
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
+              <p className="text-xs">{item.date}</p>
               <Button variant="link" asChild>
-                <Link href={`/dashboard/announcements/${item.id}`}>
+                <Link href={`/dashboard/announcements/${item.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                   Read more
                 </Link>
               </Button>
