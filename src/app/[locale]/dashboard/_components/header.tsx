@@ -20,7 +20,6 @@ import { Link } from '@/i18n/routing';
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useTransition } from "react";
-import { Separator } from "@/components/ui/separator";
 
 const languages: { value: "en" | "uz" | "ru", label: string }[] = [
   { value: "en", label: "English" },
@@ -46,7 +45,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-slate-950 border-b h-16 z-50 flex items-center shadow-sm">
+    <header className="bg-white dark:bg-slate-900 border-b h-16 z-50 flex items-center shadow-sm">
       <div className="h-full container mx-auto px-4 flex items-center justify-between">
         {
           !isLoaded ? (
