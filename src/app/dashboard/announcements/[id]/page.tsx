@@ -62,14 +62,14 @@ const Page = () => {
   }
 
   return (
-    <Panel title="Announcement Details" action={
+    <Panel title="Announcements" action={
       <Button variant="default" asChild>
         <Link href="/dashboard/announcements">
           Back
         </Link>
       </Button>
     }>
-      <div className="bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-6">
+      <div className="bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4">
         <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
           {anons.title}
         </h1>
