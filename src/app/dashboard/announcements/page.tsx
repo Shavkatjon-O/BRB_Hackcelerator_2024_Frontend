@@ -72,9 +72,9 @@ const Page = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{item.title}</h2>
               {
-                item.status === "Unread" ? (
+                item.is_read === false ? (
                   <Badge className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
-                    {item.status}
+                    Unread
                   </Badge>
                 ) : null
               }
