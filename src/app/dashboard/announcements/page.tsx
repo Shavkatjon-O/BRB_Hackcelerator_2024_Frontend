@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { getAnonsList, updateAnonsReadStatus } from "./_services/anonsServices";
 import { AnonsListType } from "./_types/anonsTypes";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TabsComponent = ({ onFilterChange }: { onFilterChange: (filter: string) => void }) => {
   const handleTabChange = (value: string) => {
@@ -122,13 +123,22 @@ const Page = () => {
     );
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const renderSkeletons = () => {
+    return (
+      <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6].map((index) => (
+          <Skeleton
+            key={index}
+            className="w-full h-48 bg-slate-200 dark:bg-slate-700 rounded-lg"
+          />
+        ))}
+      </div>
+    );
+  };
 
   return (
     <Panel title="Announcements" action={<TabsComponent onFilterChange={setFilter} />}>
-      {renderAnnouncements(getFilteredData(filter))}
+      {loading ? renderSkeletons() : renderAnnouncements(getFilteredData(filter))}
     </Panel>
   );
 };
