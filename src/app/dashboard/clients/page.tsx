@@ -1,8 +1,11 @@
+import coreApi from "@/lib/coreApi";
+import Panel from "../_components/Panel";
+
 const Page = () => {
   return (
-    <div>
-      <h1>Page</h1>
-    </div>
+    <Panel title="Clients">
+      <p>Clients Data</p>
+    </Panel>
   );
 };
 
