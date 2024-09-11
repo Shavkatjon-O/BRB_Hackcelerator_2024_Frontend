@@ -8,6 +8,7 @@ import Link from "next/link";
 import { getAnonsDetail } from "../_services/anonsServices";
 import { AnonsType } from "../_types/anonsTypes";
 import { format } from "date-fns";  // Import date formatting utility
+import { Skeleton } from "@/components/ui/skeleton";  // Import Skeleton component
 
 const Page = () => {
   const { id } = useParams();
@@ -35,8 +36,26 @@ const Page = () => {
     }
   }, [anons_id]);
 
+  const renderSkeleton = () => (
+    <div className="bg-white dark:bg-slate-800 shadow-lg transition-shadow duration-200 rounded-lg p-6 flex flex-col gap-4">
+      <Skeleton className="h-8 w-3/4 bg-slate-200 dark:bg-slate-700" />
+      <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+      <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+      <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+      <Skeleton className="h-4 w-1/2 bg-slate-200 dark:bg-slate-700" />
+    </div>
+  );
+
   if (loading) {
-    return <Panel title="Loading..."><p>Loading announcement...</p></Panel>;
+    return (
+      <Panel title="Announcements" action={
+        <Button variant="default" asChild>
+          <Link href="/dashboard/announcements">Back</Link>
+        </Button>
+      }>
+        {renderSkeleton()}
+      </Panel>
+    );
   }
 
   if (error || !anons) {
@@ -75,7 +94,7 @@ const Page = () => {
 
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <p className="text-xs">
-            {format(new Date(anons.created_at), "yyyy-MM-dd")} {/* Display only the date */}
+            {format(new Date(anons.created_at), "yyyy-MM-dd")}
           </p>
         </div>
       </div>
