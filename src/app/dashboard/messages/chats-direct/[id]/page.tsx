@@ -144,7 +144,7 @@ const ChatPage = () => {
       console.log("message sent", newMessage);
 
       // Don't append message to UI here; wait for WebSocket to update the UI
-      createDirectChatMessage(String(chat.id), newMessage.message.text);
+      const response = createDirectChatMessage(String(chat.id), newMessage.message.text);
       setMessage(""); // Clear input after sending
 
       inputRef.current?.focus();
