@@ -126,7 +126,7 @@ const Page = () => {
   const renderSkeletons = () => {
     return (
       <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3, 4, 5, 6].map((index) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
           <Skeleton
             key={index}
             className="w-full h-48 bg-slate-200 dark:bg-slate-700 rounded-lg"
