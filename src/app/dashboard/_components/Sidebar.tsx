@@ -10,6 +10,7 @@ import {
   ArrowLeftRight,
   BadgeDollarSign,
   Upload,
+  Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -25,9 +26,8 @@ import { UserProfileType } from '@/types/authTypes';
 
 const bankTellerLinks = [
   { href: '/dashboard/cards', label: 'Cards', icon: CreditCard },
-  { href: '/dashboard/transactions', label: 'Transactions', icon: ArrowLeftRight },
   { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
-  { href: '/dashboard/upload', label: 'Upload', icon: Upload },
+  { href: '/dashboard/clients', label: 'Clients', icon: Users },
 ];
 
 const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
@@ -37,8 +37,8 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
   const getLinksForUserType = () => {
     if (currentUser?.user_type === 'BANK_TELLER') {
       return {
-        General: [...defaultLinks.General],
         Menu: [...bankTellerLinks],
+        General: [...defaultLinks.General],
         Other: [...defaultLinks.Other],
       };
     }
@@ -73,7 +73,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
           </div>
 
           <ScrollArea className="flex-grow">
-            <nav className="flex flex-col space-y-2 p-4">
+            <nav className="flex flex-col space-y-4 p-4">
               {Object.entries(links).map(([title, links]) => (
                 <div key={title} className="space-y-2">
                   {isOpen ? (
