@@ -37,44 +37,42 @@ import {
 } from "@/components/ui/table";
 import Panel from "../_components/Panel";
 import { ClientsListTypes } from "./_types/clientsTypes";
-import coreApi from "@/lib/coreApi"; // Adjust the import if needed
+import coreApi from "@/lib/coreApi"; 
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+export type Client = {
+  id: number;
+  full_name: string;
   email: string;
+  phone_number: string;
+  city: string;
+  status: string;
+  credit_score: number;
 };
 
-// Replace static data with an empty array initially
 const Page = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = React.useState<Payment[]>([]); // Empty data state
-  const [loading, setLoading] = React.useState<boolean>(true); // Loading state
+  const [data, setData] = React.useState<Client[]>([]); 
+  const [loading, setLoading] = React.useState<boolean>(true); 
 
-  // Fetch the data from the backend API
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await coreApi.get("/clients/"); // Assuming you have axios or similar for API calls
-        setData(response.data); // Update data with response from backend
+        const response = await coreApi.get("/clients/");
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching clients data:", error);
       } finally {
-        setLoading(false); // Stop loading once data is fetched
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const columns: ColumnDef<Payment>[] = [
+  const columns: ColumnDef<Client>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -98,47 +96,59 @@ const Page = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
+      accessorKey: "full_name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Full Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       ),
+      cell: ({ row }) => <div>{row.getValue("full_name")}</div>,
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue("email")}</div>,
     },
     {
-      accessorKey: "amount",
-      header: () => <div className="text-right">Amount</div>,
+      accessorKey: "phone_number",
+      header: "Phone Number",
+      cell: ({ row }) => <div>{row.getValue("phone_number")}</div>,
+    },
+    {
+      accessorKey: "city",
+      header: "City",
+      cell: ({ row }) => <div>{row.getValue("city")}</div>,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+    },
+    {
+      accessorKey: "credit_score",
+      header: () => <div className="text-right">Credit Score</div>,
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"));
-
-        // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount);
-
-        return <div className="text-right font-medium">{formatted}</div>;
+        const score = row.getValue("credit_score") as number;
+        return <div className="text-right">{score}</div>;
       },
     },
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const payment = row.original;
+        const client = row.original;
 
         return (
           <DropdownMenu>
@@ -151,13 +161,12 @@ const Page = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() => navigator.clipboard.writeText(client.id.toString())}
               >
-                Copy payment ID
+                Copy client ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem>View client details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -227,7 +236,7 @@ const Page = () => {
           {loading ? (
             <div className="p-4 text-center">Loading...</div>
           ) : (
-            <Table>
+            <Table className="bg-white dark:bg-slate-800 border dark:border-slate-700">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
