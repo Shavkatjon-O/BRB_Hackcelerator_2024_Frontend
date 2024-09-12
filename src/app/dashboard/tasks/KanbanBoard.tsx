@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+"use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { BoardColumn, BoardContainer } from "./BoardColumn";
 import {
   DndContext,
@@ -21,100 +22,25 @@ import { type Task, TaskCard } from "./TaskCard";
 import type { Column } from "./BoardColumn";
 import { hasDraggableData } from "./utils";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
+import { getTasks } from "./_services/tasksServices"; // Import the function to fetch tasks
 
+// Limit to only 4 columns
 const defaultCols = [
-  {
-    id: "todo" as const,
-    title: "Todo",
-  },
-  {
-    id: "in-progress" as const,
-    title: "In progress",
-  },
-  {
-    id: "done" as const,
-    title: "Done",
-  },
+  { id: "to_do", title: "To Do" },
+  { id: "in_progress", title: "In Progress" },
+  { id: "on_hold", title: "On Hold" },
+  { id: "completed", title: "Completed" },
 ] satisfies Column[];
 
 export type ColumnId = (typeof defaultCols)[number]["id"];
 
-const initialTasks: Task[] = [
-  {
-    id: "task1",
-    columnId: "done",
-    content: "Project initiation and planning",
-  },
-  {
-    id: "task2",
-    columnId: "done",
-    content: "Gather requirements from stakeholders",
-  },
-  {
-    id: "task3",
-    columnId: "done",
-    content: "Create wireframes and mockups",
-  },
-  {
-    id: "task4",
-    columnId: "in-progress",
-    content: "Develop homepage layout",
-  },
-  {
-    id: "task5",
-    columnId: "in-progress",
-    content: "Design color scheme and typography",
-  },
-  {
-    id: "task6",
-    columnId: "todo",
-    content: "Implement user authentication",
-  },
-  {
-    id: "task7",
-    columnId: "todo",
-    content: "Build contact us page",
-  },
-  {
-    id: "task8",
-    columnId: "todo",
-    content: "Create product catalog",
-  },
-  {
-    id: "task9",
-    columnId: "todo",
-    content: "Develop about us page",
-  },
-  {
-    id: "task10",
-    columnId: "todo",
-    content: "Optimize website for mobile devices",
-  },
-  {
-    id: "task11",
-    columnId: "todo",
-    content: "Integrate payment gateway",
-  },
-  {
-    id: "task12",
-    columnId: "todo",
-    content: "Perform testing and bug fixing",
-  },
-  {
-    id: "task13",
-    columnId: "todo",
-    content: "Launch website and deploy to server",
-  },
-];
 export function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>(defaultCols);
   const pickedUpTaskColumn = useRef<ColumnId | null>(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const sensors = useSensors(
@@ -124,6 +50,41 @@ export function KanbanBoard() {
       coordinateGetter: coordinateGetter,
     })
   );
+
+  // Fetch tasks from backend and set the tasks state
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const backendTasks = await getTasks();
+        console.log("Fetched tasks:", backendTasks);
+        const formattedTasks = backendTasks.map((task) => ({
+          id: task.id.toString(),
+          columnId: mapStatusToColumnId(task.status), // Map backend status to columnId
+          content: task.title,
+        }));
+        setTasks(formattedTasks);
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  function mapStatusToColumnId(status: string): ColumnId {
+    switch (status) {
+      case "to_do":
+        return "to_do";
+      case "in_progress":
+        return "in_progress";
+      case "on_hold":
+        return "on_hold";
+      case "completed":
+        return "completed";
+      default:
+        return "to_do";
+    }
+  }
 
   function getDraggingTaskData(taskId: UniqueIdentifier, columnId: ColumnId) {
     const tasksInColumn = tasks.filter((task) => task.columnId === columnId);
