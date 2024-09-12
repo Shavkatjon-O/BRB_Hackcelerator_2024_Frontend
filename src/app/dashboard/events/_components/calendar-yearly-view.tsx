@@ -1,7 +1,10 @@
 "use client";
 
-import { format, startOfYear, endOfYear, eachMonthOfInterval, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
+import * as React from "react";
+import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameDay } from "date-fns";
+import { DayPicker } from "react-day-picker";
 import { EventType } from "../_types/event";
+import "react-day-picker/dist/style.css";
 
 interface CalendarYearlyViewProps {
   events: EventType[];
@@ -12,31 +15,31 @@ interface CalendarYearlyViewProps {
 const CalendarYearlyView: React.FC<CalendarYearlyViewProps> = ({ events, currentDate, onDateClick }) => {
   const monthsInYear = eachMonthOfInterval({ start: startOfYear(currentDate), end: endOfYear(currentDate) });
 
-  const eventsByMonth = monthsInYear.map((monthStart) => {
-    const daysInMonth = eachDayOfInterval({ start: startOfMonth(monthStart), end: endOfMonth(monthStart) });
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      onDateClick(date);
+    }
+  };
 
-    return daysInMonth.reduce((acc, day) => {
-      const dayString = day.toDateString();
-      acc[dayString] = events.filter((event) => new Date(event.start_date).toDateString() === dayString);
-      return acc;
-    }, {} as Record<string, EventType[]>);
-  });
+  const eventDates = events.map((event) => new Date(event.start_date));
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      {monthsInYear.map((month, index) => (
-        <div key={month.toString()} className="border p-2 rounded-md">
-          <div className="font-bold">{format(month, "MMMM yyyy")}</div>
-          {Object.entries(eventsByMonth[index]).map(([date, events]) => (
-            <div key={date} className="cursor-pointer" onClick={() => onDateClick(new Date(date))}>
-              <div className="text-sm">{format(new Date(date), "d")}</div>
-              {events.map((event) => (
-                <div key={event.id} className="text-green-500">
-                  {event.title}
-                </div>
-              ))}
-            </div>
-          ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+      {monthsInYear.map((month) => (
+        <div key={month.toString()} className="max-w-full bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+          <div className="flex justify-center">
+            <DayPicker
+              mode="single"
+              selected={currentDate}
+              onSelect={handleDateSelect}
+              month={month}
+              modifiers={{ event: eventDates }}
+              modifiersClassNames={{ event: "bg-blue-500 text-white rounded-full" }}
+              className="rounded-md border-none"
+              fromMonth={startOfYear(currentDate)}
+              toMonth={endOfYear(currentDate)}
+            />
+          </div>
         </div>
       ))}
     </div>
