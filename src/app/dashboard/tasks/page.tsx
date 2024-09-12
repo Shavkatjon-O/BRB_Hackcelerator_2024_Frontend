@@ -128,7 +128,7 @@ import Panel from "../_components/Panel";
 
 const Page = () => {
   return (
-    <Panel>
+    <Panel title="Task Management">
       <KanbanBoard />
     </Panel>
   );
