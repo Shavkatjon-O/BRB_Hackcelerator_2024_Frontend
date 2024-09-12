@@ -100,10 +100,7 @@ const CalendarPage: React.FC = () => {
         </TabsList>
       </Tabs>
 
-      <Button variant="default" onClick={() => setIsDialogOpen(true)}>
-        <CalendarIcon className="w-4 h-4 mr-2" />
-        Add Event
-      </Button>
+      <EventFormDialog isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
     </div>
   );
 

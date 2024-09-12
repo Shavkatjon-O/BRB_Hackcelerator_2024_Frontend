@@ -48,8 +48,8 @@ const EventFormDialog: React.FC<EventFormDialogProps> = ({ isDialogOpen, setIsDi
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <CalendarIcon /> Add Event
+        <Button onClick={() => setIsDialogOpen(true)} variant="default">
+          <CalendarIcon className="size-[1.2rem] mr-2" /> Add Event
         </Button>
       </DialogTrigger>
       <DialogContent>
