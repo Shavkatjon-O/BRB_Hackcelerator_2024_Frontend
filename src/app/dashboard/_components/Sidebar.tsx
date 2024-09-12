@@ -12,6 +12,9 @@ import {
   Upload,
   Users,
   House,
+  LibraryBig,
+  HandCoins,
+  CirclePercent
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -35,20 +38,27 @@ const bankTellerLinks = [
   { href: '/dashboard/clients', label: 'Clients', icon: Users },
 ];
 
+const loanManagerLinks = [
+  { href: '/dashboard/borrowers', label: 'Loans', icon: HandCoins },
+  { href: '/dashboard/applications', label: 'Loans', icon: LibraryBig },
+  { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
+  { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
+  { href: '/dashboard/clients', label: 'Clients', icon: Users },
+];
+
 const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { activePage, setActivePage } = useSidebar();
 
   const getLinksForUserType = () => {
-    if (currentUser?.user_type === 'BANK_TELLER') {
-      return {
-        Dashboard: [...mainLinks],
-        Menu: [...bankTellerLinks],
-        General: [...defaultLinks.General],
-        Other: [...defaultLinks.Other],
-      };
+    const userTypeLinks = currentUser?.user_type === 'LOAN_MANAGER' ? loanManagerLinks : bankTellerLinks || []
+
+    return {
+      Dashboard: [...mainLinks],
+      Menu: [...userTypeLinks],
+      General: [...defaultLinks.General],
+      Other: [...defaultLinks.Other],
     }
-    return defaultLinks;
   };
 
   const links = getLinksForUserType();
