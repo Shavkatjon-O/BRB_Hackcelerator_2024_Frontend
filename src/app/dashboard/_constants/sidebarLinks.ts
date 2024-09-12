@@ -18,7 +18,6 @@ import {
 
 export const defaultLinks = {
   "General": [
-    { href: "/dashboard", label: "Home", icon: House },
     { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
     { href: "/dashboard/messages", label: "Messages", icon: MessageSquareText },
     { href: "/dashboard/requests", label: "Requests & Approvals", icon: CheckSquare },

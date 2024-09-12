@@ -11,6 +11,7 @@ import {
   BadgeDollarSign,
   Upload,
   Users,
+  House,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -23,6 +24,10 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/comp
 import { defaultLinks } from '../_constants/sidebarLinks';
 
 import { UserProfileType } from '@/types/authTypes';
+
+const mainLinks = [
+  { href: '/dashboard', label: 'Home', icon: House },
+];
 
 const bankTellerLinks = [
   { href: '/dashboard/cards', label: 'Cards', icon: CreditCard },
@@ -37,6 +42,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
   const getLinksForUserType = () => {
     if (currentUser?.user_type === 'BANK_TELLER') {
       return {
+        Dashboard: [...mainLinks],
         Menu: [...bankTellerLinks],
         General: [...defaultLinks.General],
         Other: [...defaultLinks.Other],
@@ -73,13 +79,13 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
           </div>
 
           <ScrollArea className="flex-grow">
-            <nav className="flex flex-col space-y-4 p-4">
+            <nav className="flex flex-col p-4">
               {Object.entries(links).map(([title, links]) => (
                 <div key={title} className="space-y-2">
                   {isOpen ? (
-                    <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
+                    <h3 className="text-sm my-4 font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
                   ) : (
-                    <Separator className="my-2" />
+                    <Separator className="my-4 bg-slate-600" />
                   )}
                   {links.map(({ href, label, icon: Icon }) => (
                     <div key={href}>
