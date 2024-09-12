@@ -70,7 +70,7 @@ const MeetingRoom = () => {
         </div>
       </div>
 
-      <div className="w-full gap-4 flex items-center justify-center">
+      <div className="w-full gap-4 flex flex-wrap items-center justify-center">
         <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
 
         <Popover>
