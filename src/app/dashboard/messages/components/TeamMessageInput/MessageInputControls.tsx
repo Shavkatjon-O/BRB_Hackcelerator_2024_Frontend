@@ -102,3 +102,5 @@ export const MessageInputControlButton = forwardRef<HTMLButtonElement, MessageIn
     </button>
   );
 });
+
+MessageInputControlButton.displayName = 'MessageInputControlButton';
