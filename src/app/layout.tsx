@@ -8,8 +8,6 @@ import { cn } from "@/lib/utils";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 
-import ChatSupport from "@/components/chat/chat-support";
-
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,7 +32,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         >
           <NextIntlClientProvider messages={messages}>
             <main>{children}</main>
-            <ChatSupport />
           </NextIntlClientProvider>
           <Toaster />
         </ThemeProvider>

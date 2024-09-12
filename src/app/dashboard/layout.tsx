@@ -4,6 +4,7 @@ import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import useUser from "@/hooks/useUser";
+import ChatSupport from "@/components/chat/chat-support";
 import Loader from "./_components/Loader";
 
 interface Props {
@@ -30,6 +31,7 @@ const Layout = ({ children }: Props) => {
           <main className="flex-1 overflow-y-scroll dark:bg-slate-900 bg-slate-100">{children}</main>
         </div>
       </div>
+      <ChatSupport />
     </SidebarProvider>
   );
 };
