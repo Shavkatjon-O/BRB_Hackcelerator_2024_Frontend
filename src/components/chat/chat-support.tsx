@@ -84,7 +84,7 @@ export default function ChatSupport() {
   };
 
   useEffect(() => {
-    setTimeout(scrollToBottom, 100);
+    scrollToBottom();
   }, [messages]);
 
   const handleSendMessage = async () => {
