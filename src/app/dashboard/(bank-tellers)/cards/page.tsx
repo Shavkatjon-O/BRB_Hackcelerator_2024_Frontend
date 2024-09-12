@@ -1,132 +1,317 @@
 "use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Edit, Eye, Filter } from 'lucide-react';
+import * as React from "react";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-const Page = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Panel from "../../_components/Panel";
+import coreApi from "@/lib/coreApi"; 
 
-  const cards = [
-    { id: '1', number: '1234 5678 9012 3456', exp: '12/24', status: 'Active' },
-    { id: '2', number: '2345 6789 0123 4567', exp: '11/23', status: 'Inactive' },
-    { id: '3', number: '3456 7890 1234 5678', exp: '01/25', status: 'Active' },
-    { id: '4', number: '4567 8901 2345 6789', exp: '05/23', status: 'Active' },
-    { id: '5', number: '5678 9012 3456 7890', exp: '07/24', status: 'Inactive' },
-    { id: '6', number: '6789 0123 4567 8901', exp: '09/23', status: 'Active' },
-    { id: '7', number: '7890 1234 5678 9012', exp: '03/24', status: 'Inactive' },
-    { id: '8', number: '8901 2345 6789 0123', exp: '06/25', status: 'Active' },
-    { id: '9', number: '9012 3456 7890 1234', exp: '08/23', status: 'Inactive' },
-    { id: '10', number: '0123 4567 8901 2345', exp: '10/24', status: 'Active' },
-    { id: '11', number: '2345 6789 0123 4567', exp: '12/24', status: 'Active' },
-    { id: '12', number: '3456 7890 1234 5678', exp: '02/25', status: 'Inactive' },
-    { id: '13', number: '4567 8901 2345 6789', exp: '04/23', status: 'Active' },
-    { id: '14', number: '5678 9012 3456 7890', exp: '07/23', status: 'Inactive' },
-    { id: '15', number: '6789 0123 4567 8901', exp: '11/23', status: 'Active' },
-    { id: '16', number: '7890 1234 5678 9012', exp: '09/24', status: 'Inactive' },
-    { id: '17', number: '8901 2345 6789 0123', exp: '01/25', status: 'Active' },
-    { id: '18', number: '9012 3456 7890 1234', exp: '03/23', status: 'Inactive' },
-    { id: '19', number: '0123 4567 8901 2345', exp: '06/24', status: 'Active' },
-    { id: '20', number: '1234 5678 9012 3456', exp: '08/23', status: 'Inactive' },
+export type Card = {
+  id: number;
+  client: string;
+  card_number: string;
+  card_type: string;
+  currency: string;
+  balance: number;
+  status: string;
+  expiration_date: string;
+  created_by: string;
+  approved_by: string | null;
+};
+
+const CardsPage = () => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [data, setData] = React.useState<Card[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  // Fetch data from /cards/ endpoint
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await coreApi.get("/cards/");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching cards data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Columns definition for Cards
+  const columns: ColumnDef<Card>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "card_number",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Card Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue("card_number")}</div>,
+    },
+    {
+      accessorKey: "client",
+      header: "Client",
+      cell: ({ row }) => <div>{row.getValue("client")}</div>,
+    },
+    {
+      accessorKey: "card_type",
+      header: "Card Type",
+      cell: ({ row }) => <div>{row.getValue("card_type")}</div>,
+    },
+    {
+      accessorKey: "currency",
+      header: "Currency",
+      cell: ({ row }) => <div>{row.getValue("currency")}</div>,
+    },
+    {
+      accessorKey: "balance",
+      header: () => <div className="text-right">Balance</div>,
+      cell: ({ row }) => {
+        const balance = row.getValue("balance") as number;
+        return <div className="text-right">{balance}</div>;
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+    },
+    {
+      accessorKey: "expiration_date",
+      header: "Expiration Date",
+      cell: ({ row }) => <div>{row.getValue("expiration_date")}</div>,
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const card = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(card.id.toString())}
+              >
+                Copy card ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View card details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
-  const filteredCards = cards
-    .filter(card =>
-      card.number.includes(searchQuery) &&
-      (statusFilter === 'all' ? true : card.status === statusFilter)
-    )
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-  const totalPages = Math.ceil(cards.length / itemsPerPage);
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
 
   return (
-    <div className="p-6">
-      <header className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Cards</h1>
-        <div className="flex space-x-4">
+    <Panel title="Cards">
+      <div className="w-full">
+        <div className="flex items-center mb-4">
           <Input
-            placeholder="Search by card number"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64"
+            placeholder="Filter by card number..."
+            value={(table.getColumn("card_number")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("card_number")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
           />
-          <Select onValueChange={(value) => setStatusFilter(value)}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="All Statuses" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Button variant="default" className='bg-blue-500 text-white'>
-            <Filter className="w-4 h-4 mr-2" /> Filter
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </header>
-
-      <Card className="">
-        <CardHeader>
-          <CardTitle>Card List</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Card Number</TableHead>
-                <TableHead>Expiration Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredCards.map(card => (
-                <TableRow key={card.id}>
-                  <TableCell>{card.id}</TableCell>
-                  <TableCell>{card.number}</TableCell>
-                  <TableCell>{card.exp}</TableCell>
-                  <TableCell>{card.status}</TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" className="flex items-center">
-                        <Eye className="w-4 h-4 mr-2" /> View
-                      </Button>
-                      <Button variant="outline" className="flex items-center">
-                        <Edit className="w-4 h-4 mr-2" /> Edit
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          <div className="flex justify-between mt-4">
-            <Button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+        <div className="rounded-md border">
+          {loading ? (
+            <div className="p-4 text-center">Loading...</div>
+          ) : (
+            <Table className="bg-white dark:bg-slate-800 border dark:border-slate-700">
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
               Previous
             </Button>
-            <div>
-              Page {currentPage} of {totalPages}
-            </div>
-            <Button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
               Next
             </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </Panel>
   );
 };
 
-export default Page;
+export default CardsPage;
