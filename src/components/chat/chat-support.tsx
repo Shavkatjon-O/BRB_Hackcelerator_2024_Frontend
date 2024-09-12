@@ -20,8 +20,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import coreApi from "@/lib/coreApi";
 
-// Categories List
-const categories = [
+const primaryCategories = [
   "Customer Relationship Managers",
   "HR Managers",
   "IT Support Staff",
@@ -32,6 +31,14 @@ const categories = [
   "Loan Officers",
   "Marketing Managers",
   "Training and Development Officers",
+];
+
+const secondaryCategories = [
+  "Task",
+  "Duties",
+  "Rules",
+  "Performance Metrics",
+  "Training Requirements",
 ];
 
 const getAIResponse = async (message: string) => {
@@ -55,7 +62,7 @@ const initialChatSupportMessages: Message[] = [
   },
   {
     id: "2",
-    content: "Please select a category by clicking one of the buttons below:",
+    content: "Please select a Role by clicking one of the buttons below:",
     sender: "ai",
     timestamp: new Date().toLocaleTimeString(),
   },
@@ -65,15 +72,19 @@ export default function ChatSupport() {
   const [messages, setMessages] = useState<Message[]>(initialChatSupportMessages);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Track the selected category
+  const [selectedPrimaryCategory, setSelectedPrimaryCategory] = useState<string | null>(null);
+  const [selectedSecondaryCategory, setSelectedSecondaryCategory] = useState<string | null>(null);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
+  };
+
+  useEffect(() => {
+    setTimeout(scrollToBottom, 100);
   }, [messages]);
 
   const handleSendMessage = async () => {
@@ -89,12 +100,13 @@ export default function ChatSupport() {
       setInputMessage("");
       setIsLoading(true);
 
-      const messageWithTopic = selectedCategory
-        ? `Topic - ${selectedCategory}: ${userMessage.content}`
-        : userMessage.content;
+      const messageWithTopics =
+        selectedPrimaryCategory && selectedSecondaryCategory
+          ? `Role - ${selectedPrimaryCategory}, Topic - ${selectedSecondaryCategory}: ${userMessage.content}`
+          : userMessage.content;
 
       try {
-        const aiResponseContent = await getAIResponse(messageWithTopic);
+        const aiResponseContent = await getAIResponse(messageWithTopics);
         const aiMessage: Message = {
           id: Date.now().toString(),
           content: aiResponseContent,
@@ -117,8 +129,27 @@ export default function ChatSupport() {
     }
   };
 
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
+  const handlePrimaryCategoryClick = (category: string) => {
+    setSelectedPrimaryCategory(category);
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: category,
+      sender: "user",
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    const aiMessage: Message = {
+      id: Date.now().toString(),
+      content: `You have selected the role: ${category}. Now, please choose a topic.`,
+      sender: "ai",
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    setMessages((prevMessages) => [...prevMessages, userMessage, aiMessage]);
+  };
+
+  const handleSecondaryCategoryClick = (category: string) => {
+    setSelectedSecondaryCategory(category);
     const userMessage: Message = {
       id: Date.now().toString(),
       content: category,
@@ -191,7 +222,7 @@ export default function ChatSupport() {
               </motion.div>
             ))}
 
-            {!selectedCategory && (
+            {!selectedPrimaryCategory && (
               <motion.div
                 layout
                 initial={{ opacity: 0, scale: 1, y: 10, x: 0 }}
@@ -203,15 +234,45 @@ export default function ChatSupport() {
                     type: "spring",
                     bounce: 0.3,
                     duration: 0.2,
-                  },
-                }}
+                  }}}
                 className="flex flex-col mt-2"
               >
+                <h2 className="text-lg font-semibold mb-2">Roles</h2>
                 <div className="flex flex-wrap gap-2">
-                  {categories.map((category, index) => (
+                  {primaryCategories.map((category, index) => (
                     <Button
                       key={index}
-                      onClick={() => handleCategoryClick(category)}
+                      onClick={() => handlePrimaryCategoryClick(category)}
+                      variant="outline"
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {selectedPrimaryCategory && !selectedSecondaryCategory && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 1, y: 10, x: 0 }}
+                animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+                transition={{
+                  opacity: { duration: 0.1 },
+                  layout: {
+                    type: "spring",
+                    bounce: 0.3,
+                    duration: 0.2,
+                  }}}
+                className="flex flex-col mt-2"
+              >
+                <h2 className="text-lg font-semibold mb-2">Topics</h2>
+                <div className="flex flex-wrap gap-2">
+                  {secondaryCategories.map((category, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleSecondaryCategoryClick(category)}
                       variant="outline"
                     >
                       {category}
@@ -223,7 +284,7 @@ export default function ChatSupport() {
           </AnimatePresence>
         </ChatMessageList>
       </ExpandableChatBody>
-      {selectedCategory && (
+      {selectedSecondaryCategory && (
         <ExpandableChatFooter>
           <form
             onSubmit={(e) => {
