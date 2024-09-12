@@ -1,5 +1,4 @@
 import {
-  House,
   Bell,
   MessageSquareText,
   CheckSquare,
@@ -9,7 +8,6 @@ import {
   Camera,
   ListChecks,
   PieChart,
-  Bot,
   User,
   Settings,
   HelpCircle,
@@ -27,7 +25,6 @@ export const defaultLinks = {
     { href: "/dashboard/meetings", label: "Video & Call Meetings", icon: Camera },
     { href: "/dashboard/tasks", label: "Tasks Management", icon: ListChecks },
     { href: "/dashboard/reports", label: "Reports", icon: PieChart },
-    { href: "/dashboard/assistants", label: "AI Assistant", icon: Bot },
   ],
   "Other": [
     { href: "/dashboard/profile", label: "Profile", icon: User },
