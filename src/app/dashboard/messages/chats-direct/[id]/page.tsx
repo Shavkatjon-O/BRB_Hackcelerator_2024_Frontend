@@ -62,7 +62,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (!chatID) return;
 
-    const socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/chat/${chatID}/`);
+    const socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/chat/${chatID}/`.replace('//', '/'));
     setWs(socket);
 
     socket.onopen = () => console.log("WebSocket connection opened");

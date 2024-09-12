@@ -1,5 +1,3 @@
-// useChatStore.ts
-
 import { create } from 'zustand';
 import { getDirectChat, getDirectChatMessageList } from '../../_services/chatsServices';
 import { DirectChatType, MessageType } from '../../_types/chatsTypes';
@@ -31,7 +29,11 @@ const useChatStore = create<ChatState>((set, get) => ({
     try {
       const { data: directChat } = await getDirectChat(chatID);
       const { data: directChatMessageList } = await getDirectChatMessageList(chatID, MESSAGES_PER_LOAD);
-      set({ chat: directChat, messages: directChatMessageList, hasMoreMessages: directChatMessageList.length >= MESSAGES_PER_LOAD });
+      set({ 
+        chat: directChat, 
+        messages: directChatMessageList, 
+        hasMoreMessages: directChatMessageList.length >= MESSAGES_PER_LOAD 
+      });
     } catch (err) {
       console.error("Error fetching chat data", err);
     } finally {
@@ -67,3 +69,4 @@ const useChatStore = create<ChatState>((set, get) => ({
 }));
 
 export default useChatStore;
+``
