@@ -20,6 +20,8 @@ import { useCallback, useTransition } from "react";
 
 import { UserProfileType } from "@/types/authTypes";
 
+import Sidebar from "./SidebarMobile";
+
 const languages: { value: "en" | "uz" | "ru"; label: string }[] = [
   { value: "en", label: "English" },
   { value: "uz", label: "O'zbek" },
@@ -50,7 +52,11 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
 
   return (
     <header className="bg-white dark:bg-slate-800 border-b dark:border-b-slate-700 h-16 z-50 flex items-center shadow-sm">
-      <div className="size-full px-4 flex items-center justify-end lg:justify-between">
+      <div className="size-full px-4 flex items-center justify-between">
+        <div className="flex lg:hidden items-center">
+          <Sidebar currentUser={currentUser} />
+        </div>
+
         <div className="hidden lg:flex gap-2 items-center">
           <span className="text-sm">
             [
