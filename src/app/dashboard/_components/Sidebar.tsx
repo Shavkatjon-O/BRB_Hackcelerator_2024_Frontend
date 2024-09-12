@@ -42,10 +42,10 @@ const bankTellerLinks = [
 const loanManagerLinks = [
   { href: '/dashboard/borrowers', label: 'Borrowers', icon: HandCoins },
   { href: '/dashboard/applications', label: 'Applications', icon: LibraryBig },
-  { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
   { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
-  { href: '/dashboard/clients', label: 'Clients', icon: Users },
+  { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
   { href: 'dashboard/telephony', label: 'AI Telephony', icon: Headset },
+  { href: '/dashboard/clients', label: 'Clients', icon: Users },
 ];
 
 const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
