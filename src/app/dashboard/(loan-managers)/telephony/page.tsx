@@ -38,6 +38,8 @@ import { Badge } from "@/components/ui/badge"; // Import Badge component
 import Panel from "../../_components/Panel";
 import coreApi from "@/lib/coreApi";
 
+import TelephonyCall from './_components/TelephonyCall';
+
 export type Loan = {
   id: number;
   client: string;
@@ -184,7 +186,7 @@ const LoansPage = () => {
   });
 
   return (
-    <Panel title="AI Telephony">
+    <Panel title="AI Telephony" action={<TelephonyCall />}>
       <div className="w-full">
         <div className="rounded-md border">
           {loading ? (
