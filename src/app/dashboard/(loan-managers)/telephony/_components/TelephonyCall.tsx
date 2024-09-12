@@ -4,9 +4,15 @@ import React from 'react';
 import * as SpeechSDK from 'microsoft-cognitiveservices-speech-sdk';
 import { Button } from '@/components/ui/button';
 
-const TelephonyCall = () => {
-  const text = "Qarzdorlar yo'q.";
+const text = `Hurmatli mijoz!
+Sizning hisobingiz bo'yicha qarz summasi mavjud. 
+Qarzdorlik miqdori: 1,200,000 so'm.
+To'lov muddati o'tib ketgan va imkon qadar tezroq to'lov amalga oshirilishi kerak.
+Agar to'lovni kechiktirsangiz, qo'shimcha jarimalar va foizlar qo'llanilishi mumkin.
+Batafsil ma'lumot olish uchun iltimos, bankning mijozlar xizmatiga murojaat qiling. 
+Sizning to'lovingiz biz uchun juda muhim. Iltimos, imkon qadar tezroq to'lov qiling. Rahmat!`;
 
+const TelephonyCall = () => {
   const handleTextToSpeech = () => {
     const subscriptionKey = process.env.NEXT_PUBLIC_MICROSOFT_AZURE_API || '';
     const serviceRegion = 'eastus';
