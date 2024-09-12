@@ -46,6 +46,7 @@
     "framer-motion": "^11.3.31",
     "js-cookie": "^3.0.5",
     "jsx-runtime": "^1.2.0",
+    "lodash.debounce": "^4.0.8",
     "lucide": "^0.427.0",
     "lucide-react": "^0.427.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.40.0",
