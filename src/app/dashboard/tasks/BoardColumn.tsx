@@ -74,7 +74,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
       })}
     >
-      <CardHeader className="p-2 font-medium border-b dark:border-slate-600 text-left flex items-center space-between bg-white dark:bg-slate-800">
+      <CardHeader className="p-2 font-medium border-b dark:border-slate-600 text-left flex items-center space-between bg-white dark:bg-slate-800 rounded-sm">
         {/* Removed unnecessary shadows and paddings */}
         <Button
           variant="ghost"
