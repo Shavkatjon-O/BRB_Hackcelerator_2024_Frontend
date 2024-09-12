@@ -2,10 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { 
-  User,
-  Languages,
-} from "lucide-react";
+import { User, Languages } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,13 +12,15 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 
+import coreApi from "@/lib/coreApi";
+
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
-import { useTransition } from "react";
+import { useCallback, useTransition } from "react";
 
 import { UserProfileType } from "@/types/authTypes";
 
-const languages: { value: "en" | "uz" | "ru", label: string }[] = [
+const languages: { value: "en" | "uz" | "ru"; label: string }[] = [
   { value: "en", label: "English" },
   { value: "uz", label: "O'zbek" },
   { value: "ru", label: "Русский" },
@@ -29,8 +28,8 @@ const languages: { value: "en" | "uz" | "ru", label: string }[] = [
 
 const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
   const t = useTranslations("Index");
-  const router = useRouter();  
-  const locale = useLocale();     
+  const router = useRouter();
+  const locale = useLocale();
 
   const [isPending, startTransition] = useTransition();
 
@@ -39,6 +38,15 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
       router.refresh();
     });
   };
+
+  const handleToggleDashboard = useCallback(async () => {
+    try {
+      await coreApi.post("/users/toggle-user-type/");
+      window.location.reload()
+    } catch (error) {
+      console.error("Failed to toggle dashboard", error);
+    }
+  }, []);
 
   return (
     <header className="bg-white dark:bg-slate-800 border-b dark:border-b-slate-700 h-16 z-50 flex items-center shadow-sm">
@@ -59,6 +67,10 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
         </div>
 
         <div className="flex gap-2 items-center">
+          <Button variant="link" onClick={handleToggleDashboard}>
+            Toggle Dashboard
+          </Button>
+
           <Button asChild variant="link">
             <Link href="/dashboard/profile" className="flex items-center space-x-2">
               <span>{currentUser?.email}</span>
@@ -79,7 +91,7 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
               ))}
             </SelectContent>
           </Select>
-          
+
           <div>
             <ModeToggle />
           </div>
