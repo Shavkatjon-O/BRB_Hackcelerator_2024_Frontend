@@ -20,10 +20,24 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import coreApi from "@/lib/coreApi";
 
+// Categories List
+const categories = [
+  "Customer Relationship Managers",
+  "HR Managers",
+  "IT Support Staff",
+  "Bank Tellers",
+  "Compliance Officers",
+  "Branch Managers",
+  "Financial Analysts",
+  "Loan Officers",
+  "Marketing Managers",
+  "Training and Development Officers",
+];
+
 const getAIResponse = async (message: string) => {
   const response = await coreApi.post("/assistants/chat-support/", { question: message });
   return response.data;
-}
+};
 
 interface Message {
   id: string;
@@ -35,7 +49,13 @@ interface Message {
 const initialChatSupportMessages: Message[] = [
   {
     id: "1",
-    content: "Hello! How can I help you today?",
+    content: "Hello! Welcome to the chat. How can I assist you today?",
+    sender: "ai",
+    timestamp: new Date().toLocaleTimeString(),
+  },
+  {
+    id: "2",
+    content: "Please select a category by clicking one of the buttons below:",
     sender: "ai",
     timestamp: new Date().toLocaleTimeString(),
   },
@@ -45,6 +65,7 @@ export default function ChatSupport() {
   const [messages, setMessages] = useState<Message[]>(initialChatSupportMessages);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Track the selected category
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -63,13 +84,17 @@ export default function ChatSupport() {
         sender: "user",
         timestamp: new Date().toLocaleTimeString(),
       };
-      
+
       setMessages([...messages, userMessage]);
       setInputMessage("");
       setIsLoading(true);
 
+      const messageWithTopic = selectedCategory
+        ? `Topic - ${selectedCategory}: ${userMessage.content}`
+        : userMessage.content;
+
       try {
-        const aiResponseContent = await getAIResponse(userMessage.content);
+        const aiResponseContent = await getAIResponse(messageWithTopic);
         const aiMessage: Message = {
           id: Date.now().toString(),
           content: aiResponseContent,
@@ -90,6 +115,25 @@ export default function ChatSupport() {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: category,
+      sender: "user",
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    const aiMessage: Message = {
+      id: Date.now().toString(),
+      content: `You have selected the topic: ${category}. Feel free to ask your questions.`,
+      sender: "ai",
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    setMessages((prevMessages) => [...prevMessages, userMessage, aiMessage]);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -146,33 +190,65 @@ export default function ChatSupport() {
                 </ChatBubble>
               </motion.div>
             ))}
+
+            {!selectedCategory && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 1, y: 10, x: 0 }}
+                animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+                transition={{
+                  opacity: { duration: 0.1 },
+                  layout: {
+                    type: "spring",
+                    bounce: 0.3,
+                    duration: 0.2,
+                  },
+                }}
+                className="flex flex-col mt-2"
+              >
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((category, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleCategoryClick(category)}
+                      variant="outline"
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </ChatMessageList>
       </ExpandableChatBody>
-      <ExpandableChatFooter>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSendMessage();
-          }}
-          className="flex relative gap-2"
-        >
-          <ChatInput
-            onKeyDown={onKeyDown}
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Type a message..."
-          />
-          <Button
-            disabled={!inputMessage.trim() || isLoading}
-            type="submit"
-            size="icon"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 shrink-0"
+      {selectedCategory && (
+        <ExpandableChatFooter>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSendMessage();
+            }}
+            className="flex relative gap-2"
           >
-            <Send className="size-4" />
-          </Button>
-        </form>
-      </ExpandableChatFooter>
+            <ChatInput
+              onKeyDown={onKeyDown}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Type a message..."
+            />
+            <Button
+              disabled={!inputMessage.trim() || isLoading}
+              type="submit"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 shrink-0"
+            >
+              <Send className="size-4" />
+            </Button>
+          </form>
+        </ExpandableChatFooter>
+      )}
     </ExpandableChat>
   );
 }
