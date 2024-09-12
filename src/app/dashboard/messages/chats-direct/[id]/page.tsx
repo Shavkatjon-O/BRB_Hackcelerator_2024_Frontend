@@ -1,14 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import {
-  getDirectChat,
-  getDirectChatMessageList,
-  createDirectChatMessage,
-} from "../../_services/chatsServices";
-import useUser from "@/hooks/useUser";
-import { DirectChatType, MessageType } from "../../_types/chatsTypes";
+import React, { useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ChatBubbleAvatar,
@@ -17,14 +10,7 @@ import {
   ChatBubble,
 } from "../../_components/ui/chat-bubble";
 import { ChatMessageList } from "../../_components/ui/chat-message-list";
-import {
-  FileImage,
-  Mic,
-  Paperclip,
-  PlusCircle,
-  SendHorizontal,
-  ThumbsUp,
-} from "lucide-react";
+import { FileImage, Paperclip, PlusCircle, SendHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,6 +18,9 @@ import { EmojiPicker } from "../../_components/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChatInput } from "../../_components/ui/chat-input";
 import ChatTopbar from "../../_components/ChatTop";
+import useChatStore from './useChatStore';
+import useUser from "@/hooks/useUser";
+import { createDirectChatMessage } from "../../_services/chatsServices";
 
 const BottombarIcons = [
   { icon: FileImage, label: "Image" },
@@ -46,14 +35,21 @@ const ChatPage = () => {
   const chatID = Array.isArray(id) ? id[0] : id;
   const { user, isLoaded, error } = useUser();
 
-  const [chat, setChat] = useState<DirectChatType | null>(null);
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const ws = useRef<WebSocket | null>(null); // WebSocket reference
-
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const {
+    chat,
+    messages,
+    isLoading,
+    hasMoreMessages,
+    ws,
+    fetchChatData,
+    fetchMoreMessages,
+    addMessage,
+    setWs,
+  } = useChatStore();
+  const [message, setMessage] = React.useState("");
 
   // Scroll to bottom of messages
   const scrollToBottom = useCallback(() => {
@@ -63,97 +59,55 @@ const ChatPage = () => {
     });
   }, []);
 
-  // Fetch initial chat data and message list
-  const fetchChatData = useCallback(async () => {
-    if (!chatID || !user) return;
-
-    setIsLoading(true);
-    try {
-      const { data: directChat } = await getDirectChat(chatID);
-      setChat(directChat);
-
-      const { data: directChatMessageList } = await getDirectChatMessageList(chatID);
-      setMessages(directChatMessageList);
-    } catch (err) {
-      console.error("Error fetching chat data", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [chatID, user]);
-
+  // Fetch chat data when user and chatID are ready
   useEffect(() => {
-    fetchChatData();
-  }, [fetchChatData]);
+    if (chatID && user) {
+      fetchChatData(chatID, user);
+    }
+  }, [chatID, user, fetchChatData]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  // WebSocket Connection: Open connection only once
+  // WebSocket setup
   useEffect(() => {
     if (!chatID) return;
 
     const socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/chat/${chatID}/`);
-    ws.current = socket; // Store WebSocket reference
+    setWs(socket);
 
-    socket.onopen = () => {
-      console.log("WebSocket connection opened");
-    };
+    socket.onopen = () => console.log("WebSocket connection opened");
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("message received", data);
 
       if (data.chat.id !== Number(chatID)) return;
-
-      // Update UI with new message received via WebSocket
-      setMessages((prevMessages) => [...prevMessages, data]);
+      addMessage(data);
     };
 
-    socket.onclose = (event) => {
-      console.error("WebSocket closed:", event);
-    };
+    socket.onclose = (event) => console.error("WebSocket closed:", event);
+    socket.onerror = (event) => console.error("WebSocket error observed:", event);
 
-    socket.onerror = (event) => {
-      console.error("WebSocket error observed:", event);
-    };
+    return () => socket.close();
+  }, [chatID, addMessage, setWs]);
 
-    // Cleanup WebSocket on unmount
-    return () => {
-      socket.close();
-    };
-  }, [chatID]);
-
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!user) return <div>User not found</div>;
-  if (!chat) return <div>Chat not found</div>;
-  if (error) return <div>Error loading user data</div>;
-
-  // Send message via WebSocket
-  const sendMessage = () => {
-    if (ws.current && ws.current.readyState === WebSocket.OPEN && message.trim()) {
-      const newMessage = {
-        message: {
-          chat,
-          user,
-          text: message,
-        },
-      };
-
-      ws.current.send(JSON.stringify(newMessage)); // Send message through WebSocket
-      console.log("message sent", newMessage);
-
-      // Don't append message to UI here; wait for WebSocket to update the UI
-      const response = createDirectChatMessage(String(chat.id), newMessage.message.text);
-      setMessage(""); // Clear input after sending
-
-      inputRef.current?.focus();
+  // Load more messages when user scrolls up
+  const handleScroll = useCallback(() => {
+    if (messagesContainerRef.current?.scrollTop === 0 && hasMoreMessages) {
+      fetchMoreMessages(chatID, messages.length);
     }
-  };
+  }, [fetchMoreMessages, chatID, messages.length, hasMoreMessages]);
 
-  const handleSend = () => {
-    if (message.trim()) {
-      sendMessage();
+  const handleSendMessage = () => {
+    if (ws && ws.readyState === WebSocket.OPEN && message.trim()) {
+      const newMessage = { message: { chat, user, text: message } };
+      ws.send(JSON.stringify(newMessage));
+
+      createDirectChatMessage(String(chat?.id), newMessage.message.text);
+      setMessage(""); // Clear input
+      inputRef.current?.focus();
     }
   };
 
@@ -164,15 +118,20 @@ const ChatPage = () => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      handleSend();
+      handleSendMessage();
     }
   };
+
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!user) return <div>User not found</div>;
+  if (!chat) return <div>Chat not found</div>;
+  if (error) return <div>Error loading user data</div>;
 
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col justify-between">
       <ChatTopbar selectedUser={chat} />
 
-      <ChatMessageList ref={messagesContainerRef}>
+      <ChatMessageList ref={messagesContainerRef} onScroll={handleScroll}>
         <AnimatePresence>
           {messages.map((message, index) => {
             const variant = getMessageVariant(message.user.email, user.email);
@@ -274,7 +233,7 @@ const ChatPage = () => {
 
           <Button
             className="h-9 w-9 shrink-0"
-            onClick={handleSend}
+            onClick={handleSendMessage}
             disabled={isLoading}
             variant="ghost"
             size="icon"

@@ -20,16 +20,25 @@ export const createDirectChatMessage = async (id: string, text: string) => {
   return coreApi.post(`/chats/directs/${id}/messages/create/`, { text: text, chat_id: id });
 }
 
-export const getDirectChatMessageList = async (id: string) => {
-  return coreApi.get(`/chats/directs/${id}/messages/`);
-}
+// export const getDirectChatMessageList = async (id: string) => {
+//   return coreApi.get(`/chats/directs/${id}/messages/`);
+// }
 
 /////////////////////////////////////////////////////////////////////////////
 
 import { DirectChatType } from "../_types/chatsTypes";
 
 const directChatListGet = async (): Promise<DirectChatType[]> => {
-  return (await coreApi.get("/chats/directs/")).data;
+  return (await coreApi.get("/chats/directs/")).data.results;
+}
+
+export const getDirectChatMessageList = async (id: string, limit: number = 20, offset: number = 0) => {
+  return coreApi.get(`/chats/directs/${id}/messages/`, {
+    params: {
+      limit,
+      offset,
+    },
+  });
 }
 
 export { 
