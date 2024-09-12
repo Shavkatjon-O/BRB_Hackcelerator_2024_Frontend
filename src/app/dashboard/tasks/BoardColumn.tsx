@@ -53,15 +53,14 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     transform: CSS.Translate.toString(transform),
   };
 
-  // Full width with flex-grow for better spacing
   const variants = cva(
-    "h-[500px] max-h-[500px] flex-1 bg-white shadow-lg border border-gray-300 flex flex-col flex-shrink-0 rounded-md", // Removed fixed width, added flex-grow (flex-1)
+    "h-[500px] max-h-[500px] flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col flex-shrink-0 rounded-sm", // Light and dark mode background and border
     {
       variants: {
         dragging: {
           default: "border-transparent",
-          over: "ring-2 ring-gray-400 opacity-50",
-          overlay: "ring-2 ring-blue-500",
+          over: "ring-2 ring-slate-300 dark:ring-slate-600 opacity-50",
+          overlay: "ring-2 ring-blue-400",
         },
       },
     }
@@ -75,23 +74,23 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
       })}
     >
-      <CardHeader className="p-3 font-medium border-b text-left flex items-center space-between">
-        {/* Moved button to the left corner */}
+      <CardHeader className="p-2 font-medium border-b dark:border-slate-600 text-left flex items-center space-between bg-white dark:bg-slate-800">
+        {/* Removed unnecessary shadows and paddings */}
         <Button
           variant="ghost"
           {...attributes}
           {...listeners}
-          className="p-0.5 text-gray-500 hover:text-gray-700 cursor-grab mr-auto" // Added mr-auto to align to the left
+          className="p-0.5 text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 cursor-grab mr-auto"
         >
           <span className="sr-only">{`Move column: ${column.title}`}</span>
           <GripVertical className="w-4 h-4" />
         </Button>
-        <span className="text-gray-800 font-semibold">
+        <span className="text-slate-800 dark:text-slate-100 font-medium">
           {column.title}
         </span>
       </CardHeader>
       <ScrollArea>
-        <CardContent className="flex flex-col gap-2 p-3">
+        <CardContent className="flex flex-col gap-2 p-2">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (
               <TaskCard key={task.id} task={task} />
@@ -106,7 +105,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
 export function BoardContainer({ children }: { children: React.ReactNode }) {
   const dndContext = useDndContext();
 
-  // Adjust to take full width and ensure columns fit the screen
+  // Minimalist container styling with dark mode
   const variations = cva("px-2 flex flex-wrap gap-4 justify-center w-full", {
     variants: {
       dragging: {
