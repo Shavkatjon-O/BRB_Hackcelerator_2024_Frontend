@@ -28,9 +28,7 @@ interface BoardColumnProps {
 }
 
 export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
-  const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
-  }, [tasks]);
+  const tasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const {
     setNodeRef,
@@ -55,14 +53,15 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     transform: CSS.Translate.toString(transform),
   };
 
+  // Full width with flex-grow for better spacing
   const variants = cva(
-    "h-[500px] max-h-[500px] w-[350px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center",
+    "h-[500px] max-h-[500px] flex-1 bg-white shadow-lg border border-gray-300 flex flex-col flex-shrink-0 rounded-md", // Removed fixed width, added flex-grow (flex-1)
     {
       variants: {
         dragging: {
-          default: "border-2 border-transparent",
-          over: "ring-2 opacity-30",
-          overlay: "ring-2 ring-primary",
+          default: "border-transparent",
+          over: "ring-2 ring-gray-400 opacity-50",
+          overlay: "ring-2 ring-blue-500",
         },
       },
     }
@@ -76,20 +75,22 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
       })}
     >
-      <CardHeader className="p-4 font-semibold border-b-2 text-left flex flex-row space-between items-center">
+      <CardHeader className="p-3 font-medium border-b text-left flex items-center space-between">
         <Button
-          variant={"ghost"}
+          variant="ghost"
           {...attributes}
           {...listeners}
-          className=" p-1 text-primary/50 -ml-2 h-auto cursor-grab relative"
+          className="p-0.5 text-gray-500 hover:text-gray-700 cursor-grab"
         >
           <span className="sr-only">{`Move column: ${column.title}`}</span>
-          <GripVertical />
+          <GripVertical className="w-4 h-4" />
         </Button>
-        <span className="ml-auto"> {column.title}</span>
+        <span className="ml-auto text-gray-800 font-semibold">
+          {column.title}
+        </span>
       </CardHeader>
       <ScrollArea>
-        <CardContent className="flex flex-grow flex-col gap-2 p-2">
+        <CardContent className="flex flex-col gap-2 p-3">
           <SortableContext items={tasksIds}>
             {tasks.map((task) => (
               <TaskCard key={task.id} task={task} />
@@ -104,7 +105,8 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
 export function BoardContainer({ children }: { children: React.ReactNode }) {
   const dndContext = useDndContext();
 
-  const variations = cva("px-2 md:px-0 flex lg:justify-center pb-4", {
+  // Adjust to take full width and ensure columns fit the screen
+  const variations = cva("px-2 flex flex-wrap gap-4 justify-center w-full", {
     variants: {
       dragging: {
         default: "snap-x snap-mandatory",
@@ -119,7 +121,7 @@ export function BoardContainer({ children }: { children: React.ReactNode }) {
         dragging: dndContext.active ? "active" : "default",
       })}
     >
-      <div className="flex gap-4 items-center flex-row justify-center">
+      <div className="flex gap-4 items-start w-full">
         {children}
       </div>
       <ScrollBar orientation="horizontal" />
