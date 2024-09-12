@@ -44,7 +44,7 @@ const loanManagerLinks = [
   { href: '/dashboard/applications', label: 'Applications', icon: LibraryBig },
   { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
   { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
-  { href: 'dashboard/telephony', label: 'AI Telephony', icon: Headset },
+  { href: '/dashboard/telephony', label: 'AI Telephony', icon: Headset },
   { href: '/dashboard/clients', label: 'Clients', icon: Users },
 ];
 
