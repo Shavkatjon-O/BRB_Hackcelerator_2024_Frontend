@@ -47,19 +47,27 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
   }, [currentDate]);
 
   return (
-    <div className="relative border-l border-r" ref={calendarRef}>
-      <h3 className="text-lg font-semibold mb-4">{format(currentDate, "MMMM d, yyyy")}</h3>
+    <div
+      className="relative border-l border-r p-4 bg-white text-gray-900 dark:bg-slate-800 dark:text-gray-100"
+      ref={calendarRef}
+    >
+      <h3 className="text-lg font-semibold mb-4">
+        {format(currentDate, "MMMM d, yyyy")}
+      </h3>
       <div className="relative grid grid-cols-1">
         {hours.map((hour) => (
-          <div key={hour} className="relative h-32 border-t">
-            <div className="absolute top-2 left-2 text-xs text-gray-500">
+          <div key={hour} className="relative h-32 border-t border-gray-300 dark:border-gray-600">
+            <div className="absolute top-2 left-2 text-xs text-gray-500 dark:text-gray-400">
               {format(new Date(currentDate.setHours(hour, 0, 0)), "HH:mm")}
             </div>
           </div>
         ))}
 
         {isToday(currentDate) && (
-          <div className="absolute left-0 right-0 h-0.5 bg-red-500" style={getCurrentTimeStyle()}>
+          <div
+            className="absolute left-0 right-0 h-0.5 bg-red-500"
+            style={getCurrentTimeStyle()}
+          >
             <div className="absolute left-2 -top-6 text-xs text-red-500">
               {format(new Date(), "HH:mm")}
             </div>
@@ -70,18 +78,19 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
           getEventsForCurrentDate().map((event) => (
             <div
               key={event.id}
-              className="absolute left-0 right-0 p-4 m-2 rounded-md bg-blue-500 text-white shadow-md"
+              className="absolute left-0 right-0 p-4 m-2 rounded-md shadow-md bg-blue-500 text-white dark:bg-blue-600 dark:text-white"
               style={calculateEventStyle(event)}
             >
               <div className="font-bold">{event.title}</div>
               <div className="text-xs">
-                {format(new Date(event.start_date), "HH:mm")} - {format(new Date(event.end_date), "HH:mm")}
+                {format(new Date(event.start_date), "HH:mm")} -{" "}
+                {format(new Date(event.end_date), "HH:mm")}
               </div>
               <div className="text-sm">{event.description}</div>
             </div>
           ))
         ) : (
-          <div className="absolute inset-0 flex justify-center items-center text-gray-500">
+          <div className="absolute inset-0 flex justify-center items-center text-gray-500 dark:text-gray-400">
             No events for today
           </div>
         )}
