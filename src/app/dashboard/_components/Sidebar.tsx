@@ -153,7 +153,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
           </ScrollArea>
 
           <div
-            className={`p-4 px-5 h-16 flex items-center ${
+            className={`p-4 px-5 h-max min-h-16 flex items-center ${
               isOpen ? 'justify-start' : 'justify-center'
             } border-t dark:border-t-slate-700 shadow-sm overflow-hidden`}
           >

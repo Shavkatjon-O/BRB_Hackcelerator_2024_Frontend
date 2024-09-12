@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
 import { getEventsList } from "@/services/eventsServices";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import CalendarDailyView from "./_components/calendar-daily-view";
 import CalendarWeeklyView from "./_components/calendar-weekly-view";
@@ -36,16 +37,16 @@ const CalendarPage: React.FC = () => {
   const handlePrevClick = () => {
     switch (view) {
       case "monthly":
-        setCurrentDate(prev => new Date(prev.setMonth(prev.getMonth() - 1)));
+        setCurrentDate((prev) => new Date(prev.setMonth(prev.getMonth() - 1)));
         break;
       case "weekly":
-        setCurrentDate(prev => new Date(prev.setDate(prev.getDate() - 7)));
+        setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() - 7)));
         break;
       case "daily":
-        setCurrentDate(prev => new Date(prev.setDate(prev.getDate() - 1)));
+        setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() - 1)));
         break;
       case "yearly":
-        setCurrentDate(prev => new Date(prev.setFullYear(prev.getFullYear() - 1)));
+        setCurrentDate((prev) => new Date(prev.setFullYear(prev.getFullYear() - 1)));
         break;
     }
   };
@@ -53,16 +54,16 @@ const CalendarPage: React.FC = () => {
   const handleNextClick = () => {
     switch (view) {
       case "monthly":
-        setCurrentDate(prev => new Date(prev.setMonth(prev.getMonth() + 1)));
+        setCurrentDate((prev) => new Date(prev.setMonth(prev.getMonth() + 1)));
         break;
       case "weekly":
-        setCurrentDate(prev => new Date(prev.setDate(prev.getDate() + 7)));
+        setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() + 7)));
         break;
       case "daily":
-        setCurrentDate(prev => new Date(prev.setDate(prev.getDate() + 1)));
+        setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() + 1)));
         break;
       case "yearly":
-        setCurrentDate(prev => new Date(prev.setFullYear(prev.getFullYear() + 1)));
+        setCurrentDate((prev) => new Date(prev.setFullYear(prev.getFullYear() + 1)));
         break;
     }
   };
@@ -87,30 +88,37 @@ const CalendarPage: React.FC = () => {
     }
   };
 
+  const renderAction = () => (
+    <div className="flex items-center space-x-4">
+      <Tabs defaultValue="monthly" onValueChange={(v) => setView(v)}>
+        <TabsList className="space-x-2">
+          <TabsTrigger value="daily">Daily</TabsTrigger>
+          <TabsTrigger value="weekly">Weekly</TabsTrigger>
+          <TabsTrigger value="monthly">Monthly</TabsTrigger>
+          <TabsTrigger value="yearly">Yearly</TabsTrigger>
+          <TabsTrigger value="list">List</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      <Button variant="default" onClick={() => setIsDialogOpen(true)}>
+        <CalendarIcon className="w-4 h-4 mr-2" />
+        Add Event
+      </Button>
+    </div>
+  );
+
   return (
-    <Panel title="Calendar" action={<EventFormDialog isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />}>
-      <div className="flex justify-between items-center mb-4">
-        <Button onClick={handlePrevClick} variant="outline">
-          <ChevronLeft />
+    <Panel title="Calendar" action={renderAction()}>
+      <div className="flex justify-between items-center mb-6">
+        <Button variant="ghost" onClick={handlePrevClick} size="icon">
+          <ChevronLeft className="w-5 h-5 text-gray-800 dark:text-gray-300" />
         </Button>
-        <h2 className="text-xl font-bold">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-300">
           {format(currentDate, view === "yearly" ? "yyyy" : "MMMM yyyy")}
         </h2>
-        <Button onClick={handleNextClick} variant="outline">
-          <ChevronRight />
+        <Button variant="ghost" onClick={handleNextClick} size="icon">
+          <ChevronRight className="w-5 h-5 text-gray-800 dark:text-gray-300" />
         </Button>
-      </div>
-
-      <div className="flex space-x-2 mb-4">
-        {["daily", "weekly", "monthly", "yearly", "list"].map((v) => (
-          <Button
-            key={v}
-            variant={view === v ? "default" : "outline"}
-            onClick={() => setView(v)}
-          >
-            {v.charAt(0).toUpperCase() + v.slice(1)}
-          </Button>
-        ))}
       </div>
 
       {renderCalendarView()}
