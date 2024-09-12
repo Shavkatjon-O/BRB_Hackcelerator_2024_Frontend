@@ -11,8 +11,6 @@ const TelephonyCall = () => {
     const subscriptionKey = process.env.NEXT_PUBLIC_MICROSOFT_AZURE_API || '';
     const serviceRegion = 'eastus';
 
-    console.log(subscriptionKey);
-
     const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
     speechConfig.speechSynthesisLanguage = "uz-UZ";
     speechConfig.speechSynthesisVoiceName = "uz-UZ-SardorNeural";
