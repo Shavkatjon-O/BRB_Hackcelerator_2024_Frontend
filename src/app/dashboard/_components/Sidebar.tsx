@@ -79,13 +79,13 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
           </div>
 
           <ScrollArea className="flex-grow">
-            <nav className="flex flex-col p-4">
+            <nav className="flex flex-col px-4">
               {Object.entries(links).map(([title, links]) => (
                 <div key={title} className="space-y-2">
                   {isOpen ? (
-                    <h3 className="text-sm my-4 font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
+                    <h3 className="text-sm my-4 font-semibold text-slate-600 dark:text-slate-300">{title}</h3>
                   ) : (
-                    <Separator className="my-4 bg-slate-600" />
+                    <Separator className="my-4 bg-slate-500" />
                   )}
                   {links.map(({ href, label, icon: Icon }) => (
                     <div key={href}>
@@ -136,6 +136,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
                   ))}
                 </div>
               ))}
+              <Separator className="my-4 bg-slate-600" />
             </nav>
           </ScrollArea>
 
