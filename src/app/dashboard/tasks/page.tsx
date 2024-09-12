@@ -124,13 +124,13 @@
 
 import React from "react";
 import { KanbanBoard } from "./KanbanBoard";
+import Panel from "../_components/Panel";
 
 const Page = () => {
   return (
-    <div>
-      <h1>Tasks</h1>
+    <Panel>
       <KanbanBoard />
-    </div>
+    </Panel>
   );
 };
 
