@@ -42,7 +42,7 @@ const TelephonyCall = () => {
   return (
 
     <Button onClick={handleTextToSpeech}>
-      Try Demo
+      Phone Call Demo
     </Button>
   );
 };
