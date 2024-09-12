@@ -50,8 +50,8 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
 
   return (
     <header className="bg-white dark:bg-slate-800 border-b dark:border-b-slate-700 h-16 z-50 flex items-center shadow-sm">
-      <div className="size-full px-4 flex items-center justify-between">
-        <div className="flex gap-2 items-center">
+      <div className="size-full px-4 flex items-center justify-end lg:justify-between">
+        <div className="hidden lg:flex gap-2 items-center">
           <span className="text-sm">
             [
             {currentUser?.user_type === "EMPLOYEE"
@@ -67,7 +67,7 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
         </div>
 
         <div className="flex gap-2 items-center">
-          <Button variant="link" onClick={handleToggleDashboard}>
+          <Button variant="link" onClick={handleToggleDashboard} className="hidden lg:block">
             Toggle Dashboard
           </Button>
 
@@ -79,7 +79,7 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
           </Button>
 
           <Select onValueChange={handleLocaleChange} value={locale}>
-            <SelectTrigger className="flex items-center space-x-2 dark:bg-slate-900">
+            <SelectTrigger className="hidden lg:flex items-center space-x-2 dark:bg-slate-900">
               <Languages className="w-5 h-5" />
               <SelectValue placeholder={locale} />
             </SelectTrigger>
