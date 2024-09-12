@@ -14,7 +14,8 @@ import {
   House,
   LibraryBig,
   HandCoins,
-  CirclePercent
+  CirclePercent,
+  Headset,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -44,6 +45,7 @@ const loanManagerLinks = [
   { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
   { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
   { href: '/dashboard/clients', label: 'Clients', icon: Users },
+  { href: 'dashboard/telephony', label: 'AI Telephony', icon: Headset },
 ];
 
 const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
