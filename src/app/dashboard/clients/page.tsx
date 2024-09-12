@@ -134,7 +134,9 @@ const Page = () => {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+      cell: ({ row }) => <div className="capitalize">{
+        row.getValue("status") === true ? "Active" : "Inactive"
+      }</div>,
     },
     {
       accessorKey: "credit_score",
