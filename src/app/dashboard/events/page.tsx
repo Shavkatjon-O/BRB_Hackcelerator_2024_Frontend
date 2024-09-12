@@ -117,8 +117,10 @@ const CalendarPage: React.FC = () => {
           <ChevronRight className="w-5 h-5 text-gray-800 dark:text-gray-300" />
         </Button>
       </div>
-
-      {renderCalendarView()}
+      
+      <div className="h-full flex-grow">
+        {renderCalendarView()}
+      </div>
     </Panel>
   );
 };
