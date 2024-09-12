@@ -76,16 +76,17 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
       })}
     >
       <CardHeader className="p-3 font-medium border-b text-left flex items-center space-between">
+        {/* Moved button to the left corner */}
         <Button
           variant="ghost"
           {...attributes}
           {...listeners}
-          className="p-0.5 text-gray-500 hover:text-gray-700 cursor-grab"
+          className="p-0.5 text-gray-500 hover:text-gray-700 cursor-grab mr-auto" // Added mr-auto to align to the left
         >
           <span className="sr-only">{`Move column: ${column.title}`}</span>
           <GripVertical className="w-4 h-4" />
         </Button>
-        <span className="ml-auto text-gray-800 font-semibold">
+        <span className="text-gray-800 font-semibold">
           {column.title}
         </span>
       </CardHeader>
