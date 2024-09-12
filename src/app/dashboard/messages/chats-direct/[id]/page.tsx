@@ -51,24 +51,12 @@ const ChatPage = () => {
   } = useChatStore();
   const [message, setMessage] = React.useState("");
 
-  // Scroll to bottom of messages
-  const scrollToBottom = useCallback(() => {
-    messagesContainerRef.current?.scrollTo({
-      top: messagesContainerRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, []);
-
   // Fetch chat data when user and chatID are ready
   useEffect(() => {
     if (chatID && user) {
       fetchChatData(chatID, user);
     }
   }, [chatID, user, fetchChatData]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
 
   // WebSocket setup
   useEffect(() => {
@@ -131,7 +119,12 @@ const ChatPage = () => {
     <div className="w-full overflow-y-auto h-full flex flex-col justify-between">
       <ChatTopbar selectedUser={chat} />
 
-      <ChatMessageList ref={messagesContainerRef} onScroll={handleScroll}>
+      {/* Chat messages displayed from bottom */}
+      <ChatMessageList
+        ref={messagesContainerRef}
+        onScroll={handleScroll}
+        style={{ display: "flex", flexDirection: "column-reverse" }}
+      >
         <AnimatePresence>
           {messages.map((message, index) => {
             const variant = getMessageVariant(message.user.email, user.email);
