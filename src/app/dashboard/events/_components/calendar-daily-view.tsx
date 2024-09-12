@@ -13,7 +13,7 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  const getEventPositionStyle = (event: EventType) => {
+  const calculateEventStyle = (event: EventType) => {
     const eventStart = new Date(event.start_date);
     const eventEnd = new Date(event.end_date);
     const startMinutes = eventStart.getHours() * 60 + eventStart.getMinutes();
@@ -25,24 +25,24 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
     };
   };
 
-  const eventsByDate = events.filter(
-    (event) => new Date(event.start_date).toDateString() === currentDate.toDateString()
-  );
+  const getEventsForCurrentDate = () => {
+    return events.filter(
+      (event) => new Date(event.start_date).toDateString() === currentDate.toDateString()
+    );
+  };
 
-  const currentTimePositionStyle = () => {
+  const getCurrentTimeStyle = () => {
     const now = new Date();
     const minutesSinceMidnight = getHours(now) * 60 + getMinutes(now);
-    return {
-      top: `${(minutesSinceMidnight / (24 * 60)) * 100}%`,
-    };
+    return { top: `${(minutesSinceMidnight / (24 * 60)) * 100}%` };
   };
 
   useEffect(() => {
     if (calendarRef.current && isToday(currentDate)) {
       const now = new Date();
       const minutesSinceMidnight = getHours(now) * 60 + getMinutes(now);
-      const scrollToPosition = (minutesSinceMidnight / (24 * 60)) * calendarRef.current.scrollHeight;
-      calendarRef.current.scrollTop = scrollToPosition - 100;
+      const scrollPosition = (minutesSinceMidnight / (24 * 60)) * calendarRef.current.scrollHeight;
+      calendarRef.current.scrollTop = scrollPosition - 100;
     }
   }, [currentDate]);
 
@@ -51,10 +51,7 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
       <h3 className="text-lg font-semibold mb-4">{format(currentDate, "MMMM d, yyyy")}</h3>
       <div className="relative grid grid-cols-1">
         {hours.map((hour) => (
-          <div
-            key={hour}
-            className="relative h-32 border-t"
-          >
+          <div key={hour} className="relative h-32 border-t">
             <div className="absolute top-2 left-2 text-xs text-gray-500">
               {format(new Date(currentDate.setHours(hour, 0, 0)), "HH:mm")}
             </div>
@@ -62,22 +59,19 @@ const CalendarDailyView: React.FC<CalendarDailyViewProps> = ({ events, currentDa
         ))}
 
         {isToday(currentDate) && (
-          <div
-            className="absolute left-0 right-0 h-0.5 bg-red-500"
-            style={currentTimePositionStyle()}
-          >
+          <div className="absolute left-0 right-0 h-0.5 bg-red-500" style={getCurrentTimeStyle()}>
             <div className="absolute left-2 -top-6 text-xs text-red-500">
               {format(new Date(), "HH:mm")}
             </div>
           </div>
         )}
 
-        {eventsByDate.length > 0 ? (
-          eventsByDate.map((event) => (
+        {getEventsForCurrentDate().length > 0 ? (
+          getEventsForCurrentDate().map((event) => (
             <div
               key={event.id}
               className="absolute left-0 right-0 p-4 m-2 rounded-md bg-blue-500 text-white shadow-md"
-              style={getEventPositionStyle(event)}
+              style={calculateEventStyle(event)}
             >
               <div className="font-bold">{event.title}</div>
               <div className="text-xs">
