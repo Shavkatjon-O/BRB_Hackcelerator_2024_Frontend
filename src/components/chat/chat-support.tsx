@@ -18,6 +18,13 @@ import {
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import { AnimatePresence, motion } from "framer-motion";
 
+import coreApi from "@/lib/coreApi";
+
+const getAIResponse = async (message: string) => {
+  const response = await coreApi.post("/assistants/chat-support/", { question: message });
+  return response.data;
+}
+
 interface Message {
   id: string;
   content: string;
@@ -35,10 +42,9 @@ const initialChatSupportMessages: Message[] = [
 ];
 
 export default function ChatSupport() {
-  const [messages, setMessages] = useState<Message[]>(
-    initialChatSupportMessages,
-  );
+  const [messages, setMessages] = useState<Message[]>(initialChatSupportMessages);
   const [inputMessage, setInputMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -49,16 +55,40 @@ export default function ChatSupport() {
     }
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputMessage.trim()) {
-      const newMessage: Message = {
+      const userMessage: Message = {
         id: Date.now().toString(),
         content: inputMessage,
         sender: "user",
         timestamp: new Date().toLocaleTimeString(),
       };
-      setMessages([...messages, newMessage]);
+      
+      setMessages([...messages, userMessage]);
       setInputMessage("");
+      setIsLoading(true);
+
+      try {
+        const aiResponseContent = await getAIResponse(userMessage.content);
+        const aiMessage: Message = {
+          id: Date.now().toString(),
+          content: aiResponseContent,
+          sender: "ai",
+          timestamp: new Date().toLocaleTimeString(),
+        };
+        setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      } catch (error) {
+        console.error("Error fetching AI response:", error);
+        const errorMessage: Message = {
+          id: Date.now().toString(),
+          content: "Sorry, there was an error processing your request.",
+          sender: "ai",
+          timestamp: new Date().toLocaleTimeString(),
+        };
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -80,47 +110,42 @@ export default function ChatSupport() {
         <p>Ask any question for our AI to answer</p>
       </ExpandableChatHeader>
       <ExpandableChatBody>
-        <ChatMessageList
-          ref={messagesContainerRef}
-          className="dark:bg-muted/40"
-        >
+        <ChatMessageList ref={messagesContainerRef} className="dark:bg-muted/40">
           <AnimatePresence>
-            {messages.map((message, index) => {
-              return (
-                <motion.div
-                  key={index}
-                  layout
-                  initial={{ opacity: 0, scale: 1, y: 10, x: 0 }}
-                  animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                  exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
-                  transition={{
-                    opacity: { duration: 0.1 },
-                    layout: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: index * 0.05 + 0.2,
-                    },
-                  }}
-                  style={{ originX: 0.5, originY: 0.5 }}
-                  className="flex flex-col"
+            {messages.map((message, index) => (
+              <motion.div
+                key={index}
+                layout
+                initial={{ opacity: 0, scale: 1, y: 10, x: 0 }}
+                animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+                transition={{
+                  opacity: { duration: 0.1 },
+                  layout: {
+                    type: "spring",
+                    bounce: 0.3,
+                    duration: index * 0.05 + 0.2,
+                  },
+                }}
+                style={{ originX: 0.5, originY: 0.5 }}
+                className="flex flex-col"
+              >
+                <ChatBubble
+                  key={message.id}
+                  variant={message.sender === "user" ? "sent" : "received"}
                 >
-                  <ChatBubble
-                    key={message.id}
+                  <ChatBubbleAvatar
+                    src={message.sender === "user" ? "" : ""}
+                    fallback={message.sender === "user" ? "US" : "🤖"}
+                  />
+                  <ChatBubbleMessage
                     variant={message.sender === "user" ? "sent" : "received"}
                   >
-                    <ChatBubbleAvatar
-                      src={message.sender === "user" ? "" : ""}
-                      fallback={message.sender === "user" ? "US" : "🤖"}
-                    />
-                    <ChatBubbleMessage
-                      variant={message.sender === "user" ? "sent" : "received"}
-                    >
-                      {message.content}
-                    </ChatBubbleMessage>
-                  </ChatBubble>
-                </motion.div>
-              );
-            })}
+                    {message.content}
+                  </ChatBubbleMessage>
+                </ChatBubble>
+              </motion.div>
+            ))}
           </AnimatePresence>
         </ChatMessageList>
       </ExpandableChatBody>
@@ -139,7 +164,7 @@ export default function ChatSupport() {
             placeholder="Type a message..."
           />
           <Button
-            disabled={!inputMessage.trim()}
+            disabled={!inputMessage.trim() || isLoading}
             type="submit"
             size="icon"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 shrink-0"
