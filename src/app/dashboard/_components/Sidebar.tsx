@@ -150,7 +150,7 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
               ))}
               {
                 isOpen ? (
-                  <div></div>
+                  <div className='mb-4'></div>
                 ) : (
 
                   <Separator className="my-4 dark:bg-slate-600" />
