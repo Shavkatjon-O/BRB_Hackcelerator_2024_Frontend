@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className={cn("min-h-screen", inter.className)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
