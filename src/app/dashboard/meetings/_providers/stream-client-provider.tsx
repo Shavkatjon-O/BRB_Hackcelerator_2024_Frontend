@@ -48,7 +48,7 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
     }
     return (
       <div className="h-full flex items-center justify-center">
-        <Loader size={40} className="dark:text-white animate-spin" />
+        <Loader className="size-4 text-sm animate-spin" />
       </div>
     );
   }

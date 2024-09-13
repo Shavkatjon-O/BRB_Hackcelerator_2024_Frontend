@@ -46,7 +46,7 @@ const MeetingRoom = () => {
 
   if (callingState !== CallingState.JOINED) return (
     <div className="h-full flex items-center justify-center">
-      <Loader size={20} className="dark:text-white animate-spin" />
+      <Loader className="text-sm size-4 animate-spin" />
     </div>
   );
 

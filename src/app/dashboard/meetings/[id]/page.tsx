@@ -17,7 +17,7 @@ const MeetingPage = () => {
 
    if (!isLoaded || isCallLoading) return (
       <div className="h-full flex items-center justify-center">
-         <Loader size={20} className="dark:text-white animate-spin" />
+         <Loader className="animate-spin size-4 text-sm" />
       </div>
    );
 
