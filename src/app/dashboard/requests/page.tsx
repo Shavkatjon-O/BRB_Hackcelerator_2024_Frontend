@@ -260,7 +260,7 @@ const Page = () => {
       </Panel>
 
       {/* Requests Table */}
-      <Panel title="Requests & Approvals"
+      <Panel title="Requests & Approvals" className="mb-32"
         action={<RequestFormDialog onSubmit={handleFormSubmit} />}
       >
         <RequestsTable requests={requests} />
