@@ -194,7 +194,7 @@ const CardsPage = () => {
 
   return (
     <Panel title="Cards">
-      <div className="w-full">
+      <div className="w-full pb-32">
         <div className="flex items-center mb-4">
           <Input
             placeholder="Filter by card number..."
