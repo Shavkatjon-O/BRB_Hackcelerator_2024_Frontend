@@ -16,7 +16,7 @@ const mockUserProfiles = [
   {
     id: 1,
     name: 'John Doe',
-    avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
+    avatar: 'https://randomuser.me/api/portraits/women/8.jpg',
     status: 'Online',
   },
   {
@@ -28,7 +28,7 @@ const mockUserProfiles = [
   {
     id: 3,
     name: 'Mark Spencer',
-    avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
+    avatar: 'https://randomuser.me/api/portraits/men/74.jpg',
     status: 'Offline',
   },
 ];
