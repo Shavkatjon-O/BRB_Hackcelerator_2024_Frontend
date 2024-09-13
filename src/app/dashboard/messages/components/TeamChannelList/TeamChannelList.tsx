@@ -45,10 +45,10 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
   if (error) {
     return type === 'team' ? (
       <div className="team-channel-list">
-        {/* 
+        
           List of user profile cards like in messengers with random static data 
-        */}
-        <div className="user-profile-list space-y-2 p-2">
+       
+        {/* <div className="user-profile-list space-y-2 p-2">
           {mockUserProfiles.map((user) => (
             <div key={user.id} className="user-profile-card p-2 text-white flex space-x-2 bg-slate-600 rounded-md">
               <img src={user.avatar} alt={user.name} className=" rounded full w-12 h-12" />
@@ -58,7 +58,7 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
               </div>
             </div>
           ))}
-        </div>
+        {/* </div> */}
       </div>
     ) : null;
   }
