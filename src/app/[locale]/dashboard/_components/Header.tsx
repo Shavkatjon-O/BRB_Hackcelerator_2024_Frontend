@@ -16,7 +16,7 @@ import coreApi from "@/lib/coreApi";
 
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
-import { useCallback, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { UserProfileType } from "@/types/authTypes";
 
@@ -32,11 +32,25 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
   const t = useTranslations("Index");
   const router = useRouter();
   const locale = useLocale();
+  const pathname = usePathname();
 
   const [isPending, startTransition] = useTransition();
+  const [currentLocale, setCurrentLocale] = useState(locale);
 
-  const handleLocaleChange = () => {
+  useEffect(() => {
+    setCurrentLocale(locale); // Ensure the current locale is reflected in the select value
+  }, [locale]);
+
+  const handleLocaleChange = (newLocale: string) => {
     startTransition(() => {
+      const segments = pathname.split("/");
+      if (["en", "uz", "ru"].includes(segments[1])) {
+        segments[1] = newLocale;
+      } else {
+        segments.splice(1, 0, newLocale);
+      }
+      setCurrentLocale(newLocale);
+      router.push(segments.join("/"));
       router.refresh();
     });
   };
@@ -44,7 +58,7 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
   const handleToggleDashboard = useCallback(async () => {
     try {
       await coreApi.post("/users/toggle-user-type/");
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.error("Failed to toggle dashboard", error);
     }
@@ -84,10 +98,10 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
             </Link>
           </Button>
 
-          <Select onValueChange={handleLocaleChange} value={locale}>
+          <Select onValueChange={handleLocaleChange} value={currentLocale}>
             <SelectTrigger className="hidden lg:flex items-center space-x-2 dark:bg-slate-900">
               <Languages className="w-5 h-5" />
-              <SelectValue placeholder={locale} />
+              <SelectValue placeholder={currentLocale} />
             </SelectTrigger>
             <SelectContent>
               {languages.map(({ value, label }) => (
