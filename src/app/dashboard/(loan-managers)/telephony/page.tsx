@@ -187,7 +187,7 @@ const LoansPage = () => {
 
   return (
     <Panel title="AI Telephony" action={<TelephonyCall />}>
-      <div className="w-full">
+      <div className="w-full pb-32">
         <div className="rounded-md border">
           {loading ? (
             <div className="p-4 text-center">Loading...</div>
