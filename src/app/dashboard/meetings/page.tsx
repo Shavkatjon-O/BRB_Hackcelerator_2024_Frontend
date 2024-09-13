@@ -17,7 +17,7 @@ const MeetingsPage = () => {
 
   if (!user?.id) return null;
 
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/meetings/${user.id}?personal=true`;
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/meetings/1?personal=true`;
 
   const redirectToMeeting = () => {
     setDisabled(true);
