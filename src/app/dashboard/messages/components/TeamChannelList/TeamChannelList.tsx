@@ -46,7 +46,7 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
     return type === 'team' ? (
       <div className="team-channel-list">
         
-          List of user profile cards like in messengers with random static data 
+          {/* List of user profile cards like in messengers with random static data  */}
        
         {/* <div className="user-profile-list space-y-2 p-2">
           {mockUserProfiles.map((user) => (
