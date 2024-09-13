@@ -11,16 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-
-import coreApi from "@/lib/coreApi";
-
-import { useTranslations, useLocale } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
-import { useCallback, useEffect, useState, useTransition } from "react";
-
-import { UserProfileType } from "@/types/authTypes";
-
+import { useCallback, useEffect, useState } from "react";
 import Sidebar from "./SidebarMobile";
+import { useTranslations } from "next-intl"; // Re-introduce useTranslations for title translation
+import { UserProfileType } from "@/types/authTypes";
+import coreApi from "@/lib/coreApi";
 
 const languages: { value: "en" | "uz" | "ru"; label: string }[] = [
   { value: "en", label: "English" },
@@ -29,30 +24,21 @@ const languages: { value: "en" | "uz" | "ru"; label: string }[] = [
 ];
 
 const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
-  const t = useTranslations("Index");
-  const router = useRouter();
-  const locale = useLocale();
-  const pathname = usePathname();
+  const [currentLocale, setCurrentLocale] = useState<string>("en");
+  const t = useTranslations("Index"); // Hook for getting translated strings
 
-  const [isPending, startTransition] = useTransition();
-  const [currentLocale, setCurrentLocale] = useState(locale);
-
+  // Load the saved locale from local storage on page load
   useEffect(() => {
-    setCurrentLocale(locale); // Ensure the current locale is reflected in the select value
-  }, [locale]);
+    const savedLocale = localStorage.getItem("locale") || "en";
+    setCurrentLocale(savedLocale);
+  }, []);
 
+  // Handle locale change
   const handleLocaleChange = (newLocale: string) => {
-    startTransition(() => {
-      const segments = pathname.split("/");
-      if (["en", "uz", "ru"].includes(segments[1])) {
-        segments[1] = newLocale;
-      } else {
-        segments.splice(1, 0, newLocale);
-      }
-      setCurrentLocale(newLocale);
-      router.push(segments.join("/"));
-      router.refresh();
-    });
+    setCurrentLocale(newLocale);
+    localStorage.setItem("locale", newLocale);
+    // Optionally, reload the page or trigger a function to update the UI
+    window.location.reload();
   };
 
   const handleToggleDashboard = useCallback(async () => {
@@ -83,7 +69,8 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
               : "Guest"}
             ]
           </span>
-          <span className="text-sm">[{t("title")}]</span>
+          {/* Use the translation hook for rendering the title */}
+          <span className="text-sm">{t("title")}</span> {/* Translated title */}
         </div>
 
         <div className="flex gap-2 items-center">
