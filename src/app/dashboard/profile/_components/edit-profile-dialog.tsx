@@ -65,7 +65,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>Edit Profile</DialogTitle>
           <DialogDescription>
-            Update your profile information
+            Update your profile information (Email is not updatable)
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-[560px]">

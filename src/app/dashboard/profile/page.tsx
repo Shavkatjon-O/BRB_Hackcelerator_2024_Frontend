@@ -30,8 +30,15 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = async (updatedData: profileDataType) => {
     try {
+      // Ensure that email is preserved if not returned from the update API
       const response = await coreApi.put("/users/profile/update/", updatedData);
-      setProfileData(response.data);
+      
+      // Keep email in the state if it is missing from the response
+      setProfileData(prevData => ({
+        ...response.data,
+        email: prevData?.email || '' // Preserve email
+      }));
+
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Failed to update profile", error);
@@ -61,19 +68,19 @@ export default function ProfilePage() {
         <>
           <div className="mb-6">
             <h1 className="text-2xl font-bold">Profile</h1>
-            <p className="text-gray-600">{profileData.email}</p>
+            <p className="text-gray-600"><strong>Email:</strong> {profileData.email}</p>
             <p className="text-gray-600">
-              {profileData.first_name} {profileData.last_name}
+              <strong>Name:</strong> {profileData.first_name} {profileData.last_name}
             </p>
-            <p className="text-gray-600">Phone: {profileData.phone_number}</p>
-            <p className="text-gray-600">Address: {profileData.address}</p>
-            <p className="text-gray-600">Job Title: {profileData.job_title}</p>
-            <p className="text-gray-600">Department: {profileData.department}</p>
-            <p className="text-gray-600">Education: {profileData.education}</p>
+            <p className="text-gray-600"><strong>Phone:</strong> {profileData.phone_number}</p>
+            <p className="text-gray-600"><strong>Address:</strong> {profileData.address}</p>
+            <p className="text-gray-600"><strong>Job Title:</strong> {profileData.job_title}</p>
+            <p className="text-gray-600"><strong>Department:</strong> {profileData.department}</p>
+            <p className="text-gray-600"><strong>Education:</strong> {profileData.education}</p>
             <p className="text-gray-600">
-              Employment Start Date: {profileData.employment_start_date}
+              <strong>Employment Start Date:</strong> {profileData.employment_start_date}
             </p>
-            <p className="text-gray-600">Skills: {profileData.skills}</p>
+            <p className="text-gray-600"><strong>Skills:</strong> {profileData.skills}</p>
           </div>
           <EditProfileDialog
             profileData={profileData}
