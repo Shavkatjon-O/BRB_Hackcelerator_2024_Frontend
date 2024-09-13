@@ -148,7 +148,14 @@ const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
                   ))}
                 </div>
               ))}
-              <Separator className="my-4 dark:bg-slate-600" />
+              {
+                isOpen ? (
+                  <div></div>
+                ) : (
+
+                  <Separator className="my-4 dark:bg-slate-600" />
+                )
+              }
             </nav>
           </ScrollArea>
 
