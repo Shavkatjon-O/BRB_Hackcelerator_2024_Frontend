@@ -24,7 +24,7 @@ export const defaultLinks = {
     // { href: "/dashboard/documents", label: "Documents", icon: File },
     { href: "/dashboard/meetings", label: "Video & Call Meetings", icon: Camera },
     { href: "/dashboard/tasks", label: "Tasks Management", icon: ListChecks },
-    { href: "/dashboard/reports", label: "Reports", icon: PieChart },
+    // { href: "/dashboard/reports", label: "Reports", icon: PieChart },
   ],
   "Other": [
     { href: "/dashboard/profile", label: "Profile", icon: User },
