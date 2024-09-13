@@ -11,6 +11,8 @@ import {
   CreditCard,
   Globe,
   ShieldCheck,
+  Monitor,
+  Smartphone,
 } from 'lucide-react';
 
 import { 
@@ -78,7 +80,7 @@ const testimonials = [
 const LandingPage = () => {
   return (
     <div className="text-slate-950 dark:text-slate-100">
-
+      {/* Hero Section */}
       <section className="relative py-24 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
@@ -99,6 +101,7 @@ const LandingPage = () => {
 
       <Separator />
 
+      {/* Key Features Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
@@ -129,6 +132,7 @@ const LandingPage = () => {
 
       <Separator />
 
+      {/* About Us Section */}
       <section className="py-16 bg-white dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">About Us</h2>
@@ -141,14 +145,13 @@ const LandingPage = () => {
 
       <Separator />
 
+      {/* Our Services Section */}
       <section className="py-20 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
           <p className="text-lg text-center text-gray-600 dark:text-gray-300">We offer a range of banking services tailored to meet your needs.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card
-              className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out"
-            >
+            <Card className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out">
               <CardHeader className="flex justify-center">
                 <Shield className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
@@ -162,9 +165,7 @@ const LandingPage = () => {
                 </CardDescription>
               </CardContent>
             </Card>
-            <Card
-              className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out"
-            >
+            <Card className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out">
               <CardHeader className="flex justify-center">
                 <CreditCard className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
@@ -178,9 +179,7 @@ const LandingPage = () => {
                 </CardDescription>
               </CardContent>
             </Card>
-            <Card
-              className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out"
-            >
+            <Card className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out">
               <CardHeader className="flex justify-center">
                 <ShieldCheck className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
@@ -198,6 +197,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Call to Action Section */}
       <section className="py-28 bg-custom dark:bg-custom-dark text-white">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
@@ -208,6 +208,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
       <section className="py-16 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-12">
           <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">What Our Clients Say</h2>
@@ -233,6 +234,35 @@ const LandingPage = () => {
 
       <Separator />
 
+      {/* Download Buttons Section */}
+      <section className="py-16 bg-slate-50 dark:bg-slate-950">
+        <div className="container mx-auto space-y-12 text-center">
+          <h2 className="text-4xl font-bold">Download Our App</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Get the best experience by downloading our app for desktop and mobile.
+          </p>
+          <div className="flex justify-center space-x-8">
+            {/* Desktop Button */}
+            <Link href="/downpage">
+              <Button variant="default" size="lg" className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500">
+                <Monitor className="w-5 h-5" />
+                <span>Desktop (Windows)</span>
+              </Button>
+            </Link>
+            {/* Mobile Button */}
+            <Link href="/downpage">
+              <Button variant="default" size="lg" className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500">
+                <Smartphone className="w-5 h-5" />
+                <span>Mobile (Android)</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* Contact Us Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Contact Us</h2>
