@@ -44,7 +44,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -53,7 +53,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSave(formData);
-    setIsOpen(false)
+    setIsOpen(false);
   };
 
   return (
@@ -76,15 +76,15 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <span>Full name</span>
               </Label>
               <div className="grid grid-cols-2 gap-2">
-                <Input 
+                <Input
                   placeholder="First name"
                   name="first_name"
                   value={formData.first_name || ""}
                   onChange={handleChange}
                   type="text"
                 />
-                <Input 
-                  placeholder="Last name" 
+                <Input
+                  placeholder="Last name"
                   name="last_name"
                   value={formData.last_name || ""}
                   onChange={handleChange}
@@ -98,12 +98,12 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <Phone className="w-5 h-5 mr-1" />
                 <span>Phone number</span>
               </Label>
-              <Input 
+              <Input
                 placeholder="+998991234567"
                 name="phone_number"
                 value={formData.phone_number || ""}
                 onChange={handleChange}
-                type="tel"  
+                type="tel"
               />
             </div>
 
@@ -113,11 +113,11 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <span>Date of Birth</span>
               </Label>
               <Input
-                placeholder="MM/DD/YYYY" 
+                placeholder="MM/DD/YYYY"
                 name="date_of_birth"
                 value={formData.date_of_birth || ""}
-                onChange={handleChange}  
-                type="date" 
+                onChange={handleChange}
+                type="date"
               />
             </div>
 
@@ -140,8 +140,8 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <BriefcaseBusiness className="w-5 h-5 mr-1" />
                 <span>Job Title</span>
               </Label>
-              <Input 
-                placeholder="Your Job Title" 
+              <Input
+                placeholder="Your Job Title"
                 name="job_title"
                 value={formData.job_title || ""}
                 onChange={handleChange}
@@ -154,8 +154,8 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <Shield className="w-5 h-5 mr-1" />
                 <span>Department</span>
               </Label>
-              <Input 
-                placeholder="Your Department" 
+              <Input
+                placeholder="Your Department"
                 name="department"
                 value={formData.department || ""}
                 onChange={handleChange}
@@ -173,7 +173,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 name="education"
                 value={formData.education || ""}
                 onChange={handleChange}
-                type="text"  
+                type="text"
               />
             </div>
 
@@ -183,7 +183,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <span>Employment Start Date</span>
               </Label>
               <Input
-                placeholder="MM/DD/YYYY" 
+                placeholder="MM/DD/YYYY"
                 name="employment_start_date"
                 value={formData.employment_start_date || ""}
                 onChange={handleChange}
@@ -197,7 +197,7 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
                 <span>Skills</span>
               </Label>
               <Input
-                placeholder="Your Skills" 
+                placeholder="Your Skills"
                 name="skills"
                 value={formData.skills || ""}
                 onChange={handleChange}
@@ -205,10 +205,12 @@ export default function EditProfileDialog({ profileData, onSave }: EditProfileDi
               />
             </div>
 
-            <Button type="submit" className="w-full mt-4">Save Changes</Button>
+            <Button type="submit" className="w-full mt-4">
+              Save Changes
+            </Button>
           </form>
         </ScrollArea>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
