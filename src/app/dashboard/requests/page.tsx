@@ -11,13 +11,13 @@ import { FilePlus, CheckCircle2, XCircle, Clock, BarChart2, PieChart, PlusCircle
 import coreApi from "@/lib/coreApi";
 import Loader from "../_components/Loader";
 import Panel from "../_components/Panel";
-import { Chart } from "react-google-charts";  // Assuming you use a charting library
+import { Chart } from "react-google-charts"; 
 
 // Add status colors for requests
 const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-300 text-yellow-800",
-  APPROVED: "bg-green-300 text-green-800",
-  REJECTED: "bg-red-300 text-red-800",
+  PENDING: "bg-orange-600 text-white",
+  APPROVED: "bg-green-600 text-white",
+  REJECTED: "bg-red-600 text-white",
 };
 
 // Request form dialog
