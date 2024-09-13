@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+import coreApi from '@/lib/coreApi';
+import Cookies from 'js-cookie';
+
 import {
   User,
   Lock,
@@ -25,6 +28,17 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+
+
+const login = async () => {
+  const response = await coreApi.post('/auth/login', {
+    email: 'shavkatjon@gmail.com',
+    password: 'Shovkatbek_1',
+  });
+  Cookies.set('accessToken', response.data.accessToken);
+  Cookies.set('refreshToken', response.data.refreshToken);
+}
+
 
 const features = [
   {
@@ -91,8 +105,9 @@ const LandingPage = () => {
                 variant="default" 
                 size="lg" 
                 className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                onClick={login}
               >
-                Get Started
+                Try Demo
               </Button>
             </Link>
           </div>
@@ -202,8 +217,11 @@ const LandingPage = () => {
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
           <p className="text-lg">Join thousands of satisfied clients. Contact us today!</p>
-          <Button variant="default" size="lg" className="bg-white text-black hover:text-white dark:bg-white dark:text-black">
-            Get Started
+          <Button variant="default" size="lg" className="bg-white text-black hover:text-white dark:bg-white dark:text-black"
+                  onClick={
+                    login
+                  }>
+            Try Demo
           </Button>
         </div>
       </section>
