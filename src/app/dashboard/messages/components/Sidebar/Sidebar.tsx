@@ -89,7 +89,7 @@ export const Sidebar = () => {
       <FakeCompanySelectionBar />
       <div className='channel-list-bar'>
         <div className='channel-list-bar__header'>
-          <p className='channel-list-bar__header__text'>Worksly</p>
+          <p className='channel-list-bar__header__text mt-4'>BRB Titans Messenger</p>
         </div>
         <ChannelSearch />
         <TeamChannelsList/>

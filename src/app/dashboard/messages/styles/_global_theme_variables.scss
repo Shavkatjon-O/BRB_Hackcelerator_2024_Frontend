@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #005fffE6;
-  --primary-color-alpha: #005fff1a;
+  --primary-color: #1e293b; /* Dark slate color from the image */
+  --primary-color-alpha: #1e293b1a; /* Dark slate with transparency */
   --static-background-color: #fff;
 
   --header-height: 62px;
@@ -12,18 +12,18 @@
   --font-family: Helvetica Neue, sans-serif;
 
   --text-color: #2c2c30;
-  --text-low-emphasis-color: #858688;
+  --text-low-emphasis-color: #94a3b8; /* Slate-like lower-emphasis color */
 
-  --border-color: rgba(0,0,0,0.1);
+  --border-color: rgba(30, 41, 59, 0.1); /* Border color to match dark slate */
   --border-stroke: 1px solid var(--border-color);
 
   --header-title-text: var(--font-weight-bold) 18px/22px var(--font-family);
   --header-subtitle-text: 14px/18px var(--font-family);
 
-  --panel-primary-background-color: #f7f6f8;
-  --panel-secondary-background-color: #e9e9ea;
+  --panel-primary-background-color: #f1f5f9; /* Light slate background */
+  --panel-secondary-background-color: #e2e8f0; /* Slightly darker slate background */
 
-  --error-color: #d0021b;
+  --error-color: #ef4444; /* Error color remains red */
 }
 
 .str-chat {
