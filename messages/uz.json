@@ -1,15 +1,15 @@
 {
   "Index": {
-    "title": "Asosiy sahifa"
+    "title": "Indeks sahifasiga xush kelibsiz"
   },
   "Sidebar": {
     "home": "Bosh sahifa",
     "notifications": "Bildirishnomalar",
     "messages": "Xabarlar",
-    "meetings": "Uchrashuvlar",
-    "events": "Voqealar",
+    "meetings": "Video va Qo'ng'iroq Uchrashuvlari",
+    "events": "Voqealar va Taqvim",
     "documents": "Hujjatlar",
-    "requests": "So'rovlar",
+    "requests": "So'rovlar va Tasdiqlar",
     "announcements": "E'lonlar",
     "tasks": "Vazifalar",
     "reports": "Hisobotlar",

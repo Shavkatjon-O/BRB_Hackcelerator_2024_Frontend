@@ -1,15 +1,15 @@
 {
   "Index": {
-    "title": "Главная страница"
+    "title": "Добро пожаловать на индексную страницу"
   },
   "Sidebar": {
-    "home": "Домой",
+    "home": "Дом",
     "notifications": "Уведомления",
     "messages": "Сообщения",
-    "meetings": "Встречи",
-    "events": "События",
+    "meetings": "Видеозвонки и собрания",
+    "events": "События и Календарь",
     "documents": "Документы",
-    "requests": "Запросы",
+    "requests": "Запросы и Утверждения",
     "announcements": "Объявления",
     "tasks": "Задачи",
     "reports": "Отчеты",
@@ -24,6 +24,5 @@
     "applications": "Заявки",
     "loans": "Займы",
     "aiTelephony": "AI Телефония"
-  
   }
 }
