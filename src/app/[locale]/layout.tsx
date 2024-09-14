@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
-import "./globals.css";
+import "@/css/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
