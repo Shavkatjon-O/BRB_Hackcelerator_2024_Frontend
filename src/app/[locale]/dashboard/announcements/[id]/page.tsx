@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Panel from "../../_components/Panel";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import {Link} from "@/i18n/routing";
 import { getAnonsDetail } from "../_services/anonsServices";
 import { AnonsType } from "../_types/anonsTypes";
 import { format } from "date-fns";  // Import date formatting utility

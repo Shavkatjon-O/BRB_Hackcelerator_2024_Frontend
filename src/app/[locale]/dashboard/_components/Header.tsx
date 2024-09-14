@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
+import {Link} from "@/i18n/routing";
 
 import { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";

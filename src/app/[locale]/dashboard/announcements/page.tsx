@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Panel from "../_components/Panel";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import {Link} from "@/i18n/routing";
 import { format, isAfter, subDays } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
