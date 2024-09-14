@@ -29,21 +29,21 @@ const getSidebarLinks = (currentUser: UserProfileType, translate: any) => {
   ];
   
   const defaultGeneral = [
-    { href: "/dashboard/notifications", label: translate("notifications"), icon: Bell },
+    // { href: "/dashboard/notifications", label: translate("notifications"), icon: Bell },
     { href: "/dashboard/messages", label: translate("messages"), icon: MessageSquareText },
     { href: "/dashboard/meetings", label: translate("meetings"), icon: Camera },
     { href: "/dashboard/events", label: translate("events"), icon: Calendar },
-    { href: "/dashboard/documents", label: translate("documents"), icon: File },
+    // { href: "/dashboard/documents", label: translate("documents"), icon: File },
     { href: "/dashboard/requests", label: translate("requests"), icon: CheckSquare },
     { href: "/dashboard/announcements", label: translate("announcements"), icon: Megaphone },
     { href: "/dashboard/tasks", label: translate("tasks"), icon: ListChecks },
-    { href: "/dashboard/reports", label: translate("reports"), icon: PieChart },
+    // { href: "/dashboard/reports", label: translate("reports"), icon: PieChart },
   ];
 
   const defaultOther = [
     { href: "/dashboard/profile", label: translate("profile"), icon: User },
-    { href: "/dashboard/settings", label: translate("settings"), icon: Settings },
-    { href: "/dashboard/help", label: translate("help"), icon: HelpCircle },
+    // { href: "/dashboard/settings", label: translate("settings"), icon: Settings },
+    // { href: "/dashboard/help", label: translate("help"), icon: HelpCircle },
     { href: "/sign-out", label: translate("signOut"), icon: LogOut },
   ];
 
