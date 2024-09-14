@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 
 import "./globals.css";
 
@@ -17,24 +17,30 @@ export const metadata: Metadata = {
   description: "BRB Titans - The best place for your banking needs.",
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const locale = await getLocale();
+interface RootLayoutProps {
+  children: React.ReactNode;
+  params: { 
+    locale: string 
+  };
+}
+
+export default async function RootLayout({ children, params }: RootLayoutProps) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={params.locale} suppressHydrationWarning>
       <body className={cn("min-h-screen", inter.className)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
-            <main>{children}</main>
-          </NextIntlClientProvider>
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+              <main>{children}</main>
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
