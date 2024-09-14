@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Panel from "../_components/Panel";
+import Panel from "../../_components/Panel";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
