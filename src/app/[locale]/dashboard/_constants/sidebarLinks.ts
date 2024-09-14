@@ -66,8 +66,8 @@ const getSidebarLinks = (currentUser: UserProfileType, translate: any) => {
 
   return {
     Dashboard: [...home],
-    General: [...defaultGeneral],
     Menu: [...userSpecificLinks],
+    General: [...defaultGeneral],
     Other: [...defaultOther],
   };
 };
