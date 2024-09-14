@@ -34,7 +34,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Panel from "../../_components/Panel";
+import Panel from "../_components/Panel";
 import coreApi from "@/lib/coreApi"; 
 
 export type Card = {

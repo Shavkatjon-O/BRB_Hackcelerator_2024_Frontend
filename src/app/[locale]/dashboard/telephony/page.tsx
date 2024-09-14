@@ -35,7 +35,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge"; // Import Badge component
-import Panel from "../../_components/Panel";
+import Panel from "../_components/Panel";
 import coreApi from "@/lib/coreApi";
 
 import TelephonyCall from './_components/TelephonyCall';
