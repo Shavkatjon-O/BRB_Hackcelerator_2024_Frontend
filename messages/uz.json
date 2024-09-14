@@ -1,5 +1,28 @@
 {
   "Index": {
     "title": "Asosiy sahifa"
+  },
+  "Sidebar": {
+    "home": "Bosh sahifa",
+    "notifications": "Bildirishnomalar",
+    "messages": "Xabarlar",
+    "meetings": "Uchrashuvlar",
+    "events": "Voqealar",
+    "documents": "Hujjatlar",
+    "requests": "So'rovlar",
+    "announcements": "E'lonlar",
+    "tasks": "Vazifalar",
+    "reports": "Hisobotlar",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "help": "Yordam",
+    "signOut": "Chiqish",
+    "cards": "Kartalar",
+    "payments": "To'lovlar",
+    "clients": "Mijozlar",
+    "borrowers": "Qarz oluvchilar",
+    "applications": "Arizalar",
+    "loans": "Kreditlar",
+    "aiTelephony": "AI Telefoniyasi"
   }
 }

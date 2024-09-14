@@ -1,5 +1,28 @@
 {
   "Index": {
     "title": "Welcome to the index page"
+  },
+  "Sidebar": {
+    "home": "Home",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "meetings": "Meetings",
+    "events": "Events",
+    "documents": "Documents",
+    "requests": "Requests",
+    "announcements": "Announcements",
+    "tasks": "Tasks",
+    "reports": "Reports",
+    "profile": "Profile",
+    "settings": "Settings",
+    "help": "Help",
+    "signOut": "Sign Out",
+    "cards": "Cards",
+    "payments": "Payments",
+    "clients": "Clients",
+    "borrowers": "Borrowers",
+    "applications": "Applications",
+    "loans": "Loans",
+    "aiTelephony": "AI Telephony"    
   }
 }

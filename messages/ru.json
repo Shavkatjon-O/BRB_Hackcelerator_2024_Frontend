@@ -1,5 +1,29 @@
 {
   "Index": {
     "title": "Главная страница"
+  },
+  "Sidebar": {
+    "home": "Домой",
+    "notifications": "Уведомления",
+    "messages": "Сообщения",
+    "meetings": "Встречи",
+    "events": "События",
+    "documents": "Документы",
+    "requests": "Запросы",
+    "announcements": "Объявления",
+    "tasks": "Задачи",
+    "reports": "Отчеты",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "help": "Помощь",
+    "signOut": "Выйти",
+    "cards": "Карты",
+    "payments": "Платежи",
+    "clients": "Клиенты",
+    "borrowers": "Заемщики",
+    "applications": "Заявки",
+    "loans": "Займы",
+    "aiTelephony": "AI Телефония"
+  
   }
 }

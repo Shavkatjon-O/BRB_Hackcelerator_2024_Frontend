@@ -6,16 +6,6 @@ import Image from 'next/image';
 import {
   ChevronFirst,
   ChevronLast,
-  CreditCard,
-  ArrowLeftRight,
-  BadgeDollarSign,
-  Upload,
-  Users,
-  House,
-  LibraryBig,
-  HandCoins,
-  CirclePercent,
-  Headset,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -24,47 +14,18 @@ import { useSidebar } from '@/providers/sidebar-provider';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-
-import { defaultLinks } from '../_constants/sidebarLinks';
-
 import { UserProfileType } from '@/types/authTypes';
+import { useTranslations } from 'next-intl';
 
-const mainLinks = [
-  { href: '/dashboard', label: 'Home', icon: House },
-];
-
-const bankTellerLinks = [
-  { href: '/dashboard/cards', label: 'Cards', icon: CreditCard },
-  { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
-  { href: '/dashboard/clients', label: 'Clients', icon: Users },
-];
-
-const loanManagerLinks = [
-  { href: '/dashboard/borrowers', label: 'Borrowers', icon: HandCoins },
-  { href: '/dashboard/applications', label: 'Applications', icon: LibraryBig },
-  { href: '/dashboard/payments', label: 'Payments', icon: BadgeDollarSign },
-  { href: '/dashboard/loans', label: 'Loans', icon: CirclePercent },
-  { href: '/dashboard/telephony', label: 'AI Telephony', icon: Headset },
-  { href: '/dashboard/clients', label: 'Clients', icon: Users },
-];
+import getSidebarLinks from '../_constants/sidebarLinks';
 
 const Sidebar = ({ currentUser }: { currentUser: UserProfileType }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { activePage, setActivePage } = useSidebar();
 
-  const getLinksForUserType = () => {
-    const userTypeLinks = currentUser?.user_type === 'LOAN_MANAGER' ? loanManagerLinks : bankTellerLinks || []
-
-    return {
-      Dashboard: [...mainLinks],
-      Menu: [...userTypeLinks],
-      General: [...defaultLinks.General],
-      Other: [...defaultLinks.Other],
-    }
-  };
-
-  const links = getLinksForUserType();
-
+  const t = useTranslations("Sidebar")
+  const links = getSidebarLinks(currentUser, t);
+  
   return (
     <TooltipProvider delayDuration={50}>
       <aside
