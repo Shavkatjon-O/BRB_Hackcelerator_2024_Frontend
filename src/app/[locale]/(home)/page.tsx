@@ -137,6 +137,52 @@ const LandingPage = () => {
       <Separator />
 
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
+        <div className="container mx-auto space-y-12 text-center">
+          <h2 className="text-4xl font-bold">Download Our App</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Get the best experience by downloading our app for desktop and mobile.
+          </p>
+          <div className="flex justify-center space-x-8">
+            {desktopDownloadUrl ? (
+              <a href={desktopDownloadUrl} download>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                >
+                  <Monitor className="w-5 h-5" />
+                  <span>Desktop (Windows)</span>
+                </Button>
+              </a>
+            ) : (
+              <Button variant="default" size="lg" disabled>
+                Desktop Download Unavailable
+              </Button>
+            )}
+
+            {mobileDownloadUrl ? (
+              <a href={mobileDownloadUrl} download>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                >
+                  <Smartphone className="w-5 h-5" />
+                  <span>Mobile (Android)</span>
+                </Button>
+              </a>
+            ) : (
+              <Button variant="default" size="lg" disabled>
+                Mobile Download Unavailable
+              </Button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <Separator />
+
+      <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -258,52 +304,6 @@ const LandingPage = () => {
                 <p className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.name}</p>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <Separator />
-
-      <section className="py-16 bg-slate-50 dark:bg-slate-950">
-        <div className="container mx-auto space-y-12 text-center">
-          <h2 className="text-4xl font-bold">Download Our App</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Get the best experience by downloading our app for desktop and mobile.
-          </p>
-          <div className="flex justify-center space-x-8">
-            {desktopDownloadUrl ? (
-              <a href={desktopDownloadUrl} download>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
-                >
-                  <Monitor className="w-5 h-5" />
-                  <span>Desktop (Windows)</span>
-                </Button>
-              </a>
-            ) : (
-              <Button variant="default" size="lg" disabled>
-                Desktop Download Unavailable
-              </Button>
-            )}
-
-            {mobileDownloadUrl ? (
-              <a href={mobileDownloadUrl} download>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
-                >
-                  <Smartphone className="w-5 h-5" />
-                  <span>Mobile (Android)</span>
-                </Button>
-              </a>
-            ) : (
-              <Button variant="default" size="lg" disabled>
-                Mobile Download Unavailable
-              </Button>
-            )}
           </div>
         </div>
       </section>
