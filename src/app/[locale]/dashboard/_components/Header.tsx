@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { User, Languages } from "lucide-react";
+import { User, Languages, Bell } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -58,33 +58,23 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
 
         <div className="hidden lg:flex gap-2 items-center">
           <span className="text-sm">
-            [
             {currentUser?.user_type === "EMPLOYEE"
               ? "Employee"
               : currentUser?.user_type === "LOAN_MANAGER"
               ? "Loan Manager"
               : currentUser?.user_type === "BANK_TELLER"
               ? "Bank Teller"
-              : "Guest"}
-            ]
+              : "Guest"} Dashboard
           </span>
-          <span className="text-sm">{t("title")}</span> {/* Translated title */}
         </div>
 
         <div className="flex gap-2 items-center">
           <Button
-            variant="link"
+            variant="outline"
             onClick={handleToggleDashboard}
-            className="hidden lg:block"
+            className="hidden lg:block dark:hover:bg-slate-700 dark:bg-slate-900"
           >
             Toggle Dashboard
-          </Button>
-
-          <Button asChild variant="link">
-            <Link href="/dashboard/profile" className="flex items-center space-x-2">
-              <span>{currentUser?.email}</span>
-              <User className="w-5 h-5 text-gray-500 dark:text-gray-300" />
-            </Link>
           </Button>
 
           <Select onValueChange={handleLocaleChange} value={locale}>
@@ -100,6 +90,14 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
               ))}
             </SelectContent>
           </Select>
+
+          <div>
+            <Button variant="outline" size="icon" className="dark:hover:bg-slate-700 dark:bg-slate-900" asChild>
+              <Link href="/dashboard/announcements">
+                <Bell className="size-[1.2rem]" />
+              </Link>
+            </Button>
+          </div>
 
           <div>
             <ModeToggle />
