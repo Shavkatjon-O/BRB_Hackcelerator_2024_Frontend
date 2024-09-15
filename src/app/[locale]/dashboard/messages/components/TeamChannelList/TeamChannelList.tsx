@@ -21,6 +21,7 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
   }, [type, displayWorkspace]);
 
   if (error) {
+    console.error('Error loading channels:', error);
     return type === 'team' ? (
       <div className="team-channel-list text-white text-sm p-4">
         Error loading channels, please try again shortly.
