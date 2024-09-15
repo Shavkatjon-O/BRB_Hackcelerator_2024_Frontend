@@ -7,13 +7,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from '@/components/ui/textarea';
 import { AudioLines, Edit } from 'lucide-react';
 
-const initialText = `Hurmatli mijoz!
-  Sizning hisobingiz bo'yicha qarz summasi mavjud. 
-  Qarzdorlik miqdori: bir milion ikki yuz ming so'm.
-  To'lov muddati o'tib ketgan va imkon qadar tezroq to'lov amalga oshirilishi kerak.
-  Agar to'lovni kechiktirsangiz, qo'shimcha jarimalar va foizlar qo'llanilishi mumkin.
-  Batafsil ma'lumot olish uchun iltimos, bankning mijozlar xizmatiga murojaat qiling. 
-  Sizning to'lovingiz biz uchun juda muhim. Iltimos, imkon qadar tezroq to'lov qiling. Rahmat!`;
+const initialText = `Sizning hisobingizda qarzdorlik mavjud.
+  To'lov muddati o'tgan, imkon qadar tezroq to'lov qiling.
+  Batafsil ma'lumot uchun bank mijozlar xizmatiga murojaat qiling.`;
 
 const TelephonyCall = () => {
   const [text, setText] = useState(initialText);
@@ -46,7 +42,7 @@ const TelephonyCall = () => {
   };
 
   const handleSaveText = () => {
-    setIsDialogOpen(false); // Close dialog after saving
+    setIsDialogOpen(false);
   };
 
   return (
@@ -58,7 +54,6 @@ const TelephonyCall = () => {
         <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo (SardorNeural)
       </Button>
 
-      {/* Dialog for editing default text */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button className='ml-4'>
@@ -72,7 +67,7 @@ const TelephonyCall = () => {
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            rows={8}
+            rows={4}
             className='w-full mt-4'
           />
           <Button onClick={handleSaveText} className='mt-4'>
