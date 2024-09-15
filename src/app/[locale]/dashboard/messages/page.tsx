@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
 
@@ -22,7 +22,8 @@ import './styles/index.scss';
 const App = () => {
   const theme = 'light';
 
-  const { user } = useUser();
+  const { user, isLoaded } = useUser(); // Use `isLoaded` from the hook
+  const [isConnected, setIsConnected] = useState(false);
 
   const apiKey = process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY;
   const accessToken = Cookies.get('accessToken');
@@ -41,13 +42,13 @@ const App = () => {
 
       const userToken = await tokenProvider(accessToken);
 
-      const client = StreamChat.getInstance<StreamChatType>(String(apiKey), { 
-        enableInsights: true, 
-        enableWSFallback: true 
+      const client = StreamChat.getInstance<StreamChatType>(String(apiKey), {
+        enableInsights: true,
+        enableWSFallback: true,
       });
 
       await client.connectUser(
-        { id: String(user.id), name: user.email, image: getRandomImage() }, 
+        { id: String(user.id), name: user.email, image: getRandomImage() },
         userToken
       );
 
@@ -61,18 +62,26 @@ const App = () => {
 
       window.addEventListener('message', (event) => handleColorChange(event.data));
 
+      setIsConnected(true);
+
       return () => {
         client.disconnectUser();
         window.removeEventListener('message', (event) => handleColorChange(event.data));
       };
     };
 
-    connectUser();
-  }, [apiKey, accessToken, user]);
+    if (isLoaded) {
+      connectUser();
+    }
+  }, [apiKey, accessToken, user, isLoaded]);
+
+  if (!isLoaded) {
+    return <p>Loading user data...</p>;
+  }
 
   return (
     <div className='app__wrapper str-chat w-full h-full'>
-      {user && user.id ? (
+      {user && user.id && isConnected ? (
         <Chat client={StreamChat.getInstance(String(apiKey))} theme={`team ${theme}`}>
           <WorkspaceController>
             <Sidebar />
@@ -80,7 +89,7 @@ const App = () => {
           </WorkspaceController>
         </Chat>
       ) : (
-        <p>Loading user data...</p>
+        <p>Connecting to chat...</p>
       )}
     </div>
   );
