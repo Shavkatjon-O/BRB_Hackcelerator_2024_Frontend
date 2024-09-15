@@ -41,33 +41,49 @@ const App = () => {
       }
 
       const userToken = await tokenProvider(accessToken);
-
       const client = StreamChat.getInstance<StreamChatType>(String(apiKey), {
         enableInsights: true,
         enableWSFallback: true,
       });
 
-      await client.connectUser(
-        { id: String(user.id), name: user.email, image: getRandomImage() },
-        userToken
-      );
+      try {
+        // Check if user exists
+        const existingUser = await client.queryUsers({ id: String(user.id) });
 
-      const handleColorChange = (color: string) => {
-        const root = document.documentElement;
-        if (color.length && color.length === 7) {
-          root.style.setProperty('--primary-color', `${color}E6`);
-          root.style.setProperty('--primary-color-alpha', `${color}1A`);
+        if (existingUser.users.length === 0) {
+          // Create the user if it doesn't exist
+          await client.upsertUser({
+            id: String(user.id),
+            name: user.email,
+            image: getRandomImage(),
+          });
         }
-      };
 
-      window.addEventListener('message', (event) => handleColorChange(event.data));
+        // Connect the user
+        await client.connectUser(
+          { id: String(user.id), name: user.email, image: getRandomImage() },
+          userToken
+        );
 
-      setIsConnected(true);
+        const handleColorChange = (color: string) => {
+          const root = document.documentElement;
+          if (color.length && color.length === 7) {
+            root.style.setProperty('--primary-color', `${color}E6`);
+            root.style.setProperty('--primary-color-alpha', `${color}1A`);
+          }
+        };
 
-      return () => {
-        client.disconnectUser();
-        window.removeEventListener('message', (event) => handleColorChange(event.data));
-      };
+        window.addEventListener('message', (event) => handleColorChange(event.data));
+
+        setIsConnected(true);
+
+        return () => {
+          client.disconnectUser();
+          window.removeEventListener('message', (event) => handleColorChange(event.data));
+        };
+      } catch (error) {
+        console.error('Error connecting user:', error);
+      }
     };
 
     if (isLoaded) {
