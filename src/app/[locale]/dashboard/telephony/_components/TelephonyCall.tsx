@@ -27,8 +27,10 @@ const russianVoices = [
 
 const TelephonyCall: React.FC = () => {
   const [language, setLanguage] = useState<LanguageType>("uz-UZ");
+  const [editLanguage, setEditLanguage] = useState<LanguageType>("uz-UZ");
   const [voiceName, setVoiceName] = useState<string>("uz-UZ-MadinaNeural");
   const [text, setText] = useState<string>(initialTexts["uz-UZ"]);
+  const [texts, setTexts] = useState<Record<LanguageType, string>>(initialTexts);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleTextToSpeech = (): void => {
@@ -59,7 +61,7 @@ const TelephonyCall: React.FC = () => {
 
   const handleLanguageChange = (selectedLanguage: LanguageType): void => {
     setLanguage(selectedLanguage);
-    setText(initialTexts[selectedLanguage]);
+    setText(texts[selectedLanguage]);
     setVoiceName(
       selectedLanguage === "uz-UZ"
         ? "uz-UZ-MadinaNeural"
@@ -67,7 +69,15 @@ const TelephonyCall: React.FC = () => {
     );
   };
 
+  const handleEditLanguageChange = (selectedLanguage: LanguageType): void => {
+    setEditLanguage(selectedLanguage);
+  };
+
   const handleSaveText = (): void => {
+    setTexts((prev) => ({
+      ...prev,
+      [editLanguage]: text,
+    }));
     setIsDialogOpen(false);
   };
 
@@ -125,11 +135,22 @@ const TelephonyCall: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Edit Text</DialogTitle>
           </DialogHeader>
+
+          <Select onValueChange={handleEditLanguageChange} value={editLanguage}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="uz-UZ">Uzbek</SelectItem>
+              <SelectItem value="ru-RU">Russian</SelectItem>
+            </SelectContent>
+          </Select>
+
           <Textarea
-            value={text}
+            value={texts[editLanguage]}
             onChange={(e) => setText(e.target.value)}
             rows={4}
-            className='w-full mt-4'
+            className='w-full min-h-60 mt-4'
           />
           <Button onClick={handleSaveText} className='mt-4'>
             Save Text
