@@ -57,14 +57,14 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
         </div>
 
         <div className="hidden lg:flex gap-2 items-center">
-          <span className="text-sm">
+          <span className="text-sm font-semibold">
             {currentUser?.user_type === "EMPLOYEE"
               ? t("employee")
               : currentUser?.user_type === "LOAN_MANAGER"
               ? t("loanManager")
               : currentUser?.user_type === "BANK_TELLER"
               ? t("bankTeller")
-              : null } Dashboard
+              : null }
           </span>
         </div>
 
