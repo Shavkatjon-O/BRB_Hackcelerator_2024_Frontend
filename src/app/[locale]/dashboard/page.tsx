@@ -209,7 +209,7 @@ const DashboardPage = () => {
           <Card className="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2 text-slate-900 dark:text-slate-100">
               <Smile className="text-yellow-600" />
-              <span>Customer Satisfaction</span>
+              <span>Employee of month</span>
             </h2>
             <Bar data={customerSatisfactionData} options={customerSatisfactionOptions} />
           </Card>
