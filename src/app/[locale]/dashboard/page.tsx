@@ -2,7 +2,7 @@
 
 import withAuth from "@/components/auth/withAuth";
 import { Card } from '@/components/ui/card';
-import { TrendingUp, BarChart, Activity, DollarSign } from 'lucide-react';
+import { TrendingUp, BarChart, Activity, DollarSign, Smile, BarChart2 } from 'lucide-react';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -115,24 +115,44 @@ const DashboardPage = () => {
     },
   };
 
-  // Line Chart Data (Financial Forecast)
-  const financialForecastData = {
-    labels: ['2024', '2025', '2026', '2027', '2028'],
+  // Bar Chart Data (Employee Performance)
+  const employeePerformanceData = {
+    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
     datasets: [
       {
-        label: 'Projected Revenue',
-        data: [100000, 120000, 150000, 180000, 210000],
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        label: 'Employee Performance',
+        data: [80, 85, 90, 95],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
       },
     ],
   };
 
-  const financialForecastOptions = {
+  const employeePerformanceOptions = {
     responsive: true,
     plugins: {
       legend: { display: false },
-      title: { display: true, text: '5-Year Financial Forecast' },
+      title: { display: true, text: 'Quarterly Employee Performance' },
+    },
+  };
+
+  // Horizontal Bar Chart Data (Customer Satisfaction)
+  const customerSatisfactionData = {
+    labels: ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied'],
+    datasets: [
+      {
+        label: 'Customer Satisfaction',
+        data: [60, 25, 10, 5],
+        backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 205, 86, 0.8)', 'rgba(255, 99, 132, 0.8)'],
+      },
+    ],
+  };
+
+  const customerSatisfactionOptions = {
+    responsive: true,
+    indexAxis: 'y' as const, // Fixed the type for `indexAxis`
+    plugins: {
+      legend: { display: true },
+      title: { display: true, text: 'Customer Satisfaction Levels' },
     },
   };
 
@@ -176,13 +196,22 @@ const DashboardPage = () => {
             <Bar data={loanRepaymentsData} options={loanRepaymentsOptions} />
           </Card>
 
-          {/* Financial Forecast Line Chart */}
+          {/* Employee Performance Bar Chart */}
           <Card className="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md rounded-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2 text-slate-900 dark:text-slate-100">
-              <TrendingUp className="text-blue-600" />
+              <BarChart2 className="text-blue-600" />
               <span>Employee Performance</span>
             </h2>
-            <Line data={financialForecastData} options={financialForecastOptions} />
+            <Bar data={employeePerformanceData} options={employeePerformanceOptions} />
+          </Card>
+
+          {/* Customer Satisfaction Horizontal Bar Chart */}
+          <Card className="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md rounded-lg">
+            <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2 text-slate-900 dark:text-slate-100">
+              <Smile className="text-yellow-600" />
+              <span>Customer Satisfaction</span>
+            </h2>
+            <Bar data={customerSatisfactionData} options={customerSatisfactionOptions} />
           </Card>
         </div>
       </div>

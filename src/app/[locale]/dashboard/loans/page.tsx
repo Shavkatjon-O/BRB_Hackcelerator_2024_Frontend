@@ -35,11 +35,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Panel from "../_components/Panel";
-import coreApi from "@/lib/coreApi"; 
+import coreApi from "@/lib/coreApi";
 
+// Define Client type with necessary properties
+export type Client = {
+  id: number;
+  full_name: string;
+  gender: string;
+  email: string;
+  birth_date: string;
+  phone_number: string;
+  city: string;
+  postal_code: string;
+  country: string;
+  address: string;
+  identification_number: string;
+  credit_score: number;
+  image: string;
+  is_active: boolean;
+};
+
+// Define Loan type with Client nested inside
 export type Loan = {
   id: number;
-  client: string;
+  client: Client;
   loan_type: string;
   amount_disbursed: number;
   currency: string;
@@ -75,7 +94,7 @@ const LoansPage = () => {
     fetchData();
   }, []);
 
-  // Columns definition for Loans
+  // Updated Columns definition for Loans
   const columns: ColumnDef<Loan>[] = [
     {
       id: "select",
@@ -100,17 +119,17 @@ const LoansPage = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "client",
+      accessorKey: "client.full_name",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Client
+          Client Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("client")}</div>,
+      cell: ({ row }) => <div>{row.original.client.full_name}</div>,
     },
     {
       accessorKey: "loan_type",
@@ -133,11 +152,6 @@ const LoansPage = () => {
       cell: ({ row }) => <div>{row.getValue("disbursement_date")}</div>,
     },
     {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-    },
-    {
       accessorKey: "interest_rate",
       header: () => <div className="text-right">Interest Rate (%)</div>,
       cell: ({ row }) => {
@@ -151,9 +165,9 @@ const LoansPage = () => {
       cell: ({ row }) => <div>{row.getValue("repayment_period_months")}</div>,
     },
     {
-      accessorKey: "reference_number",
-      header: "Reference Number",
-      cell: ({ row }) => <div>{row.getValue("reference_number")}</div>,
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
     },
     {
       id: "actions",
@@ -209,9 +223,9 @@ const LoansPage = () => {
         <div className="flex items-center mb-4">
           <Input
             placeholder="Filter by client name..."
-            value={(table.getColumn("client")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn("client.full_name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("client")?.setFilterValue(event.target.value)
+              table.getColumn("client.full_name")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
