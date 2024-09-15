@@ -1,6 +1,7 @@
 'use client';
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from '@/i18n/routing';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -17,7 +18,7 @@ const MeetingsPage = () => {
 
   if (!user?.id) return null;
 
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/meetings/1?personal=true`;
+  const meetingLink = `/dashboard/meetings/${user.id}?personal=true`;
 
   const redirectToMeeting = () => {
     setDisabled(true);
