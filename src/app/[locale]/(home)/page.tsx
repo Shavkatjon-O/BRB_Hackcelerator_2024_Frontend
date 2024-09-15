@@ -37,8 +37,8 @@ const LandingPage = () => {
         return;
       }
       const response = await coreApi.post("/users/token/", {
-        email: "shavkatjon@gmail.com",
-        password: "Shovkatbek_1",
+        email: "demo@gmail.com",
+        password: "DemoUser_1",
       });
 
       const { access, refresh } = response.data;
