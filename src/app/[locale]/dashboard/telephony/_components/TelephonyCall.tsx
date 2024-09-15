@@ -17,13 +17,13 @@ const text = `Hurmatli mijoz!
   Sizning to'lovingiz biz uchun juda muhim. Iltimos, imkon qadar tezroq to'lov qiling. Rahmat!`;
 
 const TelephonyCall = () => {
-  const handleTextToSpeech = () => {
+  const handleTextToSpeech = (voiceName: string) => {
     const subscriptionKey = process.env.NEXT_PUBLIC_MICROSOFT_AZURE_API || '';
     const serviceRegion = 'eastus';
 
     const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
     speechConfig.speechSynthesisLanguage = "uz-UZ";
-    speechConfig.speechSynthesisVoiceName = "uz-UZ-MadinaNeural";
+    speechConfig.speechSynthesisVoiceName = voiceName;
 
     const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
@@ -44,9 +44,14 @@ const TelephonyCall = () => {
   };
 
   return (
-    <Button onClick={handleTextToSpeech}>
-      <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo
-    </Button>
+    <div>
+      <Button onClick={() => handleTextToSpeech("uz-UZ-MadinaNeural")}>
+        <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo (MadinaNeural)
+      </Button>
+      <Button onClick={() => handleTextToSpeech("uz-UZ-SardorNeural")} className='ml-4'>
+        <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo (SardorNeural)
+      </Button>
+    </div>
   );
 };
 
