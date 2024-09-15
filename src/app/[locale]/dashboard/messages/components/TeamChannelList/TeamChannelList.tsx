@@ -22,8 +22,7 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
 
   if (error) {
     return type === 'team' ? (
-      <div className="team-channel-list">
-        
+      <div className="team-channel-list text-white text-sm p-4">
         Error loading channels, please try again shortly.
       </div>
     ) : null;
