@@ -15,9 +15,9 @@ import { Chart } from "react-google-charts";
 
 // Add status colors for requests
 const statusColors: Record<string, string> = {
-  PENDING: "bg-orange-600 text-white",
-  APPROVED: "bg-green-600 text-white",
-  REJECTED: "bg-red-600 text-white",
+  PENDING: "bg-yellow-500 text-white",
+  APPROVED: "bg-green-500 text-white",
+  REJECTED: "bg-red-500 text-white",
 };
 
 // Request form dialog
@@ -52,21 +52,21 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="text-slate-900 bg-blue-100 hover:bg-blue-200 border-blue-300 dark:bg-blue-900 dark:text-white dark:border-blue-700 dark:hover:bg-blue-800">
           <PlusCircle className="mr-2" /> Create Request
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg bg-slate-50 text-slate-900 border-slate-300 dark:bg-slate-900 dark:text-white dark:border-slate-700">
+      <DialogContent className="max-w-lg bg-white dark:bg-gray-900 text-slate-900 dark:text-white border-slate-300 dark:border-slate-700">
         <DialogHeader>
           <DialogTitle>Create a New Request</DialogTitle>
           <DialogDescription>Select the type of request and provide details.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <Select value={requestType} onValueChange={setRequestType}>
-            <SelectTrigger className="bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:text-white">
+            <SelectTrigger className="bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
               <SelectValue placeholder="Select Request Type" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:text-white">
+            <SelectContent className="bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
               <SelectItem value="LEAVE">Leave Request</SelectItem>
               <SelectItem value="EXPENSE">Expense Request</SelectItem>
               <SelectItem value="TRAVEL">Travel Request</SelectItem>
@@ -79,7 +79,7 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
             placeholder="Request Details"
             value={requestDetails}
             onChange={(e) => setRequestDetails(e.target.value)}
-            className="bg-slate-50 border-slate-300 text-slate-900 rounded-md dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+            className="bg-gray-50 border-gray-300 text-slate-900 rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -87,20 +87,20 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
               placeholder="Start Date"
               value={startDate || ""}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-slate-50 border-slate-300 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className="bg-gray-50 border-gray-300 text-slate-900 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             />
             <Input
               type="date"
               placeholder="End Date"
               value={endDate || ""}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-slate-50 border-slate-300 text-slate-900 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className="bg-gray-50 border-gray-300 text-slate-900 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             />
           </div>
           <Button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50"
+            className="w-full bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600 disabled:opacity-50"
           >
             {loading ? <Loader /> : 'Submit'}
           </Button>
@@ -112,24 +112,24 @@ const RequestFormDialog = ({ onSubmit }: { onSubmit: (formData: any) => void }) 
 
 // Requests Table with added columns
 const RequestsTable = ({ requests }: { requests: any[] }) => (
-  <Table className="min-w-full bg-white shadow-lg rounded-md overflow-hidden text-slate-900 dark:bg-slate-800 dark:text-white">
+  <Table className="min-w-full bg-white shadow-lg rounded-md overflow-hidden text-slate-900 dark:bg-gray-800 dark:text-white">
     <TableHeader>
-      <TableRow className="dark:bg-slate-800">
-        <TableHead>Type</TableHead>
-        <TableHead>Details</TableHead>
-        <TableHead>Start Date</TableHead>
-        <TableHead>End Date</TableHead>
-        <TableHead>Status</TableHead>
+      <TableRow className="dark:bg-gray-800">
+        <TableHead className="bg-gray-200 dark:bg-gray-900">Type</TableHead>
+        <TableHead className="bg-gray-200 dark:bg-gray-900">Details</TableHead>
+        <TableHead className="bg-gray-200 dark:bg-gray-900">Start Date</TableHead>
+        <TableHead className="bg-gray-200 dark:bg-gray-900">End Date</TableHead>
+        <TableHead className="bg-gray-200 dark:bg-gray-900">Status</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {requests.length === 0 ? (
         <TableRow>
-          <TableCell colSpan={5} className="text-center py-4 text-slate-500 dark:text-slate-400">No requests available.</TableCell>
+          <TableCell colSpan={5} className="text-center py-4 text-gray-500 dark:text-gray-400">No requests available.</TableCell>
         </TableRow>
       ) : (
         requests.map((request, index) => (
-          <TableRow key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700">
+          <TableRow key={index} className="hover:bg-blue-50 dark:hover:bg-blue-800">
             <TableCell>{request.request_type}</TableCell>
             <TableCell>{request.description}</TableCell>
             <TableCell>{request.start_date}</TableCell>
@@ -161,9 +161,9 @@ const statisticsData = [
 const StatisticsPanel = () => (
   <Panel title="Requests Statistics" className="grid grid-cols-4 gap-4">
     {statisticsData.map((stat, index) => (
-      <div key={index} className="p-4 bg-slate-100 dark:bg-slate-800 rounded-md text-center">
-        <div className="text-xl font-semibold">{stat.value}</div>
-        <div className="text-slate-500 dark:text-slate-400">{stat.label}</div>
+      <div key={index} className="p-4 bg-gray-200 dark:bg-gray-800 rounded-md text-center">
+        <div className="text-xl font-semibold text-slate-900 dark:text-white">{stat.value}</div>
+        <div className="text-gray-500 dark:text-gray-400">{stat.label}</div>
       </div>
     ))}
   </Panel>
@@ -191,9 +191,9 @@ const ChartPanel = () => {
       }
     },
     slices: {
-      0: { color: '#4285F4' },  // Approved color
-      1: { color: '#FBBC05' },  // Pending color
-      2: { color: '#EA4335' },  // Rejected color
+      0: { color: '#4CAF50' },  // Approved color (Green)
+      1: { color: '#FFC107' },  // Pending color (Yellow)
+      2: { color: '#F44336' },  // Rejected color (Red)
     },
     chartArea: { width: '80%', height: '80%' },
     pieSliceTextStyle: {
@@ -202,13 +202,13 @@ const ChartPanel = () => {
   };
 
   return (
-    <Panel title="Request Analytics" className="p-6 bg-slate-800 rounded-lg">
+    <Panel title="Request Analytics" className="p-6 bg-gray-800 rounded-lg">
       <Chart
         chartType="PieChart"
         data={chartData}
         options={chartOptions}
         width="100%"
-        height="400px"  // Increased height for better view
+        height="400px"
       />
     </Panel>
   );
@@ -245,16 +245,16 @@ const Page = () => {
       <StatisticsPanel />
 
       <Panel title="Quick Actions" className="grid grid-cols-4 gap-4">
-        <Button variant="outline" className="w-full h-20 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="w-full h-20 text-slate-900 bg-blue-100 hover:bg-blue-200 border-blue-300 dark:bg-blue-900 dark:text-white dark:border-blue-700 dark:hover:bg-blue-800">
           <FilePlus className="mr-2" /> New Leave Request
         </Button>
-        <Button variant="outline" className="w-full h-20 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="w-full h-20 text-slate-900 bg-green-100 hover:bg-green-200 border-green-300 dark:bg-green-900 dark:text-white dark:border-green-700 dark:hover:bg-green-800">
           <Edit3 className="mr-2" /> Modify Request
         </Button>
-        <Button variant="outline" className="w-full h-20 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="w-full h-20 text-slate-900 bg-yellow-100 hover:bg-yellow-200 border-yellow-300 dark:bg-yellow-900 dark:text-white dark:border-yellow-700 dark:hover:bg-yellow-800">
           <BarChart2 className="mr-2" /> View Reports
         </Button>
-        <Button variant="outline" className="w-full h-20 text-slate-900 hover:bg-slate-50 border-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700">
+        <Button variant="outline" className="w-full h-20 text-slate-900 bg-red-100 hover:bg-red-200 border-red-300 dark:bg-red-900 dark:text-white dark:border-red-700 dark:hover:bg-red-800">
           <PieChart className="mr-2" /> Analytics
         </Button>
       </Panel>
