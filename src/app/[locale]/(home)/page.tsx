@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-
 import {
   User,
   Lock,
@@ -13,7 +12,6 @@ import {
   Smartphone,
   Globe,
 } from "lucide-react";
-
 import {
   Card,
   CardContent,
@@ -21,76 +19,107 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
-const login = async () => {
-  // Demo login logic here (if needed)
-};
-
-const features = [
-  {
-    icon: ChartBar,
-    title: "Financial Insights",
-    description: "Gain insights into your financial data with interactive reports and analytics.",
-  },
-  {
-    icon: User,
-    title: "User Management",
-    description: "Manage roles and permissions with an easy-to-use interface.",
-  },
-  {
-    icon: Lock,
-    title: "Secure Access",
-    description: "Advanced security features to protect your data and assets.",
-  },
-  {
-    icon: Shield,
-    title: "Fraud Detection",
-    description: "AI-powered systems to detect and prevent fraudulent activities.",
-  },
-  {
-    icon: CreditCard,
-    title: "Payment Solutions",
-    description: "Seamless payment processing tailored to your banking needs.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Compliance",
-    description: "Ensuring compliance with financial regulations and standards.",
-  },
-];
-
-const testimonials = [
-  {
-    name: "John Doe",
-    feedback: "This platform has transformed how we handle our banking operations. Highly recommended!",
-    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
-  },
-  {
-    name: "Jane Smith",
-    feedback: "An intuitive and secure solution that meets all our needs. Excellent customer support!",
-    image: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg",
-  },
-  {
-    name: "Alex Johnson",
-    feedback: "A remarkable service that has exceeded our expectations!",
-    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
-  },
-];
+import coreApi from "@/lib/coreApi";
+import Cookies from "js-cookie";
+import { useRouter } from "@/i18n/routing";
 
 const LandingPage = () => {
-  // Direct download links from Google Drive (replace these with actual file IDs)
-  const desktopDownloadUrl = "https://drive.google.com/uc?export=download&id=1qFbu0SGLuKelcNLyMpay9bkL3KFESUhz";
-  const mobileDownloadUrl = "https://drive.google.com/uc?export=download&id=1kM2Z0aHSphG_8BCBenR-R7bY0fxiVgW0";
+  const router = useRouter();
+
+  const login = async () => {
+    try {
+      const accessToken = Cookies.get("accessToken");
+
+      if (accessToken) {
+        router.push("/dashboard");
+        return;
+      }
+      const response = await coreApi.post("/users/token/", {
+        email: "shavkatjon@gmail.com",
+        password: "Shovkatbek_1",
+      });
+
+      const { access, refresh } = response.data;
+
+      Cookies.set("accessToken", access);
+      Cookies.set("refreshToken", refresh);
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const desktopDownloadUrl =
+    "https://drive.google.com/uc?export=download&id=1qFbu0SGLuKelcNLyMpay9bkL3KFESUhz";
+  const mobileDownloadUrl =
+    "https://drive.google.com/uc?export=download&id=1kM2Z0aHSphG_8BCBenR-R7bY0fxiVgW0";
+
+  const features = [
+    {
+      icon: ChartBar,
+      title: "Financial Insights",
+      description:
+        "Gain insights into your financial data with interactive reports and analytics.",
+    },
+    {
+      icon: User,
+      title: "User Management",
+      description: "Manage roles and permissions with an easy-to-use interface.",
+    },
+    {
+      icon: Lock,
+      title: "Secure Access",
+      description: "Advanced security features to protect your data and assets.",
+    },
+    {
+      icon: Shield,
+      title: "Fraud Detection",
+      description: "AI-powered systems to detect and prevent fraudulent activities.",
+    },
+    {
+      icon: CreditCard,
+      title: "Payment Solutions",
+      description: "Seamless payment processing tailored to your banking needs.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Compliance",
+      description:
+        "Ensuring compliance with financial regulations and standards.",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "John Doe",
+      feedback:
+        "This platform has transformed how we handle our banking operations. Highly recommended!",
+      image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+    },
+    {
+      name: "Jane Smith",
+      feedback:
+        "An intuitive and secure solution that meets all our needs. Excellent customer support!",
+      image: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg",
+    },
+    {
+      name: "Alex Johnson",
+      feedback: "A remarkable service that has exceeded our expectations!",
+      image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
+    },
+  ];
 
   return (
     <div className="text-slate-950 dark:text-slate-100">
       <section className="relative py-24 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">Your trusted partner for innovative banking solutions.</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            Your trusted partner for innovative banking solutions.
+          </p>
           <div>
             <Button
               variant="default"
@@ -110,7 +139,8 @@ const LandingPage = () => {
         <div className="container mx-auto space-y-12 text-center">
           <h2 className="text-4xl font-bold">Download Our App</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Get the best experience by downloading our app for desktop and mobile.
+            Get the best experience by downloading our app for desktop and
+            mobile.
           </p>
           <div className="flex justify-center space-x-8">
             <a href={desktopDownloadUrl}>
@@ -172,7 +202,10 @@ const LandingPage = () => {
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">About Us</h2>
           <p className="text-lg text-center text-gray-600 dark:text-gray-300">
-            At BRB Titans, we are committed to delivering innovative banking solutions that meet the highest standards of security and reliability. Our team of experts is dedicated to helping you achieve your financial goals.
+            At BRB Titans, we are committed to delivering innovative banking
+            solutions that meet the highest standards of security and
+            reliability. Our team of experts is dedicated to helping you achieve
+            your financial goals.
           </p>
           <Globe className="w-12 h-12 mx-auto text-custom dark:text-custom-dark" />
         </div>
@@ -183,7 +216,9 @@ const LandingPage = () => {
       <section className="py-20 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
-          <p className="text-lg text-center text-gray-600 dark:text-gray-300">We offer a range of banking services tailored to meet your needs.</p>
+          <p className="text-lg text-center text-gray-600 dark:text-gray-300">
+            We offer a range of banking services tailored to meet your needs.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="p-6 hover:bg-custom dark:hover:bg-custom-dark group transition-colors duration-300 ease-in-out">
               <CardHeader className="flex justify-center">
@@ -194,7 +229,8 @@ const LandingPage = () => {
                   Risk Management
                 </CardTitle>
                 <CardDescription className="text-gray-700 dark:text-gray-300 group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
-                  Identify, assess, and control risks effectively with our comprehensive solutions.
+                  Identify, assess, and control risks effectively with our
+                  comprehensive solutions.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -207,7 +243,8 @@ const LandingPage = () => {
                   Card Services
                 </CardTitle>
                 <CardDescription className="text-gray-700 dark:text-gray-300 group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
-                  Secure and seamless card services for all your banking transactions.
+                  Secure and seamless card services for all your banking
+                  transactions.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -220,7 +257,8 @@ const LandingPage = () => {
                   Compliance & Audits
                 </CardTitle>
                 <CardDescription className="text-gray-700 dark:text-gray-300 group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
-                  Stay compliant with evolving regulations and ensure audit readiness.
+                  Stay compliant with evolving regulations and ensure audit
+                  readiness.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -230,8 +268,12 @@ const LandingPage = () => {
 
       <section className="py-28 bg-custom dark:bg-custom-dark text-white">
         <div className="container mx-auto text-center space-y-6">
-          <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
-          <p className="text-lg">Join thousands of satisfied clients. Contact us today!</p>
+          <h2 className="text-4xl font-bold">
+            Ready to Transform Your Banking Experience?
+          </h2>
+          <p className="text-lg">
+            Join thousands of satisfied clients. Contact us today!
+          </p>
           <Button
             variant="default"
             size="lg"
@@ -245,10 +287,15 @@ const LandingPage = () => {
 
       <section className="py-16 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-12">
-          <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">What Our Clients Say</h2>
+          <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
+            What Our Clients Say
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white dark:bg-slate-950 p-8 rounded-lg flex flex-col justify-between shadow">
+              <Card
+                key={index}
+                className="bg-white dark:bg-slate-950 p-8 rounded-lg flex flex-col justify-between shadow"
+              >
                 <div className="flex justify-center mb-4">
                   <Image
                     src={testimonial.image}
@@ -258,8 +305,12 @@ const LandingPage = () => {
                     className="object-cover w-32 h-32 rounded-full border-2 p-1 border-custom dark:border-custom-dark"
                   />
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{testimonial.feedback}</p>
-                <p className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.name}</p>
+                <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+                  {testimonial.feedback}
+                </p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
+                  {testimonial.name}
+                </p>
               </Card>
             ))}
           </div>
@@ -272,7 +323,8 @@ const LandingPage = () => {
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Contact Us</h2>
           <p className="text-lg text-center text-gray-600 dark:text-gray-300">
-            We would love to hear from you. Please fill out the form below, and our team will get in touch with you.
+            We would love to hear from you. Please fill out the form below, and
+            our team will get in touch with you.
           </p>
           <form className="max-w-4xl mx-auto bg-white dark:bg-slate-950 p-8 rounded-lg border dark:border-slate-600 shadow">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
