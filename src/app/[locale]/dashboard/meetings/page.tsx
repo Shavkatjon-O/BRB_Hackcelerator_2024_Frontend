@@ -1,26 +1,42 @@
-'use client';
+"use client";
 
-// import { useRouter } from "next/navigation";
 import { useRouter } from '@/i18n/routing';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Video, ChevronLeft, ChevronRight, Plus, Edit, Trash, Link, Phone } from 'lucide-react';
 import useUser from "@/hooks/useUser";
+import { useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { useGetCallById } from "./_hooks/useGetCallById";
 
 const MeetingsPage = () => {
   const { user } = useUser();
   const router = useRouter();
   const [selectedMonth, setSelectedMonth] = useState('August 2024');
   const [disabled, setDisabled] = useState(false);
+  const client = useStreamVideoClient();
+  const meetingId = String(user?.id);
+  const { call } = useGetCallById(meetingId);
 
   if (!user?.id) return null;
 
   const meetingLink = `/dashboard/meetings/${user.id}?personal=true`;
 
-  const redirectToMeeting = () => {
+  const startOrJoinRoom = async () => {
+    if (!client || !user) return;
+
+    const newCall = client.call("default", meetingId);
+
+    if (!call) {
+      await newCall.getOrCreate({
+        data: {
+          starts_at: new Date().toISOString(),
+        },
+      });
+    }
+
     setDisabled(true);
     router.push(meetingLink);
   };
@@ -29,7 +45,7 @@ const MeetingsPage = () => {
     <div className="flex flex-col h-screen dark:bg-gray-900 bg-gray-100">
       <div className="p-4">
         <Button
-          onClick={redirectToMeeting}
+          onClick={startOrJoinRoom}
           disabled={disabled}
           className="dark:bg-blue-600 bg-blue-500 text-white w-full"
         >
@@ -39,7 +55,6 @@ const MeetingsPage = () => {
 
       <div className="flex-1 p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
           {/* Upcoming Video Meetings Card */}
           <Card className="p-6 dark:bg-gray-800 bg-white dark:border-gray-700 border-gray-200 shadow-lg rounded-lg">
             <div className="flex items-center justify-between mb-4">

@@ -3,7 +3,8 @@
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 const EndCallButton = () => {
    const call = useCall();
