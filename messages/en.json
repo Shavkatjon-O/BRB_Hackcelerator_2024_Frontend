@@ -1,6 +1,8 @@
 {
-  "Index": {
-    "title": "Welcome to the index page"
+  "Header": {
+    "employee": "Employee Dashboard",
+    "loanManager": "Loan Manager Dashboard",
+    "bankTeller": "Bank Teller Dashboard"
   },
   "Sidebar": {
     "home": "Home",

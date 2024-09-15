@@ -1,6 +1,8 @@
 {
-  "Index": {
-    "title": "Indeks sahifasiga xush kelibsiz"
+  "Header": {
+    "employee": "Xodimlar paneli",
+    "loanManager": "Kredit menejeri paneli",
+    "bankTeller": "Bank kassiri paneli"
   },
   "Sidebar": {
     "home": "Bosh sahifa",

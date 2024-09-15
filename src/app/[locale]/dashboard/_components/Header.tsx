@@ -29,7 +29,7 @@ const languages: { value: string; label: string }[] = [
 ];
 
 const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
-  const t = useTranslations("Index");
+  const t = useTranslations("Header");
   const locale = useLocale();
   const currentLanguage = languages.find((l) => l.value === locale)?.label;
   const router = useRouter();
@@ -59,12 +59,12 @@ const Header = ({ currentUser }: { currentUser: UserProfileType }) => {
         <div className="hidden lg:flex gap-2 items-center">
           <span className="text-sm">
             {currentUser?.user_type === "EMPLOYEE"
-              ? "Employee"
+              ? t("employee")
               : currentUser?.user_type === "LOAN_MANAGER"
-              ? "Loan Manager"
+              ? t("loanManager")
               : currentUser?.user_type === "BANK_TELLER"
-              ? "Bank Teller"
-              : "Guest"} Dashboard
+              ? t("bankTeller")
+              : null } Dashboard
           </span>
         </div>
 
