@@ -8,13 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { AudioLines, Edit } from 'lucide-react';
 
-const initialTexts = {
-  "uz-UZ": `Sizning hisobingizda qarzdorlik mavjud.
-  To'lov muddati o'tgan, imkon qadar tezroq to'lov qiling.
-  Batafsil ma'lumot uchun bank mijozlar xizmatiga murojaat qiling.`,
-  "ru-RU": `На вашем счете имеется задолженность.
-  Срок оплаты истек, пожалуйста, произведите оплату как можно скорее.
-  Для получения дополнительной информации обратитесь в службу поддержки клиентов банка.`
+type LanguageType = "uz-UZ" | "ru-RU";
+
+const initialTexts: Record<LanguageType, string> = {
+  "uz-UZ": `Assalomu aleykum Anvar To'xtayev, sizni 11 million 253 ming so'm 11 tiyin to'lov, qilinmagan, kreditingiz mavjuuud!!! Iltimoos to'lov qilishingizniii so'raymiz.`,
+  "ru-RU": `Ассаламу алейкум Анвар Тохтаев, ваш платёж в размере 11 миллионов 253 тысяч сумов 11 тийин не был оплачен, у вас есть кредит!!! Пожалуйста, сделайте оплату как можно скорее.`
 };
 
 const uzbekVoices = [
@@ -28,7 +26,7 @@ const russianVoices = [
 ];
 
 const TelephonyCall: React.FC = () => {
-  const [language, setLanguage] = useState<string>("uz-UZ");
+  const [language, setLanguage] = useState<LanguageType>("uz-UZ");
   const [voiceName, setVoiceName] = useState<string>("uz-UZ-MadinaNeural");
   const [text, setText] = useState<string>(initialTexts["uz-UZ"]);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -59,7 +57,7 @@ const TelephonyCall: React.FC = () => {
     );
   };
 
-  const handleLanguageChange = (selectedLanguage: string): void => {
+  const handleLanguageChange = (selectedLanguage: LanguageType): void => {
     setLanguage(selectedLanguage);
     setText(initialTexts[selectedLanguage]);
     setVoiceName(
