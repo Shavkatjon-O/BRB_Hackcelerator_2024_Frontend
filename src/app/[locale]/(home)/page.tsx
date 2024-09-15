@@ -1,10 +1,10 @@
 "use client";
 
-import {Link} from "@/i18n/routing";
-import Image from 'next/image';
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
-import coreApi from '@/lib/coreApi';
-import Cookies from 'js-cookie';
+import coreApi from "@/lib/coreApi";
+import Cookies from "js-cookie";
 
 import {
   User,
@@ -16,60 +16,58 @@ import {
   ShieldCheck,
   Monitor,
   Smartphone,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-
 const login = async () => {
-  const response = await coreApi.post('/auth/login', {
-    email: 'shavkatjon@gmail.com',
-    password: 'Shovkatbek_1',
+  const response = await coreApi.post("/auth/login", {
+    email: "shavkatjon@gmail.com",
+    password: "Shovkatbek_1",
   });
-  Cookies.set('accessToken', response.data.accessToken);
-  Cookies.set('refreshToken', response.data.refreshToken);
-}
-
+  Cookies.set("accessToken", response.data.accessToken);
+  Cookies.set("refreshToken", response.data.refreshToken);
+};
 
 const features = [
   {
     icon: ChartBar,
-    title: 'Financial Insights',
-    description: 'Gain insights into your financial data with interactive reports and analytics.',
+    title: "Financial Insights",
+    description: "Gain insights into your financial data with interactive reports and analytics.",
   },
   {
     icon: User,
-    title: 'User Management',
-    description: 'Manage roles and permissions with an easy-to-use interface.',
+    title: "User Management",
+    description: "Manage roles and permissions with an easy-to-use interface.",
   },
   {
     icon: Lock,
-    title: 'Secure Access',
-    description: 'Advanced security features to protect your data and assets.',
+    title: "Secure Access",
+    description: "Advanced security features to protect your data and assets.",
   },
   {
     icon: Shield,
-    title: 'Fraud Detection',
-    description: 'AI-powered systems to detect and prevent fraudulent activities.',
+    title: "Fraud Detection",
+    description: "AI-powered systems to detect and prevent fraudulent activities.",
   },
   {
     icon: CreditCard,
-    title: 'Payment Solutions',
-    description: 'Seamless payment processing tailored to your banking needs.',
+    title: "Payment Solutions",
+    description: "Seamless payment processing tailored to your banking needs.",
   },
   {
     icon: ShieldCheck,
-    title: 'Compliance',
-    description: 'Ensuring compliance with financial regulations and standards.',
+    title: "Compliance",
+    description: "Ensuring compliance with financial regulations and standards.",
   },
 ];
 
@@ -92,35 +90,55 @@ const testimonials = [
 ];
 
 const LandingPage = () => {
+  const [desktopDownloadUrl, setDesktopDownloadUrl] = useState<string | null>(null);
+  const [mobileDownloadUrl, setMobileDownloadUrl] = useState<string | null>(null);
+
+  const fetchDownloadUrls = async () => {
+    try {
+      const desktopResponse = await coreApi.get("/common/downloads/desktop/");
+      const desktopData = await desktopResponse.data;
+      if (desktopData && desktopData.length > 0) {
+        setDesktopDownloadUrl(desktopData[0].file);
+      }
+
+      const mobileResponse = await coreApi.get("/common/downloads/mobile/");
+      const mobileData = await mobileResponse.data;
+      if (mobileData && mobileData.length > 0) {
+        setMobileDownloadUrl(mobileData[0].file);
+      }
+    } catch (error) {
+      console.error("Failed to fetch download URLs", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDownloadUrls();
+  }, []);
+
   return (
     <div className="text-slate-950 dark:text-slate-100">
-      {/* Hero Section */}
       <section className="relative py-24 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-6">
           <h1 className="text-6xl font-extrabold">Welcome to BRB Titans</h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">Your trusted partner for innovative banking solutions.</p>
           <div>
-            <Link href="/sign-up">
-              <Button
-                variant="default" 
-                size="lg" 
-                className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
-                onClick={login}
-              >
-                Try Demo
-              </Button>
-            </Link>
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+              onClick={login}
+            >
+              Try Demo
+            </Button>
           </div>
         </div>
       </section>
 
       <Separator />
 
-      {/* Key Features Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Key Features</h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <Card
@@ -130,7 +148,6 @@ const LandingPage = () => {
                 <CardHeader className="flex justify-center">
                   <feature.icon className="w-10 h-10 text-custom group-hover:text-white dark:text-custom-dark group-hover:dark:text-white transition-colors duration-300 ease-in-out" />
                 </CardHeader>
-
                 <CardContent className="group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                   <CardTitle className="text-2xl font-semibold group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                     {feature.title}
@@ -147,7 +164,6 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* About Us Section */}
       <section className="py-16 bg-white dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">About Us</h2>
@@ -160,7 +176,6 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* Our Services Section */}
       <section className="py-20 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Our Services</h2>
@@ -170,7 +185,6 @@ const LandingPage = () => {
               <CardHeader className="flex justify-center">
                 <Shield className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
-
               <CardContent className="group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                 <CardTitle className="text-2xl font-semibold group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                   Risk Management
@@ -184,7 +198,6 @@ const LandingPage = () => {
               <CardHeader className="flex justify-center">
                 <CreditCard className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
-
               <CardContent className="group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                 <CardTitle className="text-2xl font-semibold group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                   Card Services
@@ -198,7 +211,6 @@ const LandingPage = () => {
               <CardHeader className="flex justify-center">
                 <ShieldCheck className="w-10 h-10 text-custom dark:text-custom-dark group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out" />
               </CardHeader>
-
               <CardContent className="group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                 <CardTitle className="text-2xl font-semibold group-hover:text-white dark:group-hover:text-white transition-colors duration-300 ease-in-out">
                   Compliance & Audits
@@ -212,21 +224,21 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Call to Action Section */}
       <section className="py-28 bg-custom dark:bg-custom-dark text-white">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-4xl font-bold">Ready to Transform Your Banking Experience?</h2>
           <p className="text-lg">Join thousands of satisfied clients. Contact us today!</p>
-          <Button variant="default" size="lg" className="bg-white text-black hover:text-white dark:bg-white dark:text-black"
-                  onClick={
-                    login
-                  }>
+          <Button
+            variant="default"
+            size="lg"
+            className="bg-white text-black hover:text-white dark:bg-white dark:text-black"
+            onClick={login}
+          >
             Try Demo
           </Button>
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="py-16 bg-white dark:bg-slate-950">
         <div className="container mx-auto text-center space-y-12">
           <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">What Our Clients Say</h2>
@@ -252,7 +264,6 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* Download Buttons Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12 text-center">
           <h2 className="text-4xl font-bold">Download Our App</h2>
@@ -260,35 +271,54 @@ const LandingPage = () => {
             Get the best experience by downloading our app for desktop and mobile.
           </p>
           <div className="flex justify-center space-x-8">
-            {/* Desktop Button */}
-            <Link href="/downpage">
-              <Button variant="default" size="lg" className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500">
-                <Monitor className="w-5 h-5" />
-                <span>Desktop (Windows)</span>
+            {desktopDownloadUrl ? (
+              <a href={desktopDownloadUrl} download>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                >
+                  <Monitor className="w-5 h-5" />
+                  <span>Desktop (Windows)</span>
+                </Button>
+              </a>
+            ) : (
+              <Button variant="default" size="lg" disabled>
+                Desktop Download Unavailable
               </Button>
-            </Link>
-            {/* Mobile Button */}
-            <Link href="/downpage">
-              <Button variant="default" size="lg" className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500">
-                <Smartphone className="w-5 h-5" />
-                <span>Mobile (Android)</span>
+            )}
+
+            {mobileDownloadUrl ? (
+              <a href={mobileDownloadUrl} download>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                >
+                  <Smartphone className="w-5 h-5" />
+                  <span>Mobile (Android)</span>
+                </Button>
+              </a>
+            ) : (
+              <Button variant="default" size="lg" disabled>
+                Mobile Download Unavailable
               </Button>
-            </Link>
+            )}
           </div>
         </div>
       </section>
 
       <Separator />
 
-      {/* Contact Us Section */}
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12">
           <h2 className="text-4xl font-bold text-center">Contact Us</h2>
-          <p className="text-lg text-center text-gray-600 dark:text-gray-300">We would love to hear from you. Please fill out the form below, and our team will get in touch with you.</p>
+          <p className="text-lg text-center text-gray-600 dark:text-gray-300">
+            We would love to hear from you. Please fill out the form below, and our team will get in touch with you.
+          </p>
           <form className="max-w-4xl mx-auto bg-white dark:bg-slate-950 p-8 rounded-lg border dark:border-slate-600 shadow">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                 <input
                   type="text"
                   id="name"
@@ -298,7 +328,6 @@ const LandingPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -309,7 +338,6 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="mt-6">
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
               <textarea
                 id="message"
                 name="message"
@@ -319,14 +347,17 @@ const LandingPage = () => {
               />
             </div>
             <div className="mt-6 text-center">
-              <Button variant="default" size="lg" className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500">
+              <Button
+                variant="default"
+                size="lg"
+                className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+              >
                 Send Message
               </Button>
             </div>
           </form>
         </div>
       </section>
-
     </div>
   );
 };
