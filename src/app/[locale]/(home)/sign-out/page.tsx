@@ -13,8 +13,8 @@ const SignOutPage = () => {
   }, []);
 
   return (
-    <div className="absolute top-0 bottom-0 right-0 left-0 z-50 bg-white flex justify-center items-center">
-      <Loader className="w-6 h-6" /> Signing out...
+    <div className="absolute top-0 bottom-0 right-0 left-0 z-50 bg-white flex justify-center items-center text-sm">
+      <Loader className="w-4 h-4 mr-2" /> Signing out...
     </div>
   );
 };
