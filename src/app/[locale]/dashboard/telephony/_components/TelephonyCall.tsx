@@ -4,23 +4,41 @@ import React, { useState } from 'react';
 import * as SpeechSDK from 'microsoft-cognitiveservices-speech-sdk';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { AudioLines, Edit } from 'lucide-react';
 
-const initialText = `Sizning hisobingizda qarzdorlik mavjud.
+const initialTexts = {
+  "uz-UZ": `Sizning hisobingizda qarzdorlik mavjud.
   To'lov muddati o'tgan, imkon qadar tezroq to'lov qiling.
-  Batafsil ma'lumot uchun bank mijozlar xizmatiga murojaat qiling.`;
+  Batafsil ma'lumot uchun bank mijozlar xizmatiga murojaat qiling.`,
+  "ru-RU": `На вашем счете имеется задолженность.
+  Срок оплаты истек, пожалуйста, произведите оплату как можно скорее.
+  Для получения дополнительной информации обратитесь в службу поддержки клиентов банка.`
+};
 
-const TelephonyCall = () => {
-  const [text, setText] = useState(initialText);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+const uzbekVoices = [
+  { value: "uz-UZ-MadinaNeural", label: "MadinaNeural (Uzbek)" },
+  { value: "uz-UZ-SardorNeural", label: "SardorNeural (Uzbek)" }
+];
 
-  const handleTextToSpeech = (voiceName: string) => {
+const russianVoices = [
+  { value: "ru-RU-DmitryNeural", label: "DmitryNeural (Russian)" },
+  { value: "ru-RU-SvetlanaNeural", label: "SvetlanaNeural (Russian)" }
+];
+
+const TelephonyCall: React.FC = () => {
+  const [language, setLanguage] = useState<string>("uz-UZ");
+  const [voiceName, setVoiceName] = useState<string>("uz-UZ-MadinaNeural");
+  const [text, setText] = useState<string>(initialTexts["uz-UZ"]);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  const handleTextToSpeech = (): void => {
     const subscriptionKey = process.env.NEXT_PUBLIC_MICROSOFT_AZURE_API || '';
     const serviceRegion = 'eastus';
 
     const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
-    speechConfig.speechSynthesisLanguage = "uz-UZ";
+    speechConfig.speechSynthesisLanguage = language;
     speechConfig.speechSynthesisVoiceName = voiceName;
 
     const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
@@ -41,17 +59,62 @@ const TelephonyCall = () => {
     );
   };
 
-  const handleSaveText = () => {
+  const handleLanguageChange = (selectedLanguage: string): void => {
+    setLanguage(selectedLanguage);
+    setText(initialTexts[selectedLanguage]);
+    setVoiceName(
+      selectedLanguage === "uz-UZ"
+        ? "uz-UZ-MadinaNeural"
+        : "ru-RU-DmitryNeural"
+    );
+  };
+
+  const handleSaveText = (): void => {
     setIsDialogOpen(false);
   };
 
   return (
-    <div>
-      <Button onClick={() => handleTextToSpeech("uz-UZ-MadinaNeural")}>
-        <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo (MadinaNeural)
-      </Button>
-      <Button onClick={() => handleTextToSpeech("uz-UZ-SardorNeural")} className='ml-4'>
-        <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo (SardorNeural)
+    <div className="space-y-4">
+      <Select onValueChange={handleLanguageChange} value={language}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select Language" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="uz-UZ">Uzbek</SelectItem>
+          <SelectItem value="ru-RU">Russian</SelectItem>
+        </SelectContent>
+      </Select>
+
+      {language === "uz-UZ" ? (
+        <Select onValueChange={setVoiceName} value={voiceName}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Voice" />
+          </SelectTrigger>
+          <SelectContent>
+            {uzbekVoices.map((voice) => (
+              <SelectItem key={voice.value} value={voice.value}>
+                {voice.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : (
+        <Select onValueChange={setVoiceName} value={voiceName}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Voice" />
+          </SelectTrigger>
+          <SelectContent>
+            {russianVoices.map((voice) => (
+              <SelectItem key={voice.value} value={voice.value}>
+                {voice.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+
+      <Button onClick={handleTextToSpeech}>
+        <AudioLines className='size-[1.2rem] mr-2' /> Try Demo Audio
       </Button>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
