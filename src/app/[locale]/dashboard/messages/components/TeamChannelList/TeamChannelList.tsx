@@ -11,28 +11,6 @@ export type TeamChannelListProps = ChannelListMessengerProps & {
   type: string;
 };
 
-// Mock data for user profile cards
-const mockUserProfiles = [
-  {
-    id: 1,
-    name: 'John Doe',
-    avatar: 'https://randomuser.me/api/portraits/women/8.jpg',
-    status: 'Online',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    avatar: 'https://randomuser.me/api/portraits/women/79.jpg',
-    status: 'Away',
-  },
-  {
-    id: 3,
-    name: 'Mark Spencer',
-    avatar: 'https://randomuser.me/api/portraits/men/74.jpg',
-    status: 'Offline',
-  },
-];
-
 const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
   const { children, error = false, loading, type } = props;
 
@@ -46,19 +24,7 @@ const ChannelList = (props: PropsWithChildren<TeamChannelListProps>) => {
     return type === 'team' ? (
       <div className="team-channel-list">
         
-          {/* List of user profile cards like in messengers with random static data  */}
-       
-        {/* <div className="user-profile-list space-y-2 p-2">
-          {mockUserProfiles.map((user) => (
-            <div key={user.id} className="user-profile-card p-2 text-white flex space-x-2 bg-slate-600 rounded-md">
-              <img src={user.avatar} alt={user.name} className=" rounded full w-12 h-12" />
-              <div className="user-profile-card__info">
-                <p className="user-profile-card__name">{user.name}</p>
-                <p className="user-profile-card__status">{user.status}</p>
-              </div>
-            </div>
-          ))}
-        {/* </div> */}
+        Error loading channels, please try again shortly.
       </div>
     ) : null;
   }
