@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-
-import coreApi from "@/lib/coreApi";
-import Cookies from "js-cookie";
 
 import {
   User,
@@ -12,10 +8,10 @@ import {
   ChartBar,
   Shield,
   CreditCard,
-  Globe,
   ShieldCheck,
   Monitor,
   Smartphone,
+  Globe,
 } from "lucide-react";
 
 import {
@@ -30,12 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const login = async () => {
-  const response = await coreApi.post("/auth/login", {
-    email: "shavkatjon@gmail.com",
-    password: "Shovkatbek_1",
-  });
-  Cookies.set("accessToken", response.data.accessToken);
-  Cookies.set("refreshToken", response.data.refreshToken);
+  // Demo login logic here (if needed)
 };
 
 const features = [
@@ -90,30 +81,9 @@ const testimonials = [
 ];
 
 const LandingPage = () => {
-  const [desktopDownloadUrl, setDesktopDownloadUrl] = useState<string | null>(null);
-  const [mobileDownloadUrl, setMobileDownloadUrl] = useState<string | null>(null);
-
-  const fetchDownloadUrls = async () => {
-    try {
-      const desktopResponse = await coreApi.get("/common/downloads/desktop/");
-      const desktopData = await desktopResponse.data;
-      if (desktopData && desktopData.length > 0) {
-        setDesktopDownloadUrl(desktopData[0].file);
-      }
-
-      const mobileResponse = await coreApi.get("/common/downloads/mobile/");
-      const mobileData = await mobileResponse.data;
-      if (mobileData && mobileData.length > 0) {
-        setMobileDownloadUrl(mobileData[0].file);
-      }
-    } catch (error) {
-      console.error("Failed to fetch download URLs", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchDownloadUrls();
-  }, []);
+  // Direct download links from Google Drive (replace these with actual file IDs)
+  const desktopDownloadUrl = "https://drive.google.com/uc?export=download&id=1qFbu0SGLuKelcNLyMpay9bkL3KFESUhz";
+  const mobileDownloadUrl = "https://drive.google.com/uc?export=download&id=1kM2Z0aHSphG_8BCBenR-R7bY0fxiVgW0";
 
   return (
     <div className="text-slate-950 dark:text-slate-100">
@@ -143,39 +113,27 @@ const LandingPage = () => {
             Get the best experience by downloading our app for desktop and mobile.
           </p>
           <div className="flex justify-center space-x-8">
-            {desktopDownloadUrl ? (
-              <a href={desktopDownloadUrl} download>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
-                >
-                  <Monitor className="w-5 h-5" />
-                  <span>Desktop (Windows)</span>
-                </Button>
-              </a>
-            ) : (
-              <Button variant="default" size="lg" disabled>
-                Desktop Download Unavailable
+            <a href={desktopDownloadUrl}>
+              <Button
+                variant="default"
+                size="lg"
+                className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+              >
+                <Monitor className="w-5 h-5" />
+                <span>Desktop (Windows)</span>
               </Button>
-            )}
+            </a>
 
-            {mobileDownloadUrl ? (
-              <a href={mobileDownloadUrl} download>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
-                >
-                  <Smartphone className="w-5 h-5" />
-                  <span>Mobile (Android)</span>
-                </Button>
-              </a>
-            ) : (
-              <Button variant="default" size="lg" disabled>
-                Mobile Download Unavailable
+            <a href={mobileDownloadUrl}>
+              <Button
+                variant="default"
+                size="lg"
+                className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+              >
+                <Smartphone className="w-5 h-5" />
+                <span>Mobile (Android)</span>
               </Button>
-            )}
+            </a>
           </div>
         </div>
       </section>
