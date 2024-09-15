@@ -138,33 +138,44 @@ const LandingPage = () => {
       <section className="py-16 bg-slate-50 dark:bg-slate-950">
         <div className="container mx-auto space-y-12 text-center">
           <h2 className="text-4xl font-bold">Download Our App</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Get the best experience by downloading our app for desktop and
-            mobile.
-          </p>
-          <div className="flex justify-center space-x-8">
-            <a href={desktopDownloadUrl}>
+          <div className="flex flex-col md:flex-row justify-center items-center space-x-24 space-y-8 md:space-y-0">
+            <a href={desktopDownloadUrl} className="flex flex-col items-center h-72 justify-between">
+              <Image
+                src="/windows.png"
+                alt="Download for Windows"
+                width={200}
+                height={200}
+                />
               <Button
                 variant="default"
                 size="lg"
-                className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                className="flex items-center space-x-2 w-56 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
               >
                 <Monitor className="w-5 h-5" />
                 <span>Desktop (Windows)</span>
               </Button>
             </a>
 
-            <a href={mobileDownloadUrl}>
+            <a href={mobileDownloadUrl} className="flex flex-col items-center h-72 justify-between">
+              <Image
+                src="/android.png"
+                alt="Download for Android"
+                width={200}
+                height={200}
+              />
               <Button
                 variant="default"
                 size="lg"
-                className="flex items-center space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
+                className="flex items-center w-56 space-x-2 bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
               >
                 <Smartphone className="w-5 h-5" />
                 <span>Mobile (Android)</span>
               </Button>
             </a>
           </div>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Get the best experience by downloading our app for desktop and mobile.
+          </p>
         </div>
       </section>
 
