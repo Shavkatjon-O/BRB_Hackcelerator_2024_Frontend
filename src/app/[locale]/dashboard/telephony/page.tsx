@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal, AudioLines } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -39,10 +39,11 @@ import Panel from "../_components/Panel";
 import coreApi from "@/lib/coreApi";
 
 import TelephonyCall from './_components/TelephonyCall';
+import { Client } from "../loans/page";
 
 export type Loan = {
   id: number;
-  client: string;
+  client: Client;
   loan_type: string;
   amount_disbursed: number;
   currency: string;
@@ -83,7 +84,7 @@ const LoansPage = () => {
   // Columns definition for Loans
   const columns: ColumnDef<Loan>[] = [
     {
-      accessorKey: "client",
+      accessorKey: "client.full_name", // Access client full name
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -93,7 +94,7 @@ const LoansPage = () => {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("client")}</div>,
+      cell: ({ row }) => <div>{row.original.client.full_name}</div>, // Display client's full name
     },
     {
       accessorKey: "loan_type",
