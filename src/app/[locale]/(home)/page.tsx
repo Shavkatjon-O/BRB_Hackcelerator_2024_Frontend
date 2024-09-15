@@ -127,7 +127,7 @@ const LandingPage = () => {
               className="bg-custom text-white hover:bg-red-400 dark:bg-custom-dark dark:hover:bg-red-500"
               onClick={login}
             >
-              Try Demo
+              Try Demo as a Guest
             </Button>
           </div>
         </div>
