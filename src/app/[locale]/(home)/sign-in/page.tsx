@@ -138,7 +138,7 @@ const SignInPage = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-slate-500">
             Do not have an account yet?{' '}
-            <a href="/sign-up" className="text-blue-600 hover:underline">
+            <a onClick={() => router.push('/sign-up')} className="text-blue-600 hover:underline cursor-pointer">
               Sign up!
             </a>
           </p>
