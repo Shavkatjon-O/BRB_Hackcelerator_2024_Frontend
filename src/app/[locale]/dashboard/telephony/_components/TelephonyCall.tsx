@@ -4,6 +4,10 @@ import React from 'react';
 import * as SpeechSDK from 'microsoft-cognitiveservices-speech-sdk';
 import { Button } from '@/components/ui/button';
 
+import { 
+  AudioLines,
+} from 'lucide-react';
+
 const text = `Hurmatli mijoz!
   Sizning hisobingiz bo'yicha qarz summasi mavjud. 
   Qarzdorlik miqdori: bir milion ikki yuz ming so'm.
@@ -40,9 +44,8 @@ const TelephonyCall = () => {
   };
 
   return (
-
     <Button onClick={handleTextToSpeech}>
-      Phone Call Demo
+      <AudioLines className='size-[1.2rem] mr-2' />Phone Call Demo
     </Button>
   );
 };
