@@ -62,7 +62,7 @@ const getSidebarLinks = (currentUser: UserProfileType, translate: any) => {
     { href: '/dashboard/clients', label: translate('clients'), icon: Users },
   ];
 
-  const userSpecificLinks = currentUser.user_type === 'loanManager' ? loanManager : bankTeller;
+  const userSpecificLinks = currentUser.user_type === 'LOAN_MANAGER' ? loanManager : bankTeller;
 
   return {
     Dashboard: [...home],
