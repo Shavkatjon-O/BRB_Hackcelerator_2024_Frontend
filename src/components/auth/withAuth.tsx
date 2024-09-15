@@ -2,7 +2,8 @@
 
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 import Cookies from "js-cookie";
 
