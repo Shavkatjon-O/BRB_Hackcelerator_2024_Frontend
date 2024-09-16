@@ -34,6 +34,8 @@ import {
 import EndCallButton from "./end-call-button";
 import { Button } from "@/components/ui/button";
 
+import { useRouter } from '@/i18n/routing';
+
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 const MeetingRoom = () => {
@@ -43,6 +45,8 @@ const MeetingRoom = () => {
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
   const callingState = useCallCallingState();
+
+  const router = useRouter();
 
   if (callingState !== CallingState.JOINED) return (
     <div className="h-full flex items-center justify-center">
@@ -71,7 +75,10 @@ const MeetingRoom = () => {
       </div>
 
       <div className="w-full gap-4 flex flex-wrap items-center justify-center">
-        <CallControls onLeave={() => window.location.href = "/dashboard/meetings"} />
+        <CallControls onLeave={() => {
+          router.push("/dashboard/meetings");
+          router.refresh();
+        }} />
 
         <Popover>
           <PopoverTrigger>
